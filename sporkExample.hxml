@@ -1,0 +1,11 @@
+-js bin/sporkExample.js
+-cp src
+-main org.skyfire2008.sporkExample.Main
+-D js-flatten
+-dce full
+
+--macro org.skyfire2008.sporkExample.util.Macro.copyHtml()
+--macro org.skyfire2008.sporkExample.util.Macro.copyDir("assets", "bin/assets")
+
+-lib spork
+-lib nape

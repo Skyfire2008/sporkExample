@@ -1,0 +1,88 @@
+package org.skyfire2008.sporkExample.graphics;
+
+import haxe.Resource;
+
+import js.html.webgl.Program;
+import js.html.webgl.RenderingContext;
+import js.html.webgl.GL;
+import js.html.webgl.extension.OESVertexArrayObject;
+import js.html.webgl.Shader;
+import js.html.webgl.UniformLocation;
+
+import org.skyfire2008.sporkExample.geom.Point;
+
+// adapted from TDS
+class Renderer {
+	public var gl(default, null): RenderingContext;
+	private var ext: OESVertexArrayObject;
+	private var prog: Program;
+
+	private var rotationLoc: UniformLocation;
+	private var posLoc: UniformLocation;
+	private var scaleLoc: UniformLocation;
+
+	public function new(gl: RenderingContext) {
+		this.gl = gl;
+		ext = gl.getExtension("OES_vertex_array_object");
+		prog = Renderer.initGLProgram(gl, Resource.getString("basicVert"), Resource.getString("basicFrag"));
+
+		trace(gl.getExtension("OES_element_index_uint"));
+
+		gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+		posLoc = gl.getUniformLocation(prog, "pos");
+		rotationLoc = gl.getUniformLocation(prog, "rotation");
+		scaleLoc = gl.getUniformLocation(prog, "scale");
+	}
+
+	public inline function start() {
+		gl.useProgram(prog);
+	}
+
+	public inline function clear() {
+		gl.clear(GL.COLOR_BUFFER_BIT);
+	}
+
+	public inline function render(shape: Shape, pos: Point, rotation: Float, scale: Float) {
+		gl.uniform2f(scaleLoc, scale, scale);
+		gl.uniform1f(rotationLoc, rotation);
+		gl.uniform2f(posLoc, pos.x, pos.y);
+
+		ext.bindVertexArrayOES(shape.vao);
+
+		gl.drawElements(GL.LINES, shape.indexNum, GL.UNSIGNED_INT, 0);
+	}
+
+	public static function initGLProgram(gl: RenderingContext, vertSrc: String, fragSrc: String): Program {
+		var result = gl.createProgram();
+
+		var vert = Renderer.loadShader(gl, GL.VERTEX_SHADER, vertSrc);
+		var frag = Renderer.loadShader(gl, GL.FRAGMENT_SHADER, fragSrc);
+
+		gl.attachShader(result, vert);
+		gl.attachShader(result, frag);
+
+		gl.bindAttribLocation(result, 0, "vert"); // TODO: don't hardcode this
+		gl.bindAttribLocation(result, 1, "rgb ");
+
+		gl.linkProgram(result);
+
+		if (!gl.getProgramParameter(result, GL.LINK_STATUS)) {
+			throw "Error while linking the program: " + gl.getProgramInfoLog(result);
+		}
+
+		return result;
+	}
+
+	public static inline function loadShader(gl: RenderingContext, type: Int, src: String): Shader {
+		var result: Shader = gl.createShader(type);
+		gl.shaderSource(result, src);
+		gl.compileShader(result);
+
+		if (!gl.getShaderParameter(result, GL.COMPILE_STATUS)) {
+			throw "Error occurred while compiling shader: " + gl.getShaderInfoLog(result);
+		}
+
+		return result;
+	}
+}
