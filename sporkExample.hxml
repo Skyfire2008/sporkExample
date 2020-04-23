@@ -4,8 +4,9 @@
 -D js-flatten
 -dce full
 
---macro org.skyfire2008.sporkExample.util.Macro.copyHtml()
---macro org.skyfire2008.sporkExample.util.Macro.copyDir("assets", "bin/assets")
+--macro sys.io.File.copy("src/index.html", "bin/index.html")
+--macro org.skyfire2008.sporkExample.util.Scripts.createContentsJson("assets")
+--macro org.skyfire2008.sporkExample.util.Scripts.copyDir("assets", "bin/assets")
 
 -lib spork
 -lib nape

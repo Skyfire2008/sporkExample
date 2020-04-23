@@ -7,6 +7,22 @@ import js.html.webgl.VertexArrayObject;
 import js.html.webgl.Buffer;
 import js.html.webgl.GL;
 
+typedef Point = {
+	var x: Float;
+	var y: Float;
+	var color: String;
+}
+
+typedef Line = {
+	var from: Int;
+	var to: Int;
+}
+
+typedef ShapeJson = {
+	var points: Array<Point>;
+	var lines: Array<Line>;
+}
+
 // copied from TDS
 class Shape {
 	private var positions: Float32Array;
@@ -20,6 +36,29 @@ class Shape {
 	private var posVbo: Buffer;
 	private var colorVbo: Buffer;
 	private var indexVbo: Buffer;
+
+	public static function fromJson(json: ShapeJson): Shape {
+		var positions: Array<Float> = [];
+		var colors: Array<Float> = [];
+		var indices: Array<Int> = [];
+
+		for (p in json.points) {
+			positions.push(p.x);
+			positions.push(p.y);
+
+			var rgb = Std.parseInt(")x" + p.color.substring(1, p.color.length));
+			colors.push((rgb >> 16) / 255.0);
+			colors.push((0xff & rgb >> 8) / 255.0);
+			colors.push((0xff & rgb) / 255.0);
+		}
+
+		for (l in json.lines) {
+			indices.push(l.from);
+			indices.push(l.to);
+		}
+
+		return new Shape(positions, colors, indices);
+	}
 
 	public function new(positions: Array<Float>, colors: Array<Float>, indices: Array<Int>) {
 		this.positions = new Float32Array(positions);
