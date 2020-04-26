@@ -1,7 +1,5 @@
 package org.skyfire2008.sporkExample.graphics;
 
-import haxe.Resource;
-
 import js.html.webgl.Program;
 import js.html.webgl.RenderingContext;
 import js.html.webgl.GL;
@@ -21,10 +19,10 @@ class Renderer {
 	private var posLoc: UniformLocation;
 	private var scaleLoc: UniformLocation;
 
-	public function new(gl: RenderingContext) {
+	public function new(gl: RenderingContext, vertSrc: String, fragSrc: String) {
 		this.gl = gl;
 		ext = gl.getExtension("OES_vertex_array_object");
-		prog = Renderer.initGLProgram(gl, Resource.getString("basicVert"), Resource.getString("basicFrag"));
+		prog = Renderer.initGLProgram(gl, vertSrc, fragSrc);
 
 		trace(gl.getExtension("OES_element_index_uint"));
 
@@ -63,13 +61,15 @@ class Renderer {
 		gl.attachShader(result, frag);
 
 		gl.bindAttribLocation(result, 0, "vert"); // TODO: don't hardcode this
-		gl.bindAttribLocation(result, 1, "rgb ");
+		gl.bindAttribLocation(result, 1, "rgb");
 
 		gl.linkProgram(result);
 
 		if (!gl.getProgramParameter(result, GL.LINK_STATUS)) {
 			throw "Error while linking the program: " + gl.getProgramInfoLog(result);
 		}
+
+		trace(gl.getAttribLocation(result, "rgb"));
 
 		return result;
 	}

@@ -46,7 +46,7 @@ class Shape {
 			positions.push(p.x);
 			positions.push(p.y);
 
-			var rgb = Std.parseInt(")x" + p.color.substring(1, p.color.length));
+			var rgb = Std.parseInt("0x" + p.color.substring(1, p.color.length));
 			colors.push((rgb >> 16) / 255.0);
 			colors.push((0xff & rgb >> 8) / 255.0);
 			colors.push((0xff & rgb) / 255.0);
