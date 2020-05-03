@@ -41,10 +41,10 @@ class Renderer {
 		gl.clear(GL.COLOR_BUFFER_BIT);
 	}
 
-	public inline function render(shape: Shape, pos: Point, rotation: Float, scale: Float) {
+	public inline function render(shape: Shape, posX: Float, posY: Float, rotation: Float, scale: Float) {
 		gl.uniform2f(scaleLoc, scale, scale);
 		gl.uniform1f(rotationLoc, rotation);
-		gl.uniform2f(posLoc, pos.x, pos.y);
+		gl.uniform2f(posLoc, posX, posY);
 
 		ext.bindVertexArrayOES(shape.vao);
 

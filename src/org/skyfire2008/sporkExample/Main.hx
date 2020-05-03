@@ -9,6 +9,8 @@ import js.html.Document;
 import js.html.CanvasElement;
 import js.html.webgl.RenderingContext;
 
+import spork.core.JsonLoader;
+
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.geom.Point;
@@ -66,7 +68,7 @@ class Main {
 				renderer.start();
 				renderer.clear();
 				trace(shapes);
-				renderer.render(shapes.get("brick.json"), new Point(120, 120), 0, 1);
+				renderer.render(shapes.get("brick.json"), 120, 120, 0, 1);
 			});
 		});
 	}

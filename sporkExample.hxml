@@ -8,5 +8,8 @@
 --macro org.skyfire2008.sporkExample.util.Scripts.createContentsJson("assets")
 --macro org.skyfire2008.sporkExample.util.Scripts.copyDir("assets", "bin/assets")
 
+--macro spork.core.Macro.setPropClassPath(["org.skyfire2008.sporkExample.game.properties"])
+--macro spork.core.Macro.setComponentsClassPath(["org.skyfire2008.sporkExample.game.components"])
+
 -lib spork
--lib nape
+-lib nape-haxe4
