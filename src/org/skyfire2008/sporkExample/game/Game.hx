@@ -3,6 +3,7 @@ package org.skyfire2008.sporkExample.game;
 import haxe.ds.StringMap;
 
 import nape.space.Space;
+import nape.phys.Body;
 
 import spork.core.Entity;
 
@@ -34,6 +35,14 @@ class Game {
 		this.renderer = renderer;
 		renderer.start();
 		this.space = space;
+	}
+
+	public function addNapeBody(body: Body) {
+		space.bodies.add(body);
+	}
+
+	public function addRenderData(data: RenderData) {
+		renderList.push(data);
 	}
 
 	public function addUpdatable(entity: Entity) {
