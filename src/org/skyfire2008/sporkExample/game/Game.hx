@@ -2,47 +2,20 @@ package org.skyfire2008.sporkExample.game;
 
 import haxe.ds.StringMap;
 
-import nape.space.Space;
-import nape.phys.Body;
-
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 
-class RenderData {
-	public var owner(default, null): Entity;
-	public var shape(default, null): Shape;
-	public var pos(default, null): Position;
-
-	public function new(owner: Entity, shape: Shape, pos: Position) {
-		this.owner = owner;
-		this.shape = shape;
-		this.pos = pos;
-	}
-}
-
 class Game {
 	private var renderer: Renderer;
 
-	private var renderList: Array<RenderData> = [];
 	private var updateList: Array<Entity> = [];
 
-	private var space: Space;
-
-	public function new(renderer: Renderer, space: Space) {
+	public function new(renderer: Renderer) {
 		this.renderer = renderer;
 		renderer.start();
-		this.space = space;
-	}
-
-	public function addNapeBody(body: Body) {
-		space.bodies.add(body);
-	}
-
-	public function addRenderData(data: RenderData) {
-		renderList.push(data);
 	}
 
 	public function addUpdatable(entity: Entity) {
@@ -56,10 +29,6 @@ class Game {
 			entity.onUpdate(time);
 		}
 
-		for (data in renderList) {
-			renderer.render(data.shape, data.pos.x, data.pos.y, data.pos.rotation, 1);
-		}
-
 		// remove dead entities
 		var newUpdateList: Array<Entity> = [];
 		for (entity in updateList) {
@@ -68,13 +37,5 @@ class Game {
 			}
 		}
 		updateList = newUpdateList;
-
-		var newRenderList: Array<RenderData> = [];
-		for (data in renderList) {
-			if (!data.owner.isAlive()) {
-				newRenderList.push(data);
-			}
-		}
-		renderList = newRenderList;
 	}
 }

@@ -12,4 +12,4 @@
 --macro spork.core.Macro.setComponentsClassPath(["org.skyfire2008.sporkExample.game.components"])
 
 -lib spork
--lib nape-haxe4
+-lib polygonal-ds

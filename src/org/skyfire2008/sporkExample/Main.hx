@@ -17,6 +17,8 @@ import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.util.Scripts;
 
+using Lambda;
+
 class Main {
 	private static var gl: RenderingContext;
 	private static var document: Document;
@@ -40,25 +42,30 @@ class Main {
 		var loadPromises: Array<Promise<Void>> = [];
 		Util.fetchFile("assets/contents.json").then((text) -> {
 			var contents: Array<DirContent> = Json.parse(text);
-			for (dir in contents) {
-				if (dir.path == "shapes") {
-					for (kid in dir.kids) {
-						loadPromises.push(Util.fetchFile('assets/shapes/${kid.path}').then((file) -> {
-							trace('loaded ${kid.path}');
-							var shape = Shape.fromJson(Json.parse(file));
-							shape.init(gl);
-							shapes.set(kid.path, shape);
-							return;
-						}));
-					}
-				}
+
+			var shapesDir = contents.find((item) -> {
+				return item.path == "shapes";
+			});
+
+			var entsDir = contents.find((item) -> {
+				return item.path == "entities";
+			});
+
+			for (kid in shapesDir.kids) { // load every shape
+				loadPromises.push(Util.fetchFile('assets/shapes/${kid.path}').then((file) -> {
+					trace('loaded ${kid.path}');
+					var shape = Shape.fromJson(Json.parse(file));
+					shape.init(gl);
+					shapes.set(kid.path, shape);
+					return;
+				}));
 			}
 
 			var rendererPromises = [
 				Util.fetchFile("assets/shaders/basic.vert"),
 				Util.fetchFile("assets/shaders/basic.frag")
 			];
-			loadPromises.push(Promise.all(rendererPromises).then((shaders) -> {
+			loadPromises.push(Promise.all(rendererPromises).then((shaders) -> { // load shaders
 				renderer = new Renderer(gl, shaders[0], shaders[1]);
 				return;
 			}));
