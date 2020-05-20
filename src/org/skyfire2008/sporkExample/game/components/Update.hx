@@ -27,8 +27,21 @@ class MoveComponent implements UpdateComponent {
 
 	public function onUpdate(time: Float) {
 		pos.x += vel.x * time;
-		pos.y = vel.y * time;
-		pos.rotation = vel.rotation * time;
+		pos.y += vel.y * time;
+		pos.rotation += vel.rotation * time;
+
+		// wrap
+		if (pos.x < 0) {
+			pos.x += Game.fieldWidth;
+		} else if (pos.x > Game.fieldWidth) {
+			pos.x -= Game.fieldWidth;
+		}
+
+		if (pos.y < 0) {
+			pos.y += Game.fieldHeight;
+		} else if (pos.y > Game.fieldHeight) {
+			pos.y -= Game.fieldHeight;
+		}
 	}
 
 	public function attach(owner: Entity) {
@@ -48,10 +61,14 @@ class RenderComponent implements UpdateComponent {
 	private var owner: Entity;
 
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
-	public static var renderer(default, null): Renderer;
+	private static var renderer: Renderer;
 
-	public static function addShapes(name: String, shape: Shape) {
+	public static function setShape(name: String, shape: Shape) {
 		shapes.set(name, shape);
+	}
+
+	public static function setRenderer(renderer: Renderer) {
+		RenderComponent.renderer = renderer;
 	}
 
 	/**

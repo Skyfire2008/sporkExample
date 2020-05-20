@@ -1,0 +1,12 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"renderComponent": {
+			"shapeRef": "smallAsteroid.json"
+		},
+		"hpComponent": {
+			"hp": 1
+		}
+	}
+}
