@@ -5,6 +5,7 @@ import haxe.ds.StringMap;
 
 import js.Browser;
 import js.lib.Promise;
+import js.html.KeyboardEvent;
 import js.html.Document;
 import js.html.CanvasElement;
 import js.html.webgl.RenderingContext;
@@ -115,6 +116,12 @@ class Main {
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
 					game = new Game(renderer);
+
+					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
+						holder.position = new Position(640, 360, 0);
+						holder.velocity = new Velocity(0, 0, 0);
+					}));
+
 					for (i in 1...100) {
 						game.addEntity(entFactories.get("smallAsteroid.json")((holder) -> {
 							holder.position = new Position(Math.random() * 1280, Math.random() * 720, Math.random() * Math.PI * 2);
@@ -123,6 +130,12 @@ class Main {
 					}
 
 					Browser.window.requestAnimationFrame(onEnterFrameFirst);
+					Browser.window.addEventListener("keydown", (e: KeyboardEvent) -> {
+						game.onKeyDown(e.code);
+					});
+					Browser.window.addEventListener("keyup", (e: KeyboardEvent) -> {
+						game.onKeyUp(e.code);
+					});
 				});
 
 				renderer.start();

@@ -11,6 +11,7 @@ class Game {
 	private var renderer: Renderer;
 
 	private var entities: Array<Entity> = [];
+	private var controllableEntitites: Array<Entity> = [];
 
 	public function new(renderer: Renderer) {
 		this.renderer = renderer;
@@ -19,6 +20,22 @@ class Game {
 	public function addEntity(entity: Entity) {
 		entity.onInit(this);
 		entities.push(entity);
+	}
+
+	public function addControllableEntity(entity: Entity) {
+		controllableEntitites.push(entity);
+	}
+
+	public function onKeyDown(code: String) {
+		for (entity in controllableEntitites) {
+			entity.onKeyDown(code);
+		}
+	}
+
+	public function onKeyUp(code: String) {
+		for (entity in controllableEntitites) {
+			entity.onKeyUp(code);
+		}
 	}
 
 	public function update(time: Float) {

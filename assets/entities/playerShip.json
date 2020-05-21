@@ -1,0 +1,19 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"renderComponent": {
+			"shapeRef": "ship.json"
+		},
+		"hpComponent": {
+			"hp": 1
+		},
+		"controlComponent": {
+			"a": 300,
+			"angVel": 3.14,
+			"fwKey": "KeyW",
+			"leftKey": "KeyA",
+			"rightKey": "KeyD"
+		}
+	}
+}
