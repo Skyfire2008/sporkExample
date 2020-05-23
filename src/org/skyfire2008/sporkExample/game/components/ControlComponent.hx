@@ -33,13 +33,15 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var fwKey: String;
 	private var rightKey: String;
 	private var leftKey: String;
+	private var fireKey: String;
 
-	public function new(a: Float, angVel: Float, fwKey: String, rightKey: String, leftKey: String) {
+	public function new(a: Float, angVel: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String) {
 		this.a = a;
 		this.angVel = angVel;
 		this.fwKey = fwKey;
 		this.rightKey = rightKey;
 		this.leftKey = leftKey;
+		this.fireKey = fireKey;
 		this.keys = new StringMap<Bool>();
 
 		// assign actions
@@ -55,6 +57,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		actions.set(leftKey, (time: Float) -> {
 			vel.rotation = -angVel;
 		});
+		// actions.set(fireKey, (time: Float) -> {});
 	}
 
 	public function onInit(game: Game) {

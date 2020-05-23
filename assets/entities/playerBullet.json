@@ -3,15 +3,15 @@
 	"components": {
 		"moveComponent": {},
 		"renderComponent": {
-			"shapeRef": "smallAsteroid.json"
+			"shapeRef": "bullet.json"
 		},
-		"hpComponent": {
-			"hp": 1
+		"timedComponent": {
+			"time": 5
 		},
 		"collisionComponent": {
-			"side": "Enemy",
-			"radius": 16
+			"side": "Player",
+			"radius": 5
 		},
-		"damagedOnHit": {}
+		"diesOnHit": {}
 	}
 }

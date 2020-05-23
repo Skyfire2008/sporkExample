@@ -122,10 +122,10 @@ class Main {
 						holder.velocity = new Velocity(0, 0, 0);
 					}));
 
-					for (i in 1...100) {
+					for (i in 1...10) {
 						game.addEntity(entFactories.get("smallAsteroid.json")((holder) -> {
 							holder.position = new Position(Math.random() * 1280, Math.random() * 720, Math.random() * Math.PI * 2);
-							holder.velocity = new Velocity(Math.random() * 100, Math.random() * 100, Math.random() * Math.PI * 2);
+							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 50, Math.random() * Math.PI * 2);
 						}));
 					}
 

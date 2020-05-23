@@ -6,14 +6,20 @@
 			"shapeRef": "ship.json"
 		},
 		"hpComponent": {
-			"hp": 1
+			"hp": 100
 		},
 		"controlComponent": {
 			"a": 300,
 			"angVel": 3.14,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",
-			"rightKey": "KeyD"
-		}
+			"rightKey": "KeyD",
+			"fireKey": "Space"
+		},
+		"collisionComponent": {
+			"side": "Player",
+			"radius": 15
+		},
+		"damagedOnHit": {}
 	}
 }

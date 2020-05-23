@@ -2,12 +2,10 @@ package org.skyfire2008.sporkExample.spatial;
 
 import haxe.ds.Vector;
 
-import de.polygonal.ds.HashSet;
-import de.polygonal.ds.Sll;
-import de.polygonal.ds.IntHashSet;
+import polygonal.ds.HashSet;
+import polygonal.ds.IntHashSet;
 
 import org.skyfire2008.sporkExample.geom.Rectangle;
-import org.skyfire2008.sporkExample.geom.Circle;
 
 using Lambda;
 
@@ -16,7 +14,7 @@ using Lambda;
  * @author
  */
 class UniformGrid {
-	private var cells: Vector<List<Circle>>;
+	private var cells: Vector<List<Collider>>;
 	private var dirtyCells: IntHashSet;
 
 	public var width(default, null): Int;
@@ -30,15 +28,15 @@ class UniformGrid {
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
 
-		this.cells = new Vector<List<Circle>>(width * height);
+		this.cells = new Vector<List<Collider>>(width * height);
 		for (i in 0...width * height) {
-			this.cells.set(i, new List<Circle>());
+			this.cells.set(i, new List<Collider>());
 		}
 
 		this.dirtyCells = new IntHashSet(43);
 	}
 
-	public function add(elem: Circle): Void {
+	public function add(elem: Collider): Void {
 		var rect = elem.rect();
 
 		var startX: Int = Std.int(rect.x / cellWidth);
@@ -64,7 +62,7 @@ class UniformGrid {
 		}
 	}
 
-	public function queryRect(rect: Rectangle): List<Circle> {
+	public function queryRect(rect: Rectangle): Array<Collider> {
 		var startX: Int = Std.int(rect.x / cellWidth);
 		startX = startX < 0 ? 0 : startX;
 
@@ -79,12 +77,12 @@ class UniformGrid {
 		endY = endY > height - 1 ? height - 1 : endY;
 		endY++;
 
-		var res: HashSet<Circle> = new HashSet<Circle>(17, 17);
+		var res: HashSet<Collider> = new HashSet<Collider>(17, 17);
 		for (x in startX...endX) {
 			for (y in startY...endY) {
 				var ind = cellIndex(x, y);
 
-				cells[ind].iter(function(elem: Circle) {
+				cells[ind].iter(function(elem: Collider) {
 					if (rect.intersects(elem.rect())) {
 						res.set(elem);
 					}
@@ -92,12 +90,12 @@ class UniformGrid {
 			}
 		}
 
-		return res.list();
+		return res.toArray();
 	}
 
 	public function reset(): Void {
 		for (i in dirtyCells) {
-			cells[i] = new List<Circle>();
+			cells[i] = new List<Collider>();
 		}
 		dirtyCells.clear();
 	}
