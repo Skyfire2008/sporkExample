@@ -7,6 +7,7 @@ import spork.core.PropertyHolder;
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.geom.Point;
+import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
 import org.skyfire2008.sporkExample.game.components.Update;
@@ -20,12 +21,15 @@ interface KBComponent extends Component {
 	function onKeyUp(code: String): Void;
 }
 
+interface Dummy {}
+
 class ControlComponent implements KBComponent implements UpdateComponent implements InitComponent {
 	private var keys: StringMap<Bool>;
 	private var actions: StringMap<(time: Float) -> Void>;
 	private var a: Float;
 	private var angVel: Float;
 
+	private var wep: Spawner;
 	private var owner: Entity;
 	private var vel: Velocity;
 	private var pos: Position;
@@ -57,23 +61,32 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		actions.set(leftKey, (time: Float) -> {
 			vel.rotation = -angVel;
 		});
-		// actions.set(fireKey, (time: Float) -> {});
+		actions.set(fireKey, (time: Float) -> {});
 	}
 
 	public function onInit(game: Game) {
+		wep = new Spawner("playerBullet.json", 0.5, 400, 1, 0, false, false);
+		wep.init();
 		game.addControllableEntity(this.owner);
 	}
 
 	public function onKeyDown(code: String) {
 		keys.set(code, true);
+		if (code == fireKey) {
+			wep.startSpawn();
+		}
 	}
 
 	public function onKeyUp(code: String) {
 		keys.remove(code);
+		if (code == fireKey) {
+			wep.stopSpawn();
+		}
 	}
 
 	public function onUpdate(time: Float) {
 		vel.rotation = 0;
+		wep.update(time, pos, vel);
 
 		for (key in keys.keys()) {
 			var func = actions.get(key);
@@ -81,13 +94,6 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 				func(time);
 			}
 		}
-	}
-
-	public function attach(entity: Entity) {
-		entity.updateComponents.push(this);
-		entity.kBComponents.push(this);
-		entity.initComponents.push(this);
-		owner = entity;
 	}
 
 	public function assignProps(holder: PropertyHolder) {

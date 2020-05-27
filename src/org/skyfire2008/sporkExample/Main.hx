@@ -18,6 +18,7 @@ import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.util.Scripts;
 import org.skyfire2008.sporkExample.game.Game;
+import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
@@ -116,6 +117,7 @@ class Main {
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
 					game = new Game(renderer);
+					Spawner.setup(game, entFactories);
 
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
 						holder.position = new Position(640, 360, 0);
@@ -123,7 +125,7 @@ class Main {
 					}));
 
 					for (i in 1...10) {
-						game.addEntity(entFactories.get("smallAsteroid.json")((holder) -> {
+						game.addEntity(entFactories.get("mediumAsteroid.json")((holder) -> {
 							holder.position = new Position(Math.random() * 1280, Math.random() * 720, Math.random() * Math.PI * 2);
 							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 50, Math.random() * Math.PI * 2);
 						}));

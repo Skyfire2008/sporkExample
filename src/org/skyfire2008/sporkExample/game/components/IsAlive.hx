@@ -34,12 +34,6 @@ class TimedComponent implements IsAliveComponent implements UpdateComponent {
 	public function onUpdate(time: Float) {
 		this.time -= time;
 	}
-
-	public function attach(e: Entity) {
-		e.isAliveComponent = this;
-		e.updateComponents.push(this);
-		owner = e;
-	}
 }
 
 class HpComponent implements IsAliveComponent {
@@ -60,11 +54,6 @@ class HpComponent implements IsAliveComponent {
 
 	public function kill() {
 		health.hp = 0;
-	}
-
-	public function attach(e: Entity) {
-		e.isAliveComponent = this;
-		owner = e;
 	}
 
 	public function assignProps(holder: PropertyHolder) {

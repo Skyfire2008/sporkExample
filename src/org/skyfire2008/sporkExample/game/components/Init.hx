@@ -39,11 +39,6 @@ class CollisionComponent implements InitComponent {
 		this.side = side;
 	}
 
-	public function attach(entity: Entity) {
-		this.owner = entity;
-		entity.initComponents.push(this);
-	}
-
 	public function assignProps(holder: PropertyHolder) {
 		this.pos = holder.position;
 	}

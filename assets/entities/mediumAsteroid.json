@@ -1,0 +1,25 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"renderComponent": {
+			"shapeRef": "mediumAsteroid.json"
+		},
+		"hpComponent": {
+			"hp": 3
+		},
+		"collisionComponent": {
+			"side": "Enemy",
+			"radius": 24
+		},
+		"damagedOnHit": {},
+		"deathSpawnComponent": {
+			"entityName": "smallAsteroid.json",
+			"spawnTime": 1,
+			"spawnVel": 100,
+			"spawnNum": 3,
+			"spreadAngle": 120,
+			"isVelRelative": true
+		}
+	}
+}

@@ -6,7 +6,7 @@
 			"shapeRef": "bullet.json"
 		},
 		"timedComponent": {
-			"time": 5
+			"time": 2
 		},
 		"collisionComponent": {
 			"side": "Player",

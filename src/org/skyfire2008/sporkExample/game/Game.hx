@@ -66,10 +66,12 @@ class Game {
 
 		// detect collisions
 		grid.reset();
+		// add all enemy colliders to the grid
 		for (col in enemyColliders) {
 			grid.add(col);
 		}
 
+		// use the grid to check for collision with player colliders
 		for (col in playerColliders) {
 			var possibleCols = grid.queryRect(col.rect());
 			for (enemyCol in possibleCols) {
@@ -78,6 +80,7 @@ class Game {
 				}
 				if (enemyCol.owner.isAlive() && col.intersects(enemyCol)) {
 					enemyCol.owner.onHit(col);
+					col.owner.onHit(enemyCol);
 				}
 			}
 		}

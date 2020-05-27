@@ -44,11 +44,6 @@ class MoveComponent implements UpdateComponent {
 		}
 	}
 
-	public function attach(owner: Entity) {
-		owner.updateComponents.push(this);
-		this.owner = owner;
-	}
-
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 		vel = holder.velocity;
@@ -92,25 +87,7 @@ class RenderComponent implements UpdateComponent {
 		RenderComponent.renderer.render(shape, pos.x, pos.y, pos.rotation, 1);
 	}
 
-	public function attach(entity: Entity) {
-		this.owner = entity;
-		entity.updateComponents.push(this);
-	}
-
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 	}
 }
-/*enum Side {
-	PLAYER;
-	ENEMY;
-	}
-
-	class CollisionComponent implements UpdateComponent {
-	private var radius: Float;
-	private var pos: Position;
-	private var side: Side;
-
-	public function new()
-	}
- */
