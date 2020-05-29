@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample;
 
+import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
+
 import haxe.Json;
 import haxe.ds.StringMap;
 
@@ -89,7 +91,6 @@ class Main {
 					var shape = Shape.fromJson(Json.parse(file));
 					shape.init(gl);
 					shapes.set(kid.path, shape);
-					RenderComponent.setShape(kid.path, shape);
 					return;
 				}));
 			}
@@ -99,9 +100,12 @@ class Main {
 				Util.fetchFile("assets/shaders/basic.frag")
 			];
 			loadPromises.push(Promise.all(rendererPromises).then((shaders) -> { // load shaders
-				// when shaders are loaded, init the renderer
+				// when shaders are loaded, set the shapes for render component and init the renderer
+				RenderComponent.setShapes(shapes);
+				AnimComponent.setShapes(shapes);
 				renderer = new Renderer(gl, shaders[0], shaders[1]);
 				RenderComponent.setRenderer(renderer);
+				AnimComponent.setRenderer(renderer);
 				return;
 			}));
 
@@ -125,9 +129,9 @@ class Main {
 					}));
 
 					for (i in 1...10) {
-						game.addEntity(entFactories.get("mediumAsteroid.json")((holder) -> {
-							holder.position = new Position(Math.random() * 1280, Math.random() * 720, Math.random() * Math.PI * 2);
-							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 50, Math.random() * Math.PI * 2);
+						game.addEntity(entFactories.get("ufo.json")((holder) -> {
+							holder.position = new Position(Math.random() * 1280, Math.random() * 720, 0 /*Math.random() * Math.PI * 2*/);
+							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 5, 0 /*, Math.random() * Math.PI * 2*/);
 						}));
 					}
 

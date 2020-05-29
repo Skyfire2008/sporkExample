@@ -65,7 +65,13 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	}
 
 	public function onInit(game: Game) {
-		wep = new Spawner("playerBullet.json", 0.5, 400, 1, 0, false, false);
+		wep = new Spawner({
+			entityName: "playerBullet.json",
+			spawnTime: 0.5,
+			spawnVel: 400,
+			spawnNum: 1,
+			isVelRelative: false
+		});
 		wep.init();
 		game.addControllableEntity(this.owner);
 	}

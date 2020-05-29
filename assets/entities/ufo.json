@@ -1,0 +1,18 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"animComponent": {
+			"shapeRefs": ["ufo1.json", "ufo2.json"],
+			"frameTime": 0.25
+		},
+		"hpComponent": {
+			"hp": 3
+		},
+		"collisionComponent": {
+			"side": "Enemy",
+			"radius": 19
+		},
+		"damagedOnHit": {}
+	}
+}

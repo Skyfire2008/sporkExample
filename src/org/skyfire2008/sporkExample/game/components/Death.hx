@@ -5,6 +5,7 @@ import spork.core.PropertyHolder;
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.game.Spawner.SpawnerConfig;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
@@ -21,14 +22,7 @@ class DeathSpawnComponent implements DeathComponent implements InitComponent {
 	private var owner: Entity;
 
 	public static function fromJson(json: Dynamic): Component {
-		var entityName = json.entityName;
-		var spawnTime = json.spawnTime;
-		var spawnVel = json.spawnVel;
-		var spawnNum = json.spawnNum;
-		var spreadAngle = json.spreadAngle * Math.PI / 180.0;
-		var isVelRelative = json.isVelRelative;
-		var isRotationRandomized = json.isRotationRandomized;
-		return new DeathSpawnComponent(new Spawner(entityName, spawnTime, spawnVel, spawnNum, spreadAngle, isVelRelative, isRotationRandomized));
+		return new DeathSpawnComponent(new Spawner(json));
 	}
 
 	public function new(spawner: Spawner) {

@@ -5,6 +5,10 @@ import js.html.ProgressEvent;
 import js.lib.Promise;
 
 class Util {
+	public static inline function rand(val: Float): Float {
+		return val * (Math.random() - 0.5);
+	}
+
 	public static inline function fetchFile(path: String): Promise<String> {
 		return new Promise<String>((resolve, reject) -> {
 			var xhr = new XMLHttpRequest();

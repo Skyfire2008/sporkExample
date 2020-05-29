@@ -15,6 +15,9 @@ interface UpdateComponent extends Component {
 	function onUpdate(time: Float): Void;
 }
 
+/*class ShootsAtComponent implements UpdateComponent {}
+	class AimedAtComponent implements UpdateComponent {}
+ */
 /**
  * Updates the entity's position according to its velocity
  */
@@ -50,16 +53,72 @@ class MoveComponent implements UpdateComponent {
 	}
 }
 
+class AnimComponent implements UpdateComponent {
+	private var frames: Array<Shape>;
+	private var pos: Position;
+	private var owner: Entity;
+	private var frameTime: Float;
+
+	private var curTime: Float;
+	private var curFrame: Int;
+
+	private static var shapes: StringMap<Shape>;
+	private static var renderer: Renderer;
+
+	public static function setShapes(shapes: StringMap<Shape>) {
+		AnimComponent.shapes = shapes;
+	}
+
+	public static function setRenderer(renderer: Renderer) {
+		AnimComponent.renderer = renderer;
+	}
+
+	public static function fromJson(json: Dynamic): AnimComponent {
+		var frames: Array<Shape> = [];
+		var shapeRefs: Array<String> = cast json.shapeRefs;
+		for (shapeRef in shapeRefs) {
+			var shape = AnimComponent.shapes.get(shapeRef);
+			if (shape == null) {
+				throw 'No shape for ${shapeRef} exists';
+			}
+			frames.push(shape);
+		}
+		return new AnimComponent(frames, json.frameTime);
+	}
+
+	public function new(frames: Array<Shape>, frameTime: Float) {
+		this.frames = frames;
+		this.frameTime = frameTime;
+		this.curTime = 0;
+		this.curFrame = 0;
+	}
+
+	public function onUpdate(time: Float) {
+		curTime += time;
+		while (curTime > frameTime) {
+			curTime -= frameTime;
+			curFrame++;
+		}
+		curFrame = curFrame % frames.length;
+
+		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, pos.rotation, 1);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		pos = holder.position;
+	}
+}
+
 class RenderComponent implements UpdateComponent {
 	private var shape: Shape;
 	private var pos: Position;
 	private var owner: Entity;
 
-	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
+	private static var shapes: StringMap<Shape>;
 	private static var renderer: Renderer;
 
-	public static function setShape(name: String, shape: Shape) {
-		shapes.set(name, shape);
+	public static function setShapes(shapes: StringMap<Shape>) {
+		RenderComponent.shapes = shapes;
 	}
 
 	public static function setRenderer(renderer: Renderer) {

@@ -18,8 +18,10 @@
 			"spawnTime": 1,
 			"spawnVel": 100,
 			"spawnNum": 3,
-			"spreadAngle": 120,
-			"isVelRelative": true
+			"spreadAngle": 2.1,
+			"isVelRelative": true,
+			"velRand": 50,
+			"angleRand": 1
 		}
 	}
 }

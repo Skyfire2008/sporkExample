@@ -10,7 +10,7 @@
 		},
 		"controlComponent": {
 			"a": 300,
-			"angVel": 3.14,
+			"angVel": 4,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",
 			"rightKey": "KeyD",

@@ -4,22 +4,28 @@ import haxe.ds.StringMap;
 
 import spork.core.JsonLoader.EntityFactoryMethod;
 
+import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
+
+typedef SpawnerConfig = {
+	var entityName: String;
+	var spawnTime: Float;
+	var spawnVel: Float;
+	var spawnNum: Int;
+	var isVelRelative: Bool;
+	@:optional var velRand: Float;
+	@:optional var spreadAngle: Float;
+	@:optional var angleRand: Float;
+}
 
 class Spawner {
 	private static var game: Game;
 	private static var entityFactories: StringMap<EntityFactoryMethod>;
 
-	private var entityName: String;
 	public var spawnFunc(default, null): EntityFactoryMethod;
-	public var spawnTime(default, null): Float;
-	public var spawnVel(default, null): Float;
-	public var spawnNum(default, null): Int;
-	public var spreadAngle(default, null): Float;
-	public var isVelRelative(default, null): Bool;
-	public var isRotationRandomized(default, null): Bool;
+	public var config: SpawnerConfig;
 
 	private var curTime: Float = 0;
 	private var isSpawning: Bool = false;
@@ -29,23 +35,25 @@ class Spawner {
 		Spawner.entityFactories = entityFactories;
 	}
 
-	public function new(entityName: String, spawnTime: Float, spawnVel: Float, spawnNum: Int, spreadAngle: Float, isVelRelative: Bool,
-			isRotationRandomized: Bool) {
-		this.entityName = entityName;
-		this.spawnTime = spawnTime;
-		this.spawnVel = spawnVel;
-		this.spawnNum = spawnNum;
-		this.spreadAngle = spreadAngle;
-		this.isVelRelative = isVelRelative;
-		this.isRotationRandomized = isRotationRandomized;
+	public function new(config: SpawnerConfig) {
+		if (config.velRand == null) {
+			config.velRand = 0;
+		}
+		if (config.spreadAngle == null) {
+			config.spreadAngle = 0;
+		}
+		if (config.angleRand == null) {
+			config.angleRand = 0;
+		}
+		this.config = config;
 	}
 
 	public function init() {
-		spawnFunc = entityFactories.get(entityName);
+		spawnFunc = entityFactories.get(config.entityName);
 	}
 
 	public function clone(): Spawner {
-		return new Spawner(entityName, spawnTime, spawnVel, spawnNum, spreadAngle, isVelRelative, isRotationRandomized);
+		return new Spawner(config);
 	}
 
 	public function startSpawn() {
@@ -57,13 +65,16 @@ class Spawner {
 	}
 
 	public function spawn(pos: Position, vel: Velocity) {
-		for (i in 0...spawnNum) {
+		var baseAngle = config.spawnNum * config.spreadAngle / 2.0;
+
+		for (i in 0...config.spawnNum) {
 			var ent = spawnFunc((holder) -> {
-				var angle = i * spreadAngle + pos.rotation;
+				var angle = i * config.spreadAngle + Util.rand(config.angleRand);
+				angle += pos.rotation - baseAngle;
 				holder.position = new Position(pos.x, pos.y, pos.rotation + angle);
-				var ownVel = Point.fromPolar(angle, spawnVel);
+				var ownVel = Point.fromPolar(angle, config.spawnVel + Util.rand(config.velRand));
 				holder.velocity = new Velocity(ownVel.x, ownVel.y, 0);
-				if (isVelRelative) {
+				if (config.isVelRelative) {
 					holder.velocity.x += vel.x;
 					holder.velocity.y += vel.y;
 				}
@@ -76,12 +87,12 @@ class Spawner {
 	public function update(time: Float, pos: Position, vel: Velocity) {
 		if (isSpawning) {
 			curTime += time;
-			while (curTime >= spawnTime) {
+			while (curTime >= config.spawnTime) {
 				spawn(pos, vel);
-				curTime -= spawnTime;
+				curTime -= config.spawnTime;
 			}
 		} else {
-			if (curTime < spawnTime) {
+			if (curTime < config.spawnTime) {
 				curTime += time;
 			}
 		}
