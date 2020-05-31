@@ -2,15 +2,103 @@ package org.skyfire2008.sporkExample.game.components;
 
 import spork.core.Entity;
 import spork.core.PropertyHolder;
+import spork.core.Component;
 
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
+import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
 import org.skyfire2008.sporkExample.game.properties.Position;
+import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
+import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
 
 interface InitComponent extends spork.core.Component {
 	@callback
 	function onInit(game: Game): Void;
+}
+
+class ShootsAtComponent implements InitComponent implements UpdateComponent {
+	private var group: String;
+	private var owner: Entity;
+
+	private var pos: Position;
+	private var vel: Velocity;
+
+	private var targetPos: Position;
+	private var game: Game;
+	private var wep: Spawner;
+
+	public static function fromJson(json: Dynamic): Component {
+		return new ShootsAtComponent(json.group, new Spawner(json.wep));
+	}
+
+	public function new(group: String, wep: Spawner) {
+		this.group = group;
+		this.wep = wep;
+	}
+
+	public function onInit(game: Game) {
+		this.game = game;
+		wep.init();
+		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+	}
+
+	public function onUpdate(time: Float) {
+		var rot = pos.rotation;
+		pos.rotation = Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x) + Math.PI / 2;
+		wep.update(time, pos, vel);
+		pos.rotation = rot;
+	}
+
+	private function notifyAboutTargets(targets: Array<{
+		id: Int,
+		pos: Position
+	}>) {
+		trace("starting...");
+		wep.startSpawn();
+		var num = Std.random(targets.length);
+		targetPos = targets[num].pos;
+		game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+	}
+
+	private function notifyAboutDeath() {
+		wep.stopSpawn();
+		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		pos = holder.position;
+		vel = holder.velocity;
+	}
+
+	public function clone(): Component {
+		return new ShootsAtComponent(group, wep.clone());
+	}
+}
+
+class TargetComponent implements InitComponent implements DeathComponent {
+	private var group: String;
+	private var owner: Entity;
+
+	private var pos: Position;
+	private var game: Game;
+
+	public function new(group: String) {
+		this.group = group;
+	}
+
+	public function onInit(game: Game) {
+		game.addTarget(owner.id, pos, group);
+		this.game = game;
+	}
+
+	public function onDeath() {
+		game.removeTarget(owner.id, group);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		this.pos = holder.position;
+	}
 }
 
 class CollisionComponent implements InitComponent {

@@ -20,6 +20,9 @@
 			"side": "Player",
 			"radius": 15
 		},
-		"damagedOnHit": {}
+		"damagedOnHit": {},
+		"targetComponent": {
+			"group": "Player"
+		}
 	}
 }

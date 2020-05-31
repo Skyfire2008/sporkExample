@@ -1,10 +1,17 @@
 package org.skyfire2008.sporkExample.game;
 
+import haxe.ds.StringMap;
+import haxe.ds.IntMap;
+
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.spatial.UniformGrid;
 import org.skyfire2008.sporkExample.spatial.Collider;
+import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.graphics.Renderer;
+
+typedef TargetObserver = (Array<{id: Int, pos: Position}>) -> Void;
+typedef TargetDeathObserver = () -> Void;
 
 class Game {
 	public static var fieldWidth(default, never) = 1280;
@@ -19,13 +26,87 @@ class Game {
 	private var enemyColliders: Array<Collider>;
 	private var grid: UniformGrid;
 
+	private var targetGroups: StringMap<IntMap<Position>>;
+	private var targetObservers: StringMap<Array<TargetObserver>>;
+	private var targetDeathObservers: IntMap<Array<TargetDeathObserver>>;
+
 	public function new(renderer: Renderer) {
 		this.renderer = renderer;
 		grid = new UniformGrid(1280, 720, 64, 64);
+		targetGroups = new StringMap<IntMap<Position>>();
+		targetObservers = new StringMap<Array<TargetObserver>>();
+		targetDeathObservers = new IntMap<Array<TargetDeathObserver>>();
 		playerColliders = [];
 		enemyColliders = [];
 	}
 
+	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {
+		var group = targetGroups.get(groupName);
+		// if group is empty...
+		if (group == null || !group.keys().hasNext()) {
+			// add the observer to map
+			var observers = targetObservers.get(groupName);
+			if (observers == null) {
+				targetObservers.set(groupName, [obs]);
+			} else {
+				observers.push(obs);
+			}
+		} else {
+			// if group is not empty, just call the observer
+			var foo: Array<{id: Int, pos: Position}> = [];
+			for (target in group.keyValueIterator()) {
+				foo.push({id: target.key, pos: target.value});
+			}
+			obs(foo);
+		}
+	}
+
+	public function addTargetDeathObserver(targetId: Int, obs: TargetDeathObserver) {
+		var observers = targetDeathObservers.get(targetId);
+		if (observers == null) {
+			targetDeathObservers.set(targetId, [obs]);
+		} else {
+			observers.push(obs);
+		}
+	}
+
+	/**
+	 * Adds a new target to be aimed at
+	 * @param entId	id of entity that this target represents
+	 * @param pos target's position
+	 * @param groupName name of target group
+	 */
+	public function addTarget(entId: Int, pos: Position, groupName: String) {
+		var group = targetGroups.get(groupName);
+		if (group == null) {
+			group = new IntMap<Position>();
+			targetGroups.set(groupName, group);
+		}
+		// if group was empty previously, notify target group observers
+		if (!group.iterator().hasNext()) {
+			var observers = targetObservers.get(groupName);
+			if (observers != null) {
+				for (obs in observers) {
+					obs([{id: entId, pos: pos}]);
+				}
+			}
+		}
+		group.set(entId, pos);
+	}
+
+	public function removeTarget(entId: Int, groupName: String) {
+		targetGroups.get(groupName).remove(entId);
+		// notify all observers waiting for death of target and remove them
+		for (obs in targetDeathObservers.get(entId)) {
+			obs();
+		}
+		targetDeathObservers.set(entId, []);
+	}
+
+	/**
+	 * Adds a new entity to the game
+	 * @param entity entity to add
+	 */
 	public function addEntity(entity: Entity) {
 		entity.onInit(this);
 		entities.push(entity);

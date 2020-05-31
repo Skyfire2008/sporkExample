@@ -15,9 +15,6 @@ interface UpdateComponent extends Component {
 	function onUpdate(time: Float): Void;
 }
 
-/*class ShootsAtComponent implements UpdateComponent {}
-	class AimedAtComponent implements UpdateComponent {}
- */
 /**
  * Updates the entity's position according to its velocity
  */

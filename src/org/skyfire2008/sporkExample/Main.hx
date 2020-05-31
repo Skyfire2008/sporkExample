@@ -128,7 +128,7 @@ class Main {
 						holder.velocity = new Velocity(0, 0, 0);
 					}));
 
-					for (i in 1...10) {
+					for (i in 1...20) {
 						game.addEntity(entFactories.get("ufo.json")((holder) -> {
 							holder.position = new Position(Math.random() * 1280, Math.random() * 720, 0 /*Math.random() * Math.PI * 2*/);
 							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 5, 0 /*, Math.random() * Math.PI * 2*/);

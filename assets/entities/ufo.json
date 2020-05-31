@@ -3,7 +3,10 @@
 	"components": {
 		"moveComponent": {},
 		"animComponent": {
-			"shapeRefs": ["ufo1.json", "ufo2.json"],
+			"shapeRefs": [
+				"ufo1.json",
+				"ufo2.json"
+			],
 			"frameTime": 0.25
 		},
 		"hpComponent": {
@@ -13,6 +16,15 @@
 			"side": "Enemy",
 			"radius": 19
 		},
-		"damagedOnHit": {}
+		"damagedOnHit": {},
+		"shootsAtComponent": {
+			"group": "Player",
+			"wep": {
+				"entityName": "enemyBullet.json",
+				"spawnTime": 2,
+				"spawnVel": 300,
+				"spawnNum": 1
+			}
+		}
 	}
 }

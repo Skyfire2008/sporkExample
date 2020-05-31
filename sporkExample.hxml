@@ -2,6 +2,7 @@
 -cp src
 -main org.skyfire2008.sporkExample.Main
 -D js-flatten
+-D source-map-content
 -dce full
 
 --macro sys.io.File.copy("src/index.html", "bin/index.html")
