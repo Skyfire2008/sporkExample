@@ -14,7 +14,9 @@ import js.html.webgl.RenderingContext;
 
 import spork.core.JsonLoader;
 import spork.core.JsonLoader.EntityFactoryMethod;
+import spork.core.Wrapper;
 
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.util.Util;
@@ -22,8 +24,6 @@ import org.skyfire2008.sporkExample.util.Scripts;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
-import org.skyfire2008.sporkExample.game.properties.Position;
-import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
 
 using Lambda;
 
@@ -124,14 +124,18 @@ class Main {
 					Spawner.setup(game, entFactories);
 
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
-						holder.position = new Position(640, 360, 0);
-						holder.velocity = new Velocity(0, 0, 0);
+						holder.position = new Point(640, 360);
+						holder.rotation = new Wrapper<Float>(0);
+						holder.velocity = new Point(0, 0);
+						holder.angVel = new Wrapper<Float>(0);
 					}));
 
 					for (i in 1...20) {
 						game.addEntity(entFactories.get("ufo.json")((holder) -> {
-							holder.position = new Position(Math.random() * 1280, Math.random() * 720, 0 /*Math.random() * Math.PI * 2*/);
-							holder.velocity = new Velocity(Math.random() * 50, Math.random() * 5, 0 /*, Math.random() * Math.PI * 2*/);
+							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
+							holder.rotation = new Wrapper<Float>(0);
+							holder.velocity = new Point(Math.random() * 50, Math.random() * 5);
+							holder.angVel = new Wrapper<Float>(0);
 						}));
 					}
 

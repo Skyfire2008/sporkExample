@@ -4,19 +4,19 @@ import polygonal.ds.Hashable;
 
 import spork.core.Entity;
 
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.geom.Rectangle;
-import org.skyfire2008.sporkExample.game.properties.Position;
 
 class Collider implements Hashable {
 	public var owner(default, null): Entity;
-	public var pos(default, null): Position;
+	public var pos(default, null): Point;
 	public var x(get, set): Float;
 	public var y(get, set): Float;
 	public var radius(default, null): Float;
 
 	public var key(default, null): Int;
 
-	public function new(owner: Entity, pos: Position, radius: Float) {
+	public function new(owner: Entity, pos: Point, radius: Float) {
 		this.owner = owner;
 		this.pos = pos;
 		this.radius = radius;

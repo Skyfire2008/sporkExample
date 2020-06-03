@@ -5,8 +5,9 @@ import haxe.ds.StringMap;
 import spork.core.Entity;
 import spork.core.Component;
 import spork.core.PropertyHolder;
+import spork.core.Wrapper;
 
-import org.skyfire2008.sporkExample.game.properties.Position;
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.graphics.Shape;
 
@@ -19,16 +20,17 @@ interface UpdateComponent extends Component {
  * Updates the entity's position according to its velocity
  */
 class MoveComponent implements UpdateComponent {
-	private var pos: Position;
-	private var vel: Position;
+	private var pos: Point;
+	private var rotation: Wrapper<Float>;
+	private var vel: Point;
+	private var angVel: Wrapper<Float>;
 	private var owner: Entity;
 
 	public function new() {}
 
 	public function onUpdate(time: Float) {
-		pos.x += vel.x * time;
-		pos.y += vel.y * time;
-		pos.rotation += vel.rotation * time;
+		pos.add(Point.scale(vel, time));
+		rotation.value += angVel.value * time;
 
 		// wrap
 		if (pos.x < 0) {
@@ -47,13 +49,16 @@ class MoveComponent implements UpdateComponent {
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 		vel = holder.velocity;
+		rotation = holder.rotation;
+		angVel = holder.angVel;
 	}
 }
 
 class AnimComponent implements UpdateComponent {
 	private var frames: Array<Shape>;
-	private var pos: Position;
+	private var pos: Point;
 	private var owner: Entity;
+	private var rotation: Wrapper<Float>;
 	private var frameTime: Float;
 
 	private var curTime: Float;
@@ -98,17 +103,19 @@ class AnimComponent implements UpdateComponent {
 		}
 		curFrame = curFrame % frames.length;
 
-		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, pos.rotation, 1);
+		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, rotation.value, 1);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
+		rotation = holder.rotation;
 	}
 }
 
 class RenderComponent implements UpdateComponent {
 	private var shape: Shape;
-	private var pos: Position;
+	private var pos: Point;
+	private var rotation: Wrapper<Float>;
 	private var owner: Entity;
 
 	private static var shapes: StringMap<Shape>;
@@ -140,10 +147,11 @@ class RenderComponent implements UpdateComponent {
 	}
 
 	public function onUpdate(time: Float): Void {
-		RenderComponent.renderer.render(shape, pos.x, pos.y, pos.rotation, 1);
+		RenderComponent.renderer.render(shape, pos.x, pos.y, rotation.value, 1);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
+		rotation = holder.rotation;
 	}
 }

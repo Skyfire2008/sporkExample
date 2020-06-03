@@ -5,11 +5,10 @@ import haxe.ds.StringMap;
 import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.Entity;
+import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
-import org.skyfire2008.sporkExample.game.properties.Position;
-import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
 import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 
@@ -21,27 +20,27 @@ interface KBComponent extends Component {
 	function onKeyUp(code: String): Void;
 }
 
-interface Dummy {}
-
 class ControlComponent implements KBComponent implements UpdateComponent implements InitComponent {
 	private var keys: StringMap<Bool>;
 	private var actions: StringMap<(time: Float) -> Void>;
 	private var a: Float;
-	private var angVel: Float;
+	private var angSpeed: Float;
 
 	private var wep: Spawner;
 	private var owner: Entity;
-	private var vel: Velocity;
-	private var pos: Position;
+	private var vel: Point;
+	private var pos: Point;
+	private var rotation: Wrapper<Float>;
+	private var angVel: Wrapper<Float>;
 
 	private var fwKey: String;
 	private var rightKey: String;
 	private var leftKey: String;
 	private var fireKey: String;
 
-	public function new(a: Float, angVel: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String) {
+	public function new(a: Float, angSpeed: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String) {
 		this.a = a;
-		this.angVel = angVel;
+		this.angSpeed = angSpeed;
 		this.fwKey = fwKey;
 		this.rightKey = rightKey;
 		this.leftKey = leftKey;
@@ -51,15 +50,13 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		// assign actions
 		actions = new StringMap<(time: Float) -> Void>();
 		actions.set(fwKey, (time: Float) -> {
-			var dv = Point.fromPolar(pos.rotation, a * time);
-			vel.x += dv.x;
-			vel.y += dv.y;
+			vel.add(Point.fromPolar(rotation.value, a * time));
 		});
 		actions.set(rightKey, (time: Float) -> {
-			vel.rotation = angVel;
+			angVel.value = angSpeed;
 		});
 		actions.set(leftKey, (time: Float) -> {
-			vel.rotation = -angVel;
+			angVel.value = -angSpeed;
 		});
 		actions.set(fireKey, (time: Float) -> {});
 	}
@@ -91,8 +88,8 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	}
 
 	public function onUpdate(time: Float) {
-		vel.rotation = 0;
-		wep.update(time, pos, vel);
+		angVel.value = 0;
+		wep.update(time, pos, rotation.value, vel);
 
 		for (key in keys.keys()) {
 			var func = actions.get(key);
@@ -105,5 +102,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	public function assignProps(holder: PropertyHolder) {
 		vel = holder.velocity;
 		pos = holder.position;
+		rotation = holder.rotation;
+		angVel = holder.angVel;
 	}
 }

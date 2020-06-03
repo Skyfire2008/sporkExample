@@ -5,12 +5,12 @@ import haxe.ds.IntMap;
 
 import spork.core.Entity;
 
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.spatial.UniformGrid;
 import org.skyfire2008.sporkExample.spatial.Collider;
-import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 
-typedef TargetObserver = (Array<{id: Int, pos: Position}>) -> Void;
+typedef TargetObserver = (Array<{id: Int, pos: Point}>) -> Void;
 typedef TargetDeathObserver = () -> Void;
 
 class Game {
@@ -26,14 +26,14 @@ class Game {
 	private var enemyColliders: Array<Collider>;
 	private var grid: UniformGrid;
 
-	private var targetGroups: StringMap<IntMap<Position>>;
+	private var targetGroups: StringMap<IntMap<Point>>;
 	private var targetObservers: StringMap<Array<TargetObserver>>;
 	private var targetDeathObservers: IntMap<Array<TargetDeathObserver>>;
 
 	public function new(renderer: Renderer) {
 		this.renderer = renderer;
 		grid = new UniformGrid(1280, 720, 64, 64);
-		targetGroups = new StringMap<IntMap<Position>>();
+		targetGroups = new StringMap<IntMap<Point>>();
 		targetObservers = new StringMap<Array<TargetObserver>>();
 		targetDeathObservers = new IntMap<Array<TargetDeathObserver>>();
 		playerColliders = [];
@@ -53,7 +53,7 @@ class Game {
 			}
 		} else {
 			// if group is not empty, just call the observer
-			var foo: Array<{id: Int, pos: Position}> = [];
+			var foo: Array<{id: Int, pos: Point}> = [];
 			for (target in group.keyValueIterator()) {
 				foo.push({id: target.key, pos: target.value});
 			}
@@ -76,10 +76,10 @@ class Game {
 	 * @param pos target's position
 	 * @param groupName name of target group
 	 */
-	public function addTarget(entId: Int, pos: Position, groupName: String) {
+	public function addTarget(entId: Int, pos: Point, groupName: String) {
 		var group = targetGroups.get(groupName);
 		if (group == null) {
-			group = new IntMap<Position>();
+			group = new IntMap<Point>();
 			targetGroups.set(groupName, group);
 		}
 		// if group was empty previously, notify target group observers

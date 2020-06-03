@@ -2,12 +2,11 @@ package org.skyfire2008.sporkExample.game;
 
 import haxe.ds.StringMap;
 
+import spork.core.Wrapper;
 import spork.core.JsonLoader.EntityFactoryMethod;
 
 import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.geom.Point;
-import org.skyfire2008.sporkExample.game.properties.Position;
-import org.skyfire2008.sporkExample.game.properties.Position.Velocity;
 
 typedef SpawnerConfig = {
 	var entityName: String;
@@ -64,16 +63,18 @@ class Spawner {
 		isSpawning = false;
 	}
 
-	public function spawn(pos: Position, vel: Velocity) {
+	public function spawn(pos: Point, rotation: Float, vel: Point) {
 		var baseAngle = config.spawnNum * config.spreadAngle / 2.0;
 
 		for (i in 0...config.spawnNum) {
 			var ent = spawnFunc((holder) -> {
 				var angle = i * config.spreadAngle + Util.rand(config.angleRand);
-				angle += pos.rotation - baseAngle;
-				holder.position = new Position(pos.x, pos.y, pos.rotation + angle);
-				var ownVel = Point.fromPolar(angle, config.spawnVel + Util.rand(config.velRand));
-				holder.velocity = new Velocity(ownVel.x, ownVel.y, 0);
+				angle += rotation - baseAngle;
+				holder.position = pos.copy(); // new Position(pos.x, pos.y, pos.rotation + angle);
+				holder.rotation = new Wrapper<Float>(rotation + angle);
+				holder.angVel = new Wrapper<Float>(0);
+
+				holder.velocity = Point.fromPolar(angle, config.spawnVel + Util.rand(config.velRand));
 				if (config.isVelRelative) {
 					holder.velocity.x += vel.x;
 					holder.velocity.y += vel.y;
@@ -84,11 +85,11 @@ class Spawner {
 		}
 	}
 
-	public function update(time: Float, pos: Position, vel: Velocity) {
+	public function update(time: Float, pos: Point, rotation: Float, vel: Point) {
 		if (isSpawning) {
 			curTime += time;
 			while (curTime >= config.spawnTime) {
-				spawn(pos, vel);
+				spawn(pos, rotation, vel);
 				curTime -= config.spawnTime;
 			}
 		} else {

@@ -3,12 +3,13 @@ package org.skyfire2008.sporkExample.game.components;
 import spork.core.Entity;
 import spork.core.PropertyHolder;
 import spork.core.Component;
+import spork.core.Wrapper;
 
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
-import org.skyfire2008.sporkExample.game.properties.Position;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
 
@@ -21,10 +22,11 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	private var group: String;
 	private var owner: Entity;
 
-	private var pos: Position;
-	private var vel: Velocity;
+	private var pos: Point;
+	private var vel: Point;
+	private var rotation: Wrapper<Float>;
 
-	private var targetPos: Position;
+	private var targetPos: Point;
 	private var game: Game;
 	private var wep: Spawner;
 
@@ -44,15 +46,12 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	}
 
 	public function onUpdate(time: Float) {
-		var rot = pos.rotation;
-		pos.rotation = Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x) + Math.PI / 2;
-		wep.update(time, pos, vel);
-		pos.rotation = rot;
+		wep.update(time, pos, Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x) + Math.PI / 2, vel);
 	}
 
 	private function notifyAboutTargets(targets: Array<{
 		id: Int,
-		pos: Position
+		pos: Point
 	}>) {
 		trace("starting...");
 		wep.startSpawn();
@@ -69,6 +68,7 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 		vel = holder.velocity;
+		rotation = holder.rotation;
 	}
 
 	public function clone(): Component {
@@ -80,7 +80,7 @@ class TargetComponent implements InitComponent implements DeathComponent {
 	private var group: String;
 	private var owner: Entity;
 
-	private var pos: Position;
+	private var pos: Point;
 	private var game: Game;
 
 	public function new(group: String) {
@@ -104,7 +104,7 @@ class TargetComponent implements InitComponent implements DeathComponent {
 class CollisionComponent implements InitComponent {
 	private var owner: Entity;
 
-	private var pos: Position;
+	private var pos: Point;
 
 	public var radius(default, null): Float;
 	public var side(default, null): Side;

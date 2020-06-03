@@ -7,7 +7,7 @@ import js.html.webgl.VertexArrayObject;
 import js.html.webgl.Buffer;
 import js.html.webgl.GL;
 
-typedef Point = {
+typedef MyPoint = {
 	var x: Float;
 	var y: Float;
 	var color: String;
@@ -19,7 +19,7 @@ typedef Line = {
 }
 
 typedef ShapeJson = {
-	var points: Array<Point>;
+	var points: Array<MyPoint>;
 	var lines: Array<Line>;
 }
 
