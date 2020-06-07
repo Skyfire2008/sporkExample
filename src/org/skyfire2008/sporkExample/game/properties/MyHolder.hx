@@ -3,6 +3,8 @@ package org.skyfire2008.sporkExample.game.properties;
 import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.geom.Point;
+import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.spatial.Collider;
 
 class MyHolder {
 	public var position: Point;
@@ -10,4 +12,6 @@ class MyHolder {
 	public var velocity: Point;
 	public var angVel: Wrapper<Float>;
 	public var health: Health;
+	public var wep: Spawner;
+	public var colliderRadius: Float;
 }

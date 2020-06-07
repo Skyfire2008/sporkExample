@@ -25,6 +25,9 @@ class Game {
 	private var playerColliders: Array<Collider>;
 	private var enemyColliders: Array<Collider>;
 	private var grid: UniformGrid;
+	private var bonusColliders: Array<Collider>;
+	private var bonusGrid: UniformGrid;
+	private var bonusGetterColliders: Array<Collider>;
 
 	private var targetGroups: StringMap<IntMap<Point>>;
 	private var targetObservers: StringMap<Array<TargetObserver>>;
@@ -38,6 +41,10 @@ class Game {
 		targetDeathObservers = new IntMap<Array<TargetDeathObserver>>();
 		playerColliders = [];
 		enemyColliders = [];
+
+		bonusColliders = [];
+		bonusGrid = new UniformGrid(1280, 720, 128, 120);
+		bonusGetterColliders = [];
 	}
 
 	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {
@@ -112,12 +119,18 @@ class Game {
 		entities.push(entity);
 	}
 
+	public function addBonusGetter(collider: Collider) {
+		bonusGetterColliders.push(collider);
+	}
+
 	public function addCollider(collider: Collider, side: Side) {
 		switch (side) {
 			case Player:
 				playerColliders.push(collider);
 			case Enemy:
 				enemyColliders.push(collider);
+			case Bonus:
+				bonusColliders.push(collider);
 		}
 	}
 
@@ -145,7 +158,7 @@ class Game {
 			entity.onUpdate(time);
 		}
 
-		// detect collisions
+		// detect collisions player <-> enemy
 		grid.reset();
 		// add all enemy colliders to the grid
 		for (col in enemyColliders) {
@@ -162,6 +175,27 @@ class Game {
 				if (enemyCol.owner.isAlive() && col.intersects(enemyCol)) {
 					enemyCol.owner.onHit(col);
 					col.owner.onHit(enemyCol);
+				}
+			}
+		}
+
+		// detect collisions bonus <-> bonus getter
+		bonusGrid.reset();
+
+		for (col in bonusColliders) {
+			bonusGrid.add(col);
+		}
+
+		for (col in bonusGetterColliders) {
+			var possibleCols = bonusGrid.queryRect(col.rect());
+			trace(bonusGetterColliders);
+			for (bonusCol in possibleCols) {
+				if (!col.owner.isAlive()) {
+					break;
+				}
+				if (bonusCol.owner.isAlive() && col.intersects(bonusCol)) {
+					bonusCol.owner.onHit(col);
+					bonusCol.owner.kill();
 				}
 			}
 		}
@@ -193,5 +227,13 @@ class Game {
 			}
 		}
 		enemyColliders = newEnemyColliders;
+
+		var newBonusColliders: Array<Collider> = [];
+		for (col in bonusColliders) {
+			if (col.owner.isAlive()) {
+				newBonusColliders.push(col);
+			}
+		}
+		bonusColliders = newBonusColliders;
 	}
 }

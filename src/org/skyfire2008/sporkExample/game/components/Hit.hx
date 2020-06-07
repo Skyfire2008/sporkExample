@@ -12,6 +12,16 @@ interface HitComponent extends Component {
 	function onHit(collider: Collider): Void;
 }
 
+class DoubleFirerateBonus implements HitComponent {
+	private var owner: Entity;
+
+	public function new() {}
+
+	public function onHit(collider: Collider) {
+		collider.owner.getWep().config.spawnTime *= 0.5;
+	}
+}
+
 class DamagedOnHit implements HitComponent {
 	private var owner: Entity;
 	private var health: Health;
@@ -20,11 +30,6 @@ class DamagedOnHit implements HitComponent {
 
 	public function onHit(collider: Collider) {
 		health.hp--;
-	}
-
-	public function attach(owner: Entity) {
-		this.owner = owner;
-		owner.hitComponents.push(this);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
@@ -39,10 +44,5 @@ class DiesOnHit implements HitComponent {
 
 	public function onHit(collider: Collider) {
 		owner.kill();
-	}
-
-	public function attach(owner: Entity) {
-		this.owner = owner;
-		owner.hitComponents.push(this);
 	}
 }

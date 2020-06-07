@@ -23,6 +23,7 @@
 		"damagedOnHit": {},
 		"targetComponent": {
 			"group": "Player"
-		}
+		},
+		"getsBonuses": {}
 	}
 }

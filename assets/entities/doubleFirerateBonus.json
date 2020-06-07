@@ -1,0 +1,17 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"renderComponent": {
+			"shapeRef": "bullet2.json"
+		},
+		"timedComponent": {
+			"time": 30
+		},
+		"collisionComponent": {
+			"side": "Bonus",
+			"radius": 5
+		},
+		"doubleFirerateBonus": {}
+	}
+}

@@ -59,9 +59,6 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			angVel.value = -angSpeed;
 		});
 		actions.set(fireKey, (time: Float) -> {});
-	}
-
-	public function onInit(game: Game) {
 		wep = new Spawner({
 			entityName: "playerBullet.json",
 			spawnTime: 0.5,
@@ -69,6 +66,9 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			spawnNum: 1,
 			isVelRelative: false
 		});
+	}
+
+	public function onInit(game: Game) {
 		wep.init();
 		game.addControllableEntity(this.owner);
 	}
@@ -97,6 +97,10 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 				func(time);
 			}
 		}
+	}
+
+	public function createProps(holder: PropertyHolder) {
+		holder.wep = wep;
 	}
 
 	public function assignProps(holder: PropertyHolder) {

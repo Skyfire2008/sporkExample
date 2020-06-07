@@ -53,7 +53,6 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 		id: Int,
 		pos: Point
 	}>) {
-		trace("starting...");
 		wep.startSpawn();
 		var num = Std.random(targets.length);
 		targetPos = targets[num].pos;
@@ -116,6 +115,8 @@ class CollisionComponent implements InitComponent {
 				side = Player;
 			case "Enemy":
 				side = Enemy;
+			case "Bonus":
+				side = Bonus;
 			default:
 				throw 'Unknown side ${json.side}';
 		}
@@ -127,11 +128,15 @@ class CollisionComponent implements InitComponent {
 		this.side = side;
 	}
 
+	public function createProps(holder: PropertyHolder) {
+		holder.colliderRadius = radius;
+	}
+
 	public function assignProps(holder: PropertyHolder) {
 		this.pos = holder.position;
 	}
 
 	public function onInit(game: Game) {
-		game.addCollider(new Collider(this.owner, pos, radius), side);
+		game.addCollider(new Collider(owner, pos, radius), side);
 	}
 }

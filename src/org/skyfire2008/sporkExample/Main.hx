@@ -139,6 +139,15 @@ class Main {
 						}));
 					}
 
+					for (i in 1...5) {
+						game.addEntity(entFactories.get("doubleFirerateBonus.json")((holder) -> {
+							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
+							holder.rotation = new Wrapper<Float>(0);
+							holder.velocity = new Point(Math.random() * 50, Math.random() * 5);
+							holder.angVel = new Wrapper<Float>(0);
+						}));
+					}
+
 					Browser.window.requestAnimationFrame(onEnterFrameFirst);
 					Browser.window.addEventListener("keydown", (e: KeyboardEvent) -> {
 						game.onKeyDown(e.code);
