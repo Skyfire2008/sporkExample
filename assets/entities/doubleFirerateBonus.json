@@ -3,14 +3,14 @@
 	"components": {
 		"moveComponent": {},
 		"renderComponent": {
-			"shapeRef": "bullet2.json"
+			"shapeRef": "doubleFirerate.json"
 		},
 		"timedComponent": {
 			"time": 30
 		},
 		"collisionComponent": {
 			"side": "Bonus",
-			"radius": 5
+			"radius": 10
 		},
 		"doubleFirerateBonus": {}
 	}
