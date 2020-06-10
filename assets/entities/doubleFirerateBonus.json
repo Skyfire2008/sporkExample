@@ -12,6 +12,8 @@
 			"side": "Bonus",
 			"radius": 10
 		},
-		"doubleFirerateBonus": {}
+		"applyBonus": {
+			"bonusName": "explodeShot"
+		}
 	}
 }

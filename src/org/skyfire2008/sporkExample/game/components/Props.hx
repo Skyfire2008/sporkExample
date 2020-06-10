@@ -9,7 +9,7 @@ import spork.core.Entity;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Init;
-import org.skyfire2008.sporkExample.spatial.Collider;
+import org.skyfire2008.sporkExample.game.components.Update;
 
 @singular
 interface PropsComponent extends Component {
@@ -17,11 +17,9 @@ interface PropsComponent extends Component {
 	public function getWep(): Spawner;
 }
 
-class GetsBonuses implements PropsComponent implements InitComponent {
+class ExposePlayerWeapon implements PropsComponent {
 	private var owner: Entity;
 	private var wep: Spawner;
-	private var pos: Point;
-	private var radius: Float;
 
 	public function new() {}
 
@@ -31,11 +29,5 @@ class GetsBonuses implements PropsComponent implements InitComponent {
 
 	public function assignProps(holder: PropertyHolder) {
 		wep = holder.wep;
-		pos = holder.position;
-		radius = holder.colliderRadius;
-	}
-
-	public function onInit(game: Game) {
-		game.addBonusGetter(new Collider(owner, pos, radius));
 	}
 }

@@ -1,24 +1,37 @@
 package org.skyfire2008.sporkExample.game.components;
 
+import haxe.ds.StringMap;
+
 import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.game.properties.Health;
 import org.skyfire2008.sporkExample.spatial.Collider;
+import org.skyfire2008.sporkExample.game.Bonus.ExplodeShot;
 
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
 }
 
-class DoubleFirerateBonus implements HitComponent {
+class ApplyBonus implements HitComponent {
 	private var owner: Entity;
+	private static var bonuses: StringMap<() -> Bonus> = [
+		"explodeShot" => () -> {
+			return new ExplodeShot();
+		}
+	];
+	private var func: () -> Bonus;
+	private var bonusName: String;
 
-	public function new() {}
+	private function new(bonusName: String) {
+		this.bonusName = bonusName;
+		func = bonuses.get(bonusName);
+	}
 
 	public function onHit(collider: Collider) {
-		collider.owner.getWep().config.spawnTime *= 0.5;
+		collider.owner.applyBonus(func());
 	}
 }
 

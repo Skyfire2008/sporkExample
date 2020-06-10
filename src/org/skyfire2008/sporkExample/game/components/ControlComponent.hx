@@ -64,6 +64,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			spawnTime: 0.5,
 			spawnVel: 400,
 			spawnNum: 1,
+			spreadAngle: 5.0 * Math.PI / 180.0,
 			isVelRelative: false
 		});
 	}

@@ -23,7 +23,7 @@ class Spawner {
 	private static var game: Game;
 	private static var entityFactories: StringMap<EntityFactoryMethod>;
 
-	public var spawnFunc(default, null): EntityFactoryMethod;
+	public var spawnFunc: EntityFactoryMethod;
 	public var config: SpawnerConfig;
 
 	private var curTime: Float = 0;

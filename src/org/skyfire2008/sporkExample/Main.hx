@@ -139,11 +139,11 @@ class Main {
 						}));
 					}
 
-					for (i in 1...5) {
+					for (i in 1...10) {
 						game.addEntity(entFactories.get("doubleFirerateBonus.json")((holder) -> {
 							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
 							holder.rotation = new Wrapper<Float>(0);
-							holder.velocity = new Point(Math.random() * 50, Math.random() * 5);
+							holder.velocity = new Point(0, 0);
 							holder.angVel = new Wrapper<Float>(0);
 						}));
 					}

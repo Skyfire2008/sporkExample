@@ -188,7 +188,6 @@ class Game {
 
 		for (col in bonusGetterColliders) {
 			var possibleCols = bonusGrid.queryRect(col.rect());
-			trace(bonusGetterColliders);
 			for (bonusCol in possibleCols) {
 				if (!col.owner.isAlive()) {
 					break;

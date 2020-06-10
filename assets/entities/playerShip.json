@@ -24,6 +24,7 @@
 		"targetComponent": {
 			"group": "Player"
 		},
+		"exposePlayerWeapon": {},
 		"getsBonuses": {}
 	}
 }
