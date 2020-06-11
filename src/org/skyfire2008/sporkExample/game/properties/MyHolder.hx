@@ -4,7 +4,6 @@ import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
-import org.skyfire2008.sporkExample.spatial.Collider;
 
 class MyHolder {
 	public var position: Point;

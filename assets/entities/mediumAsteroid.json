@@ -22,6 +22,9 @@
 			"isVelRelative": true,
 			"velRand": 50,
 			"angleRand": 1
+		},
+		"dropsBonusComponent": {
+			"prob": 0.25
 		}
 	}
 }

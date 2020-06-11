@@ -3,7 +3,7 @@
 	"components": {
 		"moveComponent": {},
 		"renderComponent": {
-			"shapeRef": "doubleFirerate.json"
+			"shapeRef": "explodeShot.json"
 		},
 		"timedComponent": {
 			"time": 30
@@ -13,7 +13,7 @@
 			"radius": 15
 		},
 		"applyBonus": {
-			"bonusName": "doubleFirerate"
+			"bonusName": "explodeShot"
 		}
 	}
 }

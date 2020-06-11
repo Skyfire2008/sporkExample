@@ -24,6 +24,7 @@ import org.skyfire2008.sporkExample.util.Scripts;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
+import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
 
 using Lambda;
 
@@ -122,6 +123,11 @@ class Main {
 				Promise.all(entPromises).then((_) -> {
 					game = new Game(renderer);
 					Spawner.setup(game, entFactories);
+					DropsBonusComponent.setup(game, [
+						entFactories.get("doubleFirerateBonus.json"),
+						entFactories.get("explodeShotBonus.json"),
+						entFactories.get("tripleShotBonus.json")
+					]);
 
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
 						holder.position = new Point(640, 360);
@@ -131,19 +137,10 @@ class Main {
 					}));
 
 					for (i in 1...20) {
-						game.addEntity(entFactories.get("ufo.json")((holder) -> {
+						game.addEntity(entFactories.get("mediumAsteroid.json")((holder) -> {
 							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
 							holder.rotation = new Wrapper<Float>(0);
 							holder.velocity = new Point(Math.random() * 50, Math.random() * 5);
-							holder.angVel = new Wrapper<Float>(0);
-						}));
-					}
-
-					for (i in 1...10) {
-						game.addEntity(entFactories.get("doubleFirerateBonus.json")((holder) -> {
-							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
-							holder.rotation = new Wrapper<Float>(0);
-							holder.velocity = new Point(0, 0);
 							holder.angVel = new Wrapper<Float>(0);
 						}));
 					}

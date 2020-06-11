@@ -1,6 +1,7 @@
 package org.skyfire2008.sporkExample.game;
 
 import spork.core.Entity;
+import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.JsonLoader.EntityFactoryMethod;
 
@@ -85,14 +86,14 @@ class ExplodeShot extends AbstractBonus {
 	private static var config: SpawnerConfig = {
 		entityName: "playerBullet.json",
 		spawnTime: 1,
-		spawnVel: 400,
+		spawnVel: 200,
 		spawnNum: 6,
 		spreadAngle: Math.PI / 3,
 		angleRand: Math.PI / 18,
 		isVelRelative: true
 	};
-	private var originalMethod: EntityFactoryMethod;
 	private var spawner: Spawner;
+	private var index: Int;
 
 	public function new() {
 		super(20);
@@ -100,21 +101,12 @@ class ExplodeShot extends AbstractBonus {
 	}
 
 	public override function apply(target: Entity) {
-		originalMethod = target.getWep().spawnFunc;
-		target.getWep().spawnFunc = (assignments: (holder: PropertyHolder) -> Void) -> {
-			var holder: PropertyHolder = new PropertyHolder();
-			assignments(holder);
-			var ent = originalMethod(assignments);
-
-			var compo = new DeathSpawnComponent(spawner);
-			compo.assignProps(holder);
-			compo.attach(ent);
-
-			return ent;
-		};
+		index = target.getWep().extraComponents.push(() -> {
+			return new DeathSpawnComponent(spawner);
+		});
 	}
 
 	public override function revert(target: Entity) {
-		target.getWep().spawnFunc = originalMethod;
+		target.getWep().extraComponents = target.getWep().extraComponents.splice(index, 1);
 	}
 }

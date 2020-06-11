@@ -3,6 +3,7 @@ package org.skyfire2008.sporkExample.game;
 import haxe.ds.StringMap;
 
 import spork.core.Wrapper;
+import spork.core.Component;
 import spork.core.JsonLoader.EntityFactoryMethod;
 
 import org.skyfire2008.sporkExample.util.Util;
@@ -25,6 +26,7 @@ class Spawner {
 
 	public var spawnFunc: EntityFactoryMethod;
 	public var config: SpawnerConfig;
+	public var extraComponents: Array<() -> Component>;
 
 	private var curTime: Float = 0;
 	private var isSpawning: Bool = false;
@@ -45,6 +47,8 @@ class Spawner {
 			config.angleRand = 0;
 		}
 		this.config = config;
+
+		extraComponents = [];
 	}
 
 	public function init() {
@@ -67,10 +71,16 @@ class Spawner {
 		var baseAngle = config.spawnNum * config.spreadAngle / 2.0;
 
 		for (i in 0...config.spawnNum) {
+			// create extra components
+			var extras: Array<Component> = [];
+			for (func in extraComponents) {
+				extras.push(func());
+			}
+
 			var ent = spawnFunc((holder) -> {
 				var angle = i * config.spreadAngle + Util.rand(config.angleRand);
 				angle += rotation - baseAngle;
-				holder.position = pos.copy(); // new Position(pos.x, pos.y, pos.rotation + angle);
+				holder.position = pos.copy();
 				holder.rotation = new Wrapper<Float>(rotation + angle);
 				holder.angVel = new Wrapper<Float>(0);
 
@@ -79,7 +89,17 @@ class Spawner {
 					holder.velocity.x += vel.x;
 					holder.velocity.y += vel.y;
 				}
+
+				// assign properties to extras
+				for (component in extras) {
+					component.assignProps(holder);
+				}
 			});
+
+			// attach extra components
+			for (component in extras) {
+				component.attach(ent);
+			}
 
 			game.addEntity(ent);
 		}

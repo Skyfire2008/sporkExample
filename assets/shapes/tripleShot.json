@@ -16,12 +16,12 @@
 	  {"x": 5.65685424949238, "y": 5.65685424949238, "color": "#ffffff"},
 	  {"x": 8, "y": 0, "color": "#ffffff"},
 	  {"x": 5.65685424949238, "y": -5.65685424949238, "color": "#ffffff"},
-	  {"x": 0, "y": -5, "color": "#ffffff"},
-	  {"x": 0, "y": 5, "color": "#ffffff"},
-	  {"x": 2, "y": 5, "color": "#ffffff"},
-	  {"x": 5, "y": -3, "color": "#ffffff"},
-	  {"x": -2, "y": 5, "color": "#ffffff"},
-	  {"x": -5, "y": -3, "color": "#ffffff"}
+	  {"x": 0, "y": -5, "color": "#ffff00"},
+	  {"x": 0, "y": 5, "color": "#ffff00"},
+	  {"x": 2, "y": 5, "color": "#ffff00"},
+	  {"x": 5, "y": -3, "color": "#ffff00"},
+	  {"x": -2, "y": 5, "color": "#ffff00"},
+	  {"x": -5, "y": -3, "color": "#ffff00"}
 	],"lines": [
 	  {"from": 0, "to": 1},
 	  {"from": 1, "to": 2},
