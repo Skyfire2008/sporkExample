@@ -1,7 +1,5 @@
 package org.skyfire2008.sporkExample.game.components;
 
-import haxe.ds.StringMap;
-
 import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.JsonLoader.EntityFactoryMethod;
@@ -16,6 +14,21 @@ import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 interface DeathComponent extends Component {
 	@callback
 	function onDeath(): Void;
+}
+
+class CountedOnScreen implements DeathComponent {
+	private static var game: Game;
+	private var owner: Entity;
+
+	public static function setup(game: Game) {
+		CountedOnScreen.game = game;
+	}
+
+	public function new() {}
+
+	public function onDeath() {
+		game.asteroidsOnScreen--;
+	}
 }
 
 class DropsBonusComponent implements DeathComponent {

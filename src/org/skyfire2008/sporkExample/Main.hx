@@ -25,6 +25,7 @@ import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
+import org.skyfire2008.sporkExample.game.components.Death.CountedOnScreen;
 
 using Lambda;
 
@@ -121,13 +122,14 @@ class Main {
 				}
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
-					game = new Game(renderer);
+					game = new Game(renderer, entFactories);
 					Spawner.setup(game, entFactories);
 					DropsBonusComponent.setup(game, [
 						entFactories.get("doubleFirerateBonus.json"),
 						entFactories.get("explodeShotBonus.json"),
 						entFactories.get("tripleShotBonus.json")
 					]);
+					CountedOnScreen.setup(game);
 
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
 						holder.position = new Point(640, 360);

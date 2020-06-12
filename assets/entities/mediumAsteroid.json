@@ -25,6 +25,7 @@
 		},
 		"dropsBonusComponent": {
 			"prob": 0.25
-		}
+		},
+		"countedOnScreen": {}
 	}
 }

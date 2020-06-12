@@ -4,6 +4,7 @@ import haxe.ds.StringMap;
 import haxe.ds.IntMap;
 
 import spork.core.Entity;
+import spork.core.JsonLoader.EntityFactoryMethod;
 
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.spatial.UniformGrid;
@@ -33,7 +34,15 @@ class Game {
 	private var targetObservers: StringMap<Array<TargetObserver>>;
 	private var targetDeathObservers: IntMap<Array<TargetDeathObserver>>;
 
-	public function new(renderer: Renderer) {
+	private var createMediumAsteroid: EntityFactoryMethod;
+	private var createSmallAsteroid: EntityFactoryMethod;
+	private var createUfo: EntityFactoryMethod;
+	private var lvl: Int;
+	public var asteroidsOnScreen: Int;
+	private var currentSpawnDelay: Float;
+	private var spawnDelay: Float = 0.5;
+
+	public function new(renderer: Renderer, factoryFuncs: StringMap<EntityFactoryMethod>) {
 		this.renderer = renderer;
 		grid = new UniformGrid(1280, 720, 64, 64);
 		targetGroups = new StringMap<IntMap<Point>>();
@@ -45,6 +54,20 @@ class Game {
 		bonusColliders = [];
 		bonusGrid = new UniformGrid(1280, 720, 128, 120);
 		bonusGetterColliders = [];
+
+		lvl = 1;
+		asteroidsOnScreen = 0;
+		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
+		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
+		createUfo = factoryFuncs.get("ufo.json");
+	}
+
+	private static inline function getSmallAsteroidNum(lvl: Int): Int {
+		return Std.int(3 * Math.sqrt(lvl) + 2);
+	}
+
+	private static inline function getMediumAsteroidNum(lvl: Int): Int {
+		return Std.int(4 + lvl / 2);
 	}
 
 	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {

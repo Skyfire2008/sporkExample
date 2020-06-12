@@ -12,6 +12,7 @@
 			"side": "Enemy",
 			"radius": 16
 		},
-		"damagedOnHit": {}
+		"damagedOnHit": {},
+		"countedOnScreen": {}
 	}
 }
