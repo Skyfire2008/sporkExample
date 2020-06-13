@@ -1,0 +1,30 @@
+{
+	"properties": {},
+	"components": {
+		"renderComponent": {
+			"shapeRef": "turret.json"
+		},
+		"hpComponent": {
+			"hp": 5
+		},
+		"collisionComponent": {
+			"side": "Player",
+			"radius": 12
+		},
+		"damagedOnHit": {},
+		"targetComponent": {
+			"group": "Player"
+		},
+		"shootsAtComponent": {
+			"rotates": true,
+			"group": "Enemy",
+			"wep": {
+				"entityName": "playerBullet.json",
+				"spawnTime": 1.5,
+				"spawnVel": 600,
+				"spawnNum": 1
+			}
+		},
+		"getsBonuses": {}
+	}
+}

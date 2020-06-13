@@ -1,12 +1,9 @@
 package org.skyfire2008.sporkExample.game;
 
 import spork.core.Entity;
-import spork.core.Component;
-import spork.core.PropertyHolder;
-import spork.core.JsonLoader.EntityFactoryMethod;
 
 import org.skyfire2008.sporkExample.game.Spawner.SpawnerConfig;
-import org.skyfire2008.sporkExample.game.components.Death.DeathSpawnComponent;
+import org.skyfire2008.sporkExample.game.components.Hit.HitSpawnComponent;
 
 interface Bonus {
 	/**
@@ -102,7 +99,7 @@ class ExplodeShot extends AbstractBonus {
 
 	public override function apply(target: Entity) {
 		index = target.getWep().extraComponents.push(() -> {
-			return new DeathSpawnComponent(spawner);
+			return new HitSpawnComponent(spawner);
 		});
 	}
 

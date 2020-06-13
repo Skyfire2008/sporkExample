@@ -16,18 +16,25 @@ interface DeathComponent extends Component {
 	function onDeath(): Void;
 }
 
-class CountedOnScreen implements DeathComponent {
+class CountedOnScreen implements DeathComponent implements InitComponent {
 	private static var game: Game;
 	private var owner: Entity;
+	private var count: Int;
 
 	public static function setup(game: Game) {
 		CountedOnScreen.game = game;
 	}
 
-	public function new() {}
+	public function new(count: Int) {
+		this.count = count;
+	}
+
+	public function onInit(_: Game) {
+		game.asteroidsOnScreen += count;
+	}
 
 	public function onDeath() {
-		game.asteroidsOnScreen--;
+		game.asteroidsOnScreen -= count;
 	}
 }
 

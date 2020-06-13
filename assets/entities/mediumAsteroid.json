@@ -24,8 +24,13 @@
 			"angleRand": 1
 		},
 		"dropsBonusComponent": {
-			"prob": 0.25
+			"prob": 0.15
 		},
-		"countedOnScreen": {}
+		"countedOnScreen": {
+			"count": 4
+		},
+		"targetComponent": {
+			"group": "Enemy"
+		}
 	}
 }

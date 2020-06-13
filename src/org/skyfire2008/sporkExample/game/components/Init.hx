@@ -12,13 +12,14 @@ import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
+import org.skyfire2008.sporkExample.game.components.Props.PropsComponent;
 
 interface InitComponent extends spork.core.Component {
 	@callback
 	function onInit(game: Game): Void;
 }
 
-class ShootsAtComponent implements InitComponent implements UpdateComponent {
+class ShootsAtComponent implements InitComponent implements UpdateComponent implements PropsComponent {
 	private var group: String;
 	private var owner: Entity;
 
@@ -26,17 +27,23 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	private var vel: Point;
 	private var rotation: Wrapper<Float>;
 
-	private var targetPos: Point;
+	private var targetPos: Point = null;
 	private var game: Game;
 	private var wep: Spawner;
+	private var rotates: Bool;
 
 	public static function fromJson(json: Dynamic): Component {
-		return new ShootsAtComponent(json.group, new Spawner(json.wep));
+		var rotates = false;
+		if (json.rotates != null) {
+			rotates = json.rotates;
+		}
+		return new ShootsAtComponent(json.group, new Spawner(json.wep), rotates);
 	}
 
-	public function new(group: String, wep: Spawner) {
+	public function new(group: String, wep: Spawner, rotates: Bool) {
 		this.group = group;
 		this.wep = wep;
+		this.rotates = rotates;
 	}
 
 	public function onInit(game: Game) {
@@ -46,21 +53,34 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	}
 
 	public function onUpdate(time: Float) {
-		wep.update(time, pos, Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x) + Math.PI / 2, vel);
+		if (targetPos != null) {
+			var angle = Math.atan2(targetPos.y - pos.y, targetPos.x - pos.x) + Math.PI / 2;
+			if (rotates) {
+				rotation.value = angle;
+			}
+			wep.update(time, pos, angle, vel);
+		}
+	}
+
+	public function getWep(): Spawner {
+		return wep;
 	}
 
 	private function notifyAboutTargets(targets: Array<{
 		id: Int,
 		pos: Point
 	}>) {
-		wep.startSpawn();
-		var num = Std.random(targets.length);
-		targetPos = targets[num].pos;
-		game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+		if (targetPos == null) {
+			wep.startSpawn();
+			var num = Std.random(targets.length);
+			targetPos = targets[num].pos;
+			game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+		}
 	}
 
 	private function notifyAboutDeath() {
 		wep.stopSpawn();
+		targetPos = null;
 		game.addTargetGroupObserver(group, this.notifyAboutTargets);
 	}
 
@@ -71,7 +91,7 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent {
 	}
 
 	public function clone(): Component {
-		return new ShootsAtComponent(group, wep.clone());
+		return new ShootsAtComponent(group, wep.clone(), rotates);
 	}
 }
 

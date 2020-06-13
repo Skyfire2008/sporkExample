@@ -13,6 +13,14 @@
 			"radius": 16
 		},
 		"damagedOnHit": {},
-		"countedOnScreen": {}
+		"dropsBonusComponent": {
+			"prob": 0.01
+		},
+		"countedOnScreen": {
+			"count": 1
+		},
+		"targetComponent": {
+			"group": "Enemy"
+		}
 	}
 }

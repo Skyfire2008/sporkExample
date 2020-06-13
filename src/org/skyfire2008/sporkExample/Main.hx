@@ -127,7 +127,8 @@ class Main {
 					DropsBonusComponent.setup(game, [
 						entFactories.get("doubleFirerateBonus.json"),
 						entFactories.get("explodeShotBonus.json"),
-						entFactories.get("tripleShotBonus.json")
+						entFactories.get("tripleShotBonus.json"),
+						entFactories.get("turret.json")
 					]);
 					CountedOnScreen.setup(game);
 
@@ -137,15 +138,6 @@ class Main {
 						holder.velocity = new Point(0, 0);
 						holder.angVel = new Wrapper<Float>(0);
 					}));
-
-					for (i in 1...20) {
-						game.addEntity(entFactories.get("mediumAsteroid.json")((holder) -> {
-							holder.position = new Point(Math.random() * 1280, Math.random() * 720);
-							holder.rotation = new Wrapper<Float>(0);
-							holder.velocity = new Point(Math.random() * 50, Math.random() * 5);
-							holder.angVel = new Wrapper<Float>(0);
-						}));
-					}
 
 					Browser.window.requestAnimationFrame(onEnterFrameFirst);
 					Browser.window.addEventListener("keydown", (e: KeyboardEvent) -> {
