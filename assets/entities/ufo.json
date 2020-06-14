@@ -28,6 +28,14 @@
 		},
 		"dropsBonusComponent": {
 			"prob": 1.0
+		},
+		"countedOnScreen": {
+			"count": 1,
+			"type": "Ufo"
+		},
+		"sineMovement": {
+			"amplitude": 120,
+			"length": 1280
 		}
 	}
 }

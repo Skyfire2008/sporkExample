@@ -6,7 +6,7 @@
 			"shapeRef": "mediumAsteroid.json"
 		},
 		"hpComponent": {
-			"hp": 3
+			"hp": 5
 		},
 		"collisionComponent": {
 			"side": "Enemy",
@@ -24,10 +24,11 @@
 			"angleRand": 1
 		},
 		"dropsBonusComponent": {
-			"prob": 0.15
+			"prob": 0.2
 		},
 		"countedOnScreen": {
-			"count": 4
+			"count": 4,
+			"type": "Asteroid"
 		},
 		"targetComponent": {
 			"group": "Enemy"

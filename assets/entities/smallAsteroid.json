@@ -14,10 +14,11 @@
 		},
 		"damagedOnHit": {},
 		"dropsBonusComponent": {
-			"prob": 0.01
+			"prob": 0.05
 		},
 		"countedOnScreen": {
-			"count": 1
+			"count": 1,
+			"type": "Asteroid"
 		},
 		"targetComponent": {
 			"group": "Enemy"

@@ -25,6 +25,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var actions: StringMap<(time: Float) -> Void>;
 	private var a: Float;
 	private var angSpeed: Float;
+	private var brakeMult: Float;
 
 	private var wep: Spawner;
 	private var owner: Entity;
@@ -37,14 +38,17 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var rightKey: String;
 	private var leftKey: String;
 	private var fireKey: String;
+	private var brakeKey: String;
 
-	public function new(a: Float, angSpeed: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String) {
+	public function new(a: Float, angSpeed: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String, brakeKey: String) {
 		this.a = a;
 		this.angSpeed = angSpeed;
+		this.brakeMult = brakeMult;
 		this.fwKey = fwKey;
 		this.rightKey = rightKey;
 		this.leftKey = leftKey;
 		this.fireKey = fireKey;
+		this.brakeKey = brakeKey;
 		this.keys = new StringMap<Bool>();
 
 		// assign actions
@@ -59,6 +63,9 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			angVel.value = -angSpeed;
 		});
 		actions.set(fireKey, (time: Float) -> {});
+		actions.set(brakeKey, (time: Float) -> {
+			vel.mult(Math.pow(brakeMult, 60 * time));
+		});
 		wep = new Spawner({
 			entityName: "playerBullet.json",
 			spawnTime: 0.5,

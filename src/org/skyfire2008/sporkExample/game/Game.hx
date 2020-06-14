@@ -42,7 +42,8 @@ class Game {
 	private var createSmallAsteroid: EntityFactoryMethod;
 	private var createUfo: EntityFactoryMethod;
 	private var lvl: Int;
-	public var asteroidsOnScreen: Int;
+	public var enemyCount: Map<EnemyType, Int>;
+	private var currentUfoTime: Float;
 
 	public function new(renderer: Renderer, factoryFuncs: StringMap<EntityFactoryMethod>) {
 		this.renderer = renderer;
@@ -58,10 +59,21 @@ class Game {
 		bonusGetterColliders = [];
 
 		lvl = 0;
-		asteroidsOnScreen = 0;
+		enemyCount = new Map<EnemyType, Int>();
+		enemyCount.set(Asteroid, 0);
+		enemyCount.set(Ufo, 0);
+		currentUfoTime = 0;
 		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
 		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
 		createUfo = factoryFuncs.get("ufo.json");
+	}
+
+	private static inline function getUfoNum(lvl: Int) {
+		return Std.int(Math.sqrt(lvl));
+	}
+
+	private static inline function getUfoSpawnInterval(lvl: Int) {
+		return 5 + 5 / Math.sqrt(lvl);
 	}
 
 	private static inline function getSmallAsteroidNum(lvl: Int): Int {
@@ -89,9 +101,6 @@ class Game {
 			for (entry in group.entries()) {
 				foo.push({id: entry.key, pos: entry.value});
 			}
-			/*for (target in group.values()) {
-				foo.push({id: target.key, pos: target.value});
-			}*/
 			obs(foo);
 		}
 	}
@@ -267,7 +276,7 @@ class Game {
 		bonusColliders = newBonusColliders;
 
 		// update level and spawn new asteroids
-		if (asteroidsOnScreen <= 0) {
+		if (enemyCount.get(Asteroid) <= 0) {
 			lvl++;
 			for (i in 0...getSmallAsteroidNum(lvl)) {
 				var ent = createSmallAsteroid((holder) -> {
@@ -302,6 +311,22 @@ class Game {
 					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
 					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));
 				});
+				this.addEntity(ent);
+			}
+		}
+
+		// spawn ufos
+		if (enemyCount.get(Ufo) < getUfoNum(lvl)) {
+			currentUfoTime += time;
+			if (currentUfoTime >= getUfoSpawnInterval(lvl)) {
+				currentUfoTime -= getUfoSpawnInterval(lvl);
+				var ent = createUfo((holder) -> {
+					holder.position = new Point(0, Math.random() * 720);
+					holder.velocity = new Point(200 * (Std.random(2) * 2 - 1), 0);
+					holder.rotation = new Wrapper<Float>(0);
+					holder.angVel = new Wrapper<Float>(0);
+				});
+
 				this.addEntity(ent);
 			}
 		}

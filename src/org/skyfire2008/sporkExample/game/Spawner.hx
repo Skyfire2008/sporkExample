@@ -56,7 +56,16 @@ class Spawner {
 	}
 
 	public function clone(): Spawner {
-		return new Spawner(config);
+		return new Spawner({
+			entityName: config.entityName,
+			spawnTime: config.spawnTime,
+			spawnVel: config.spawnVel,
+			spawnNum: config.spawnNum,
+			isVelRelative: config.isVelRelative,
+			velRand: config.velRand,
+			spreadAngle: config.spreadAngle,
+			angleRand: config.angleRand
+		});
 	}
 
 	public function startSpawn() {

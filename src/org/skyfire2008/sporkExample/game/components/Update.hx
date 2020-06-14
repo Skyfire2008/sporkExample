@@ -7,13 +7,52 @@ import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.Wrapper;
 
-import org.skyfire2008.sporkExample.geom.Point;
+using org.skyfire2008.sporkExample.geom.Point;
+
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.graphics.Shape;
 
 interface UpdateComponent extends Component {
 	@callback
 	function onUpdate(time: Float): Void;
+}
+
+class SineMovement implements UpdateComponent {
+	private var vel: Point;
+	private var owner: Entity;
+	private var amplitude: Float;
+	private var length: Float;
+
+	private var dv: Point;
+	private var perp: Point;
+	private var velLength: Float;
+	private var totalLength: Float;
+
+	public function new(amplitude: Float, length: Float) {
+		this.amplitude = amplitude;
+		this.length = length;
+		this.dv = new Point();
+		this.totalLength = 0;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		this.vel = holder.velocity;
+		perp = vel.copy();
+		perp.turn(Math.PI / 2);
+		perp.normalize();
+		velLength = vel.length;
+	}
+
+	public function onUpdate(time: Float) {
+		totalLength += velLength * time;
+		while (velLength > length) {
+			totalLength -= length;
+		}
+
+		vel.sub(dv);
+		dv = perp.scale(amplitude * Math.sin(totalLength / length * Math.PI * 2));
+		vel.add(dv);
+	}
 }
 
 /**

@@ -7,6 +7,7 @@ import spork.core.Entity;
 import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.game.Game;
+import org.skyfire2008.sporkExample.game.EnemyType;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
@@ -20,21 +21,36 @@ class CountedOnScreen implements DeathComponent implements InitComponent {
 	private static var game: Game;
 	private var owner: Entity;
 	private var count: Int;
+	private var type: EnemyType;
+
+	public static function fromJson(json: Dynamic): Component {
+		var type: EnemyType = null;
+		if (json.type == "Asteroid") {
+			type = Asteroid;
+		} else if (json.type == "Ufo") {
+			type = Ufo;
+		} else {
+			throw '${json.type} is not an enemy type';
+		}
+
+		return new CountedOnScreen(json.count, type);
+	}
 
 	public static function setup(game: Game) {
 		CountedOnScreen.game = game;
 	}
 
-	public function new(count: Int) {
+	public function new(count: Int, type: EnemyType) {
 		this.count = count;
+		this.type = type;
 	}
 
 	public function onInit(_: Game) {
-		game.asteroidsOnScreen += count;
+		game.enemyCount.set(type, game.enemyCount.get(type) + count);
 	}
 
 	public function onDeath() {
-		game.asteroidsOnScreen -= count;
+		game.enemyCount.set(type, game.enemyCount.get(type) - count);
 	}
 }
 

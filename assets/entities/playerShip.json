@@ -6,14 +6,16 @@
 			"shapeRef": "ship.json"
 		},
 		"hpComponent": {
-			"hp": 100
+			"hp": 10
 		},
 		"controlComponent": {
-			"a": 300,
+			"a": 250,
 			"angSpeed": 4,
+			"brakeMult": 0.95,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",
 			"rightKey": "KeyD",
+			"brakeKey": "KeyS",
 			"fireKey": "Space"
 		},
 		"collisionComponent": {

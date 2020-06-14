@@ -53,7 +53,7 @@ class AbstractBonus implements Bonus {
 
 class DoubleFirerate extends AbstractBonus {
 	public function new() {
-		super(30);
+		super(20);
 	}
 
 	public override function apply(target: Entity) {
@@ -67,7 +67,7 @@ class DoubleFirerate extends AbstractBonus {
 
 class TripleShot extends AbstractBonus {
 	public function new() {
-		super(20);
+		super(10);
 	}
 
 	public override function apply(target: Entity) {
@@ -93,7 +93,7 @@ class ExplodeShot extends AbstractBonus {
 	private var index: Int;
 
 	public function new() {
-		super(20);
+		super(10);
 		spawner = new Spawner(config);
 	}
 
