@@ -7,6 +7,8 @@ import spork.core.PropertyHolder;
 import spork.core.Entity;
 import spork.core.Wrapper;
 
+import howler.Howl;
+
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update;
@@ -40,7 +42,10 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var fireKey: String;
 	private var brakeKey: String;
 
-	public function new(a: Float, angSpeed: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String, brakeKey: String) {
+	private var soundSrc: String;
+
+	public function new(a: Float, angSpeed: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String, brakeKey: String,
+			soundSrc: String) {
 		this.a = a;
 		this.angSpeed = angSpeed;
 		this.brakeMult = brakeMult;
@@ -72,8 +77,11 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			spawnVel: 400,
 			spawnNum: 1,
 			spreadAngle: 5.0 * Math.PI / 180.0,
-			isVelRelative: false
+			isVelRelative: false,
+			soundSrc: soundSrc
 		});
+
+		this.soundSrc = soundSrc;
 	}
 
 	public function onInit(game: Game) {

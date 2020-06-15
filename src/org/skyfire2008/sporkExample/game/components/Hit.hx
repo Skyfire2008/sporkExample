@@ -8,9 +8,11 @@ import spork.core.Entity;
 import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.game.components.Init;
+import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.properties.Health;
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.geom.Point;
+import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Bonus.ExplodeShot;
 import org.skyfire2008.sporkExample.game.Bonus.DoubleFirerate;
 import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
@@ -18,6 +20,50 @@ import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
+}
+
+class TempInvulnOnHit implements HitComponent implements UpdateComponent implements InitComponent {
+	private var owner: Entity;
+	private var side: Side;
+	private var invulnTime: Float;
+	private var game: Game;
+	private var radius: Float;
+	private var pos: Point;
+
+	private var curTime: Float;
+	private var isInvuln: Bool;
+
+	public function new(invulnTime: Float) {
+		this.invulnTime = invulnTime;
+		curTime = 0;
+		isInvuln = false;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		side = holder.side;
+		radius = holder.colliderRadius;
+		pos = holder.position;
+	}
+
+	public function onInit(game: Game) {
+		this.game = game;
+	}
+
+	public function onHit(collider: Collider) {
+		isInvuln = true;
+		game.removeCollider(owner.id, side);
+	}
+
+	public function onUpdate(time: Float) {
+		if (isInvuln) {
+			curTime += time;
+			if (curTime >= invulnTime) {
+				curTime = 0;
+				isInvuln = false;
+				game.addCollider(new Collider(owner, pos, radius), side);
+			}
+		}
+	}
 }
 
 class HitSpawnComponent implements HitComponent implements InitComponent {

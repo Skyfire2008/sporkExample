@@ -33,6 +33,7 @@ class Game {
 	private var bonusColliders: Array<Collider>;
 	private var bonusGrid: UniformGrid;
 	private var bonusGetterColliders: Array<Collider>;
+	private var collidersToRemove: Map<Side, Array<Int>>;
 
 	private var targetGroups: Map<String, Map<Int, Point>>;
 	private var targetObservers: Map<String, Array<TargetObserver>>;
@@ -45,18 +46,26 @@ class Game {
 	public var enemyCount: Map<EnemyType, Int>;
 	private var currentUfoTime: Float;
 
-	public function new(renderer: Renderer, factoryFuncs: StringMap<EntityFactoryMethod>) {
+	public var playerHpCallback(default, null): (value: Float) -> Void;
+	private var waveCallback: (value: Int) -> Void;
+
+	public function new(renderer: Renderer, factoryFuncs: StringMap<EntityFactoryMethod>, playerHpCallback: (value: Float) -> Void,
+			waveCallback: (value: Int) -> Void) {
 		this.renderer = renderer;
 		grid = new UniformGrid(1280, 720, 64, 64);
 		targetGroups = new Map<String, Map<Int, Point>>();
 		targetObservers = new Map<String, Array<TargetObserver>>();
 		targetDeathObservers = new Map<Int, Array<TargetDeathObserver>>();
+
 		playerColliders = [];
 		enemyColliders = [];
-
 		bonusColliders = [];
 		bonusGrid = new UniformGrid(1280, 720, 128, 120);
 		bonusGetterColliders = [];
+		collidersToRemove = new Map<Side, Array<Int>>();
+		collidersToRemove.set(Player, []);
+		collidersToRemove.set(Enemy, []);
+		collidersToRemove.set(Bonus, []);
 
 		lvl = 0;
 		enemyCount = new Map<EnemyType, Int>();
@@ -66,6 +75,9 @@ class Game {
 		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
 		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
 		createUfo = factoryFuncs.get("ufo.json");
+
+		this.playerHpCallback = playerHpCallback;
+		this.waveCallback = waveCallback;
 	}
 
 	private static inline function getUfoNum(lvl: Int) {
@@ -174,6 +186,10 @@ class Game {
 		}
 	}
 
+	public function removeCollider(ownerId: Int, side: Side) {
+		collidersToRemove.get(side).push(ownerId);
+	}
+
 	public function addControllableEntity(entity: Entity) {
 		controllableEntitites.push(entity);
 	}
@@ -253,31 +269,35 @@ class Game {
 		// remove dead colliders
 		var newPlayerColliders: Array<Collider> = [];
 		for (col in playerColliders) {
-			if (col.owner.isAlive()) {
+			if (col.owner.isAlive() && !collidersToRemove.get(Player).contains(col.owner.id)) {
 				newPlayerColliders.push(col);
 			}
 		}
 		playerColliders = newPlayerColliders;
+		collidersToRemove.set(Player, []);
 
 		var newEnemyColliders: Array<Collider> = [];
 		for (col in enemyColliders) {
-			if (col.owner.isAlive()) {
+			if (col.owner.isAlive() && !collidersToRemove.get(Enemy).contains(col.owner.id)) {
 				newEnemyColliders.push(col);
 			}
 		}
 		enemyColliders = newEnemyColliders;
+		collidersToRemove.set(Enemy, []);
 
 		var newBonusColliders: Array<Collider> = [];
 		for (col in bonusColliders) {
-			if (col.owner.isAlive()) {
+			if (col.owner.isAlive() && !collidersToRemove.get(Bonus).contains(col.owner.id)) {
 				newBonusColliders.push(col);
 			}
 		}
 		bonusColliders = newBonusColliders;
+		collidersToRemove.set(Bonus, []);
 
 		// update level and spawn new asteroids
 		if (enemyCount.get(Asteroid) <= 0) {
 			lvl++;
+			waveCallback(lvl);
 			for (i in 0...getSmallAsteroidNum(lvl)) {
 				var ent = createSmallAsteroid((holder) -> {
 					holder.position = new Point();

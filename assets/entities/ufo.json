@@ -23,7 +23,8 @@
 				"entityName": "enemyBullet.json",
 				"spawnTime": 2,
 				"spawnVel": 300,
-				"spawnNum": 1
+				"spawnNum": 1,
+				"soundSrc": "assets/sound/enemyShoot.wav"
 			}
 		},
 		"dropsBonusComponent": {

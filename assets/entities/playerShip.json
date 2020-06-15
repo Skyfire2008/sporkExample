@@ -16,17 +16,22 @@
 			"leftKey": "KeyA",
 			"rightKey": "KeyD",
 			"brakeKey": "KeyS",
-			"fireKey": "Space"
+			"fireKey": "Space",
+			"soundSrc": "assets/sound/playerShoot4.wav"
 		},
 		"collisionComponent": {
 			"side": "Player",
 			"radius": 15
+		},
+		"tempInvulnOnHit": {
+			"invulnTime": 10
 		},
 		"damagedOnHit": {},
 		"targetComponent": {
 			"group": "Player"
 		},
 		"exposePlayerWeapon": {},
-		"getsBonuses": {}
+		"getsBonuses": {},
+		"displayHp": {}
 	}
 }

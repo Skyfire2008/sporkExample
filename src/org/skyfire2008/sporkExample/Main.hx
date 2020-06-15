@@ -7,6 +7,7 @@ import haxe.ds.StringMap;
 
 import js.Browser;
 import js.lib.Promise;
+import js.html.Element;
 import js.html.KeyboardEvent;
 import js.html.Document;
 import js.html.CanvasElement;
@@ -32,6 +33,9 @@ using Lambda;
 class Main {
 	private static var gl: RenderingContext;
 	private static var document: Document;
+
+	private static var playerHpDisplay: Element;
+	private static var waveDisplay: Element;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
@@ -69,6 +73,10 @@ class Main {
 
 	private static function init() {
 		document = Browser.document;
+
+		// get HTML elements
+		playerHpDisplay = document.getElementById("playerHpDisplay");
+		waveDisplay = document.getElementById("waveDisplay");
 
 		gl = cast(document.getElementById("mainCanvas"), CanvasElement).getContextWebGL();
 		if (gl == null) {
@@ -122,7 +130,11 @@ class Main {
 				}
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
-					game = new Game(renderer, entFactories);
+					game = new Game(renderer, entFactories, (value) -> {
+						playerHpDisplay.innerText = "" + value;
+					}, (value) -> {
+							waveDisplay.innerText = "" + value;
+						});
 					Spawner.setup(game, entFactories);
 					DropsBonusComponent.setup(game, [
 						entFactories.get("doubleFirerateBonus.json"),

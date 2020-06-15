@@ -15,3 +15,4 @@
 
 -lib spork
 -lib polygonal-ds
+-lib howlerjs

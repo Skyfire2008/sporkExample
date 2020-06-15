@@ -10,6 +10,7 @@ import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
+import org.skyfire2008.sporkExample.game.properties.Health;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
 import org.skyfire2008.sporkExample.game.components.Props.PropsComponent;
@@ -17,6 +18,26 @@ import org.skyfire2008.sporkExample.game.components.Props.PropsComponent;
 interface InitComponent extends spork.core.Component {
 	@callback
 	function onInit(game: Game): Void;
+}
+
+class DisplayHp implements InitComponent implements UpdateComponent {
+	private var owner: Entity;
+	private var hp: Health;
+	private var callback: (value: Float) -> Void;
+
+	public function new() {}
+
+	public function onInit(game: Game) {
+		callback = game.playerHpCallback;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		hp = holder.health;
+	}
+
+	public function onUpdate(time: Float) {
+		callback(hp.hp);
+	}
 }
 
 class ShootsAtComponent implements InitComponent implements UpdateComponent implements PropsComponent {
@@ -150,6 +171,7 @@ class CollisionComponent implements InitComponent {
 
 	public function createProps(holder: PropertyHolder) {
 		holder.colliderRadius = radius;
+		holder.side = side;
 	}
 
 	public function assignProps(holder: PropertyHolder) {

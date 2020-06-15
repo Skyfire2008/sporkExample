@@ -22,7 +22,8 @@
 				"entityName": "playerBullet.json",
 				"spawnTime": 1.5,
 				"spawnVel": 600,
-				"spawnNum": 1
+				"spawnNum": 1,
+				"soundSrc": "assets/sound/playerShoot5.wav"
 			}
 		},
 		"getsBonuses": {}

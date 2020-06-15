@@ -2,6 +2,8 @@ package org.skyfire2008.sporkExample.game;
 
 import haxe.ds.StringMap;
 
+import howler.Howl;
+
 import spork.core.Wrapper;
 import spork.core.Component;
 import spork.core.JsonLoader.EntityFactoryMethod;
@@ -18,6 +20,7 @@ typedef SpawnerConfig = {
 	@:optional var velRand: Float;
 	@:optional var spreadAngle: Float;
 	@:optional var angleRand: Float;
+	@:optional var soundSrc: String;
 }
 
 class Spawner {
@@ -30,6 +33,8 @@ class Spawner {
 
 	private var curTime: Float = 0;
 	private var isSpawning: Bool = false;
+
+	public var howl(default, null): Howl = null;
 
 	public static function setup(game: Game, entityFactories: StringMap<EntityFactoryMethod>) {
 		Spawner.game = game;
@@ -45,6 +50,9 @@ class Spawner {
 		}
 		if (config.angleRand == null) {
 			config.angleRand = 0;
+		}
+		if (config.soundSrc != null) {
+			howl = new Howl({src: [config.soundSrc]});
 		}
 		this.config = config;
 
@@ -64,7 +72,8 @@ class Spawner {
 			isVelRelative: config.isVelRelative,
 			velRand: config.velRand,
 			spreadAngle: config.spreadAngle,
-			angleRand: config.angleRand
+			angleRand: config.angleRand,
+			soundSrc: config.soundSrc
 		});
 	}
 
@@ -111,6 +120,10 @@ class Spawner {
 			}
 
 			game.addEntity(ent);
+		}
+
+		if (howl != null && !howl.playing()) {
+			howl.play();
 		}
 	}
 
