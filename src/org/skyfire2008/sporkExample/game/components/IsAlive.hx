@@ -15,6 +15,23 @@ interface IsAliveComponent extends Component {
 	function kill(): Void;
 }
 
+class AlwaysAlive implements IsAliveComponent {
+	private var owner: Entity;
+	private var value: Bool;
+
+	public function new() {
+		value = true;
+	}
+
+	public function isAlive(): Bool {
+		return value;
+	}
+
+	public function kill() {
+		value = false;
+	}
+}
+
 class TimedComponent implements IsAliveComponent implements UpdateComponent {
 	private var time: Float;
 	private var owner: Entity;

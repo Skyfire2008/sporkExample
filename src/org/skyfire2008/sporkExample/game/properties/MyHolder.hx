@@ -15,4 +15,6 @@ class MyHolder {
 	public var health: Health;
 	public var wep: Spawner;
 	public var colliderRadius: Float;
+	public var colorMult: Wrapper<Float>;
+	public var scale: Wrapper<Float>;
 }

@@ -144,6 +144,11 @@ class Main {
 					]);
 					CountedOnScreen.setup(game);
 
+					// add bg particles
+					for (i in 0...100) {
+						game.addEntity(entFactories.get("bgParticle.json")((holder) -> {}));
+					}
+
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {
 						holder.position = new Point(640, 360);
 						holder.rotation = new Wrapper<Float>(0);

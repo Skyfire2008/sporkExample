@@ -18,6 +18,7 @@ class Renderer {
 	private var rotationLoc: UniformLocation;
 	private var posLoc: UniformLocation;
 	private var scaleLoc: UniformLocation;
+	private var colorMultLoc: UniformLocation;
 
 	public function new(gl: RenderingContext, vertSrc: String, fragSrc: String) {
 		this.gl = gl;
@@ -31,6 +32,7 @@ class Renderer {
 		posLoc = gl.getUniformLocation(prog, "pos");
 		rotationLoc = gl.getUniformLocation(prog, "rotation");
 		scaleLoc = gl.getUniformLocation(prog, "scale");
+		colorMultLoc = gl.getUniformLocation(prog, "colorMult");
 	}
 
 	public inline function start() {
@@ -41,10 +43,11 @@ class Renderer {
 		gl.clear(GL.COLOR_BUFFER_BIT);
 	}
 
-	public inline function render(shape: Shape, posX: Float, posY: Float, rotation: Float, scale: Float) {
+	public inline function render(shape: Shape, posX: Float, posY: Float, rotation: Float, scale: Float, colorMult: Float = 1.0) {
 		gl.uniform2f(scaleLoc, scale, scale);
 		gl.uniform1f(rotationLoc, rotation);
 		gl.uniform2f(posLoc, posX, posY);
+		gl.uniform1f(colorMultLoc, colorMult);
 
 		ext.bindVertexArrayOES(shape.vao);
 

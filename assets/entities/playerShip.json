@@ -11,20 +11,21 @@
 		"controlComponent": {
 			"a": 250,
 			"angSpeed": 4,
-			"brakeMult": 0.95,
+			"brakeMult": 0.93,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",
 			"rightKey": "KeyD",
 			"brakeKey": "KeyS",
 			"fireKey": "Space",
-			"soundSrc": "assets/sound/playerShoot4.wav"
+			"soundSrc": "assets/sound/playerShoot5.wav"
 		},
 		"collisionComponent": {
 			"side": "Player",
 			"radius": 15
 		},
 		"tempInvulnOnHit": {
-			"invulnTime": 10
+			"invulnTime": 2,
+			"blinkTime": 0.15
 		},
 		"damagedOnHit": {},
 		"targetComponent": {

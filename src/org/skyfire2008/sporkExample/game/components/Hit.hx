@@ -22,20 +22,46 @@ interface HitComponent extends Component {
 	function onHit(collider: Collider): Void;
 }
 
+class DisplayHp implements HitComponent implements InitComponent {
+	private var owner: Entity;
+	private var hp: Health;
+	private var callback: (value: Float) -> Void;
+
+	public function new() {}
+
+	public function onInit(game: Game) {
+		callback = game.playerHpCallback;
+		callback(hp.hp);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		hp = holder.health;
+	}
+
+	public function onHit(collider: Collider) {
+		callback(hp.hp);
+	}
+}
+
 class TempInvulnOnHit implements HitComponent implements UpdateComponent implements InitComponent {
 	private var owner: Entity;
 	private var side: Side;
 	private var invulnTime: Float;
+	private var blinkTime: Float;
 	private var game: Game;
 	private var radius: Float;
 	private var pos: Point;
+	private var colorMult: Wrapper<Float>;
 
 	private var curTime: Float;
+	private var curBlinkTime: Float;
 	private var isInvuln: Bool;
 
-	public function new(invulnTime: Float) {
+	public function new(invulnTime: Float, blinkTime: Float) {
 		this.invulnTime = invulnTime;
+		this.blinkTime = blinkTime;
 		curTime = 0;
+		curBlinkTime = 0;
 		isInvuln = false;
 	}
 
@@ -43,6 +69,7 @@ class TempInvulnOnHit implements HitComponent implements UpdateComponent impleme
 		side = holder.side;
 		radius = holder.colliderRadius;
 		pos = holder.position;
+		colorMult = holder.colorMult;
 	}
 
 	public function onInit(game: Game) {
@@ -51,13 +78,21 @@ class TempInvulnOnHit implements HitComponent implements UpdateComponent impleme
 
 	public function onHit(collider: Collider) {
 		isInvuln = true;
+		curBlinkTime = 0;
+		colorMult.value = 0;
 		game.removeCollider(owner.id, side);
 	}
 
 	public function onUpdate(time: Float) {
 		if (isInvuln) {
 			curTime += time;
+			curBlinkTime += time;
+			if (curBlinkTime >= blinkTime) {
+				curBlinkTime -= blinkTime;
+				colorMult.value = 1.0 - colorMult.value;
+			}
 			if (curTime >= invulnTime) {
+				colorMult.value = 1;
 				curTime = 0;
 				isInvuln = false;
 				game.addCollider(new Collider(owner, pos, radius), side);

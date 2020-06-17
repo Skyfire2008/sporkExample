@@ -17,6 +17,74 @@ interface UpdateComponent extends Component {
 	function onUpdate(time: Float): Void;
 }
 
+class BgParticle implements UpdateComponent {
+	private var owner: Entity;
+	private var scale: Wrapper<Float>;
+	private var rotation: Wrapper<Float>;
+	private var projPos: Point;
+	private var colorMult: Wrapper<Float>;
+
+	private var pos: Point;
+	private var z: Float;
+	private var zVel: Float;
+
+	private var focalLength: Float;
+	private var startZ: Float;
+	private var minVel: Float;
+	private var maxVel: Float;
+	private var trailLength: Float;
+
+	public function new(focalLength: Float, startZ: Float, minVel: Float, maxVel: Float, trailLength: Float) {
+		this.focalLength = focalLength;
+		this.startZ = startZ;
+		this.minVel = minVel;
+		this.maxVel = maxVel;
+		this.trailLength = trailLength;
+
+		z = startZ;
+		zVel = minVel + Math.random() * (maxVel - minVel);
+		pos = new Point(640, 360);
+		while (pos.x == 640 && pos.y == 360) {
+			pos.x = Math.random() * 1280;
+			pos.y = Math.random() * 640;
+		}
+		this.projPos = new Point();
+		calcProj();
+
+		this.rotation = new Wrapper<Float>(Math.atan2(pos.y - 360, pos.x - 640) + Math.PI / 2);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		this.scale = holder.scale;
+		this.colorMult = holder.colorMult;
+	}
+
+	public function createProps(holder: PropertyHolder) {
+		holder.position = projPos;
+		holder.rotation = rotation;
+	}
+
+	public function onUpdate(time: Float) {
+		if (z <= 0 || projPos.x > 1280 || projPos.x < 0 || projPos.y > 720 || projPos.y < 0) {
+			z = startZ;
+			calcProj();
+		}
+
+		z -= zVel;
+		var prevProj = projPos.copy();
+		calcProj();
+		prevProj.sub(projPos);
+		scale.value = Math.max(trailLength * prevProj.length, 1.0);
+		colorMult.value = (startZ - z) / startZ;
+	}
+
+	private inline function calcProj() {
+		var mult = focalLength / (focalLength + z);
+		projPos.x = mult * (pos.x - 640) + 640;
+		projPos.y = mult * (pos.y - 360) + 360;
+	}
+}
+
 class SineMovement implements UpdateComponent {
 	private var vel: Point;
 	private var owner: Entity;
@@ -156,6 +224,8 @@ class RenderComponent implements UpdateComponent {
 	private var pos: Point;
 	private var rotation: Wrapper<Float>;
 	private var owner: Entity;
+	private var colorMult: Wrapper<Float>;
+	private var scale: Wrapper<Float>;
 
 	private static var shapes: StringMap<Shape>;
 	private static var renderer: Renderer;
@@ -183,14 +253,21 @@ class RenderComponent implements UpdateComponent {
 
 	public function new(shape: Shape) {
 		this.shape = shape;
+		this.colorMult = new Wrapper<Float>(1.0);
+		this.scale = new Wrapper<Float>(1.0);
 	}
 
 	public function onUpdate(time: Float): Void {
-		RenderComponent.renderer.render(shape, pos.x, pos.y, rotation.value, 1);
+		RenderComponent.renderer.render(shape, pos.x, pos.y, rotation.value, scale.value, colorMult.value);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 		rotation = holder.rotation;
+	}
+
+	public function createProps(holder: PropertyHolder) {
+		holder.colorMult = colorMult;
+		holder.scale = scale;
 	}
 }

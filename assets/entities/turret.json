@@ -23,7 +23,7 @@
 				"spawnTime": 1.5,
 				"spawnVel": 600,
 				"spawnNum": 1,
-				"soundSrc": "assets/sound/playerShoot5.wav"
+				"soundSrc": "assets/sound/playerShoot4.wav"
 			}
 		},
 		"getsBonuses": {}

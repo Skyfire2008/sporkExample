@@ -21,7 +21,7 @@
 			"group": "Player",
 			"wep": {
 				"entityName": "enemyBullet.json",
-				"spawnTime": 2,
+				"spawnTime": 3,
 				"spawnVel": 300,
 				"spawnNum": 1,
 				"soundSrc": "assets/sound/enemyShoot.wav"

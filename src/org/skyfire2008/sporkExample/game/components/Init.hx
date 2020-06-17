@@ -20,26 +20,6 @@ interface InitComponent extends spork.core.Component {
 	function onInit(game: Game): Void;
 }
 
-class DisplayHp implements InitComponent implements UpdateComponent {
-	private var owner: Entity;
-	private var hp: Health;
-	private var callback: (value: Float) -> Void;
-
-	public function new() {}
-
-	public function onInit(game: Game) {
-		callback = game.playerHpCallback;
-	}
-
-	public function assignProps(holder: PropertyHolder) {
-		hp = holder.health;
-	}
-
-	public function onUpdate(time: Float) {
-		callback(hp.hp);
-	}
-}
-
 class ShootsAtComponent implements InitComponent implements UpdateComponent implements PropsComponent {
 	private var group: String;
 	private var owner: Entity;

@@ -342,7 +342,7 @@ class Game {
 				currentUfoTime -= getUfoSpawnInterval(lvl);
 				var ent = createUfo((holder) -> {
 					holder.position = new Point(0, Math.random() * 720);
-					holder.velocity = new Point(200 * (Std.random(2) * 2 - 1), 0);
+					holder.velocity = new Point(150 * (Std.random(2) * 2 - 1), 0);
 					holder.rotation = new Wrapper<Float>(0);
 					holder.angVel = new Wrapper<Float>(0);
 				});

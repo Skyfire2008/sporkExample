@@ -1,0 +1,16 @@
+{
+	"properties": {},
+	"components": {
+		"renderComponent": {
+			"shapeRef": "particle.json"
+		},
+		"bgParticle": {
+			"focalLength": 200,
+			"minVel": 1,
+			"maxVel": 4,
+			"startZ": 1000,
+			"trailLength": 5
+		},
+		"alwaysAlive": {}
+	}
+}
