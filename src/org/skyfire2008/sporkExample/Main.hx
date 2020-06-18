@@ -140,7 +140,8 @@ class Main {
 						entFactories.get("doubleFirerateBonus.json"),
 						entFactories.get("explodeShotBonus.json"),
 						entFactories.get("tripleShotBonus.json"),
-						entFactories.get("turret.json")
+						entFactories.get("turret.json"),
+						entFactories.get("hpBonus.json")
 					]);
 					CountedOnScreen.setup(game);
 

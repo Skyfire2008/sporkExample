@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample.game.components;
 
+import org.skyfire2008.sporkExample.game.Bonus.HpBonus;
+
 import haxe.ds.StringMap;
 
 import spork.core.Component;
@@ -20,27 +22,6 @@ import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
-}
-
-class DisplayHp implements HitComponent implements InitComponent {
-	private var owner: Entity;
-	private var hp: Health;
-	private var callback: (value: Float) -> Void;
-
-	public function new() {}
-
-	public function onInit(game: Game) {
-		callback = game.playerHpCallback;
-		callback(hp.hp);
-	}
-
-	public function assignProps(holder: PropertyHolder) {
-		hp = holder.health;
-	}
-
-	public function onHit(collider: Collider) {
-		callback(hp.hp);
-	}
 }
 
 class TempInvulnOnHit implements HitComponent implements UpdateComponent implements InitComponent {
@@ -146,6 +127,9 @@ class ApplyBonus implements HitComponent {
 		},
 		"tripleShot" => () -> {
 			return new TripleShot();
+		},
+		"hpBonus" => () -> {
+			return new HpBonus();
 		}
 	];
 	private var func: () -> Bonus;
@@ -171,7 +155,7 @@ class DamagedOnHit implements HitComponent {
 	public function new() {}
 
 	public function onHit(collider: Collider) {
-		health.hp--;
+		owner.damage(1);
 	}
 
 	public function assignProps(holder: PropertyHolder) {

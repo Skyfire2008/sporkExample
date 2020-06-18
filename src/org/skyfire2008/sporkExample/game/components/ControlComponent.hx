@@ -26,7 +26,8 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var keys: StringMap<Bool>;
 	private var actions: StringMap<(time: Float) -> Void>;
 	private var a: Float;
-	private var angSpeed: Float;
+	private var angA: Float;
+	private var maxAngVel: Float;
 	private var brakeMult: Float;
 
 	private var wep: Spawner;
@@ -41,13 +42,17 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var leftKey: String;
 	private var fireKey: String;
 	private var brakeKey: String;
+	private var angBrake: Float;
+	private var angMult: Float = 0;
 
 	private var soundSrc: String;
 
-	public function new(a: Float, angSpeed: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String, fireKey: String, brakeKey: String,
-			soundSrc: String) {
+	public function new(a: Float, angA: Float, maxAngVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String,
+			fireKey: String, brakeKey: String, soundSrc: String) {
 		this.a = a;
-		this.angSpeed = angSpeed;
+		this.angA = angA;
+		this.maxAngVel = maxAngVel;
+		this.angBrake = angBrake;
 		this.brakeMult = brakeMult;
 		this.fwKey = fwKey;
 		this.rightKey = rightKey;
@@ -62,10 +67,10 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			vel.add(Point.fromPolar(rotation.value, a * time));
 		});
 		actions.set(rightKey, (time: Float) -> {
-			angVel.value = angSpeed;
+			angMult += 1;
 		});
 		actions.set(leftKey, (time: Float) -> {
-			angVel.value = -angSpeed;
+			angMult -= 1;
 		});
 		actions.set(fireKey, (time: Float) -> {});
 		actions.set(brakeKey, (time: Float) -> {
@@ -104,7 +109,6 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	}
 
 	public function onUpdate(time: Float) {
-		angVel.value = 0;
 		wep.update(time, pos, rotation.value, vel);
 
 		for (key in keys.keys()) {
@@ -113,6 +117,27 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 				func(time);
 			}
 		}
+
+		if (angMult == 0 || sgn(angMult) != sgn(angVel.value)) {
+			angVel.value *= Math.pow(angBrake, 60 * time);
+		}
+		angVel.value += angMult * time * angA;
+		if (angVel.value > maxAngVel) {
+			angVel.value = maxAngVel;
+		}
+		if (angVel.value < -maxAngVel) {
+			angVel.value = -maxAngVel;
+		}
+
+		angMult = 0;
+	}
+
+	private inline function sgn(a: Float): Int {
+		var result: Int = 0;
+		if (a != 0) {
+			result = (a > 0) ? 1 : -1;
+		}
+		return result;
 	}
 
 	public function createProps(holder: PropertyHolder) {

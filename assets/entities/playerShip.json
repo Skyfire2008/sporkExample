@@ -10,7 +10,9 @@
 		},
 		"controlComponent": {
 			"a": 250,
-			"angSpeed": 4,
+			"angA": 12,
+			"maxAngVel": 6,
+			"angBrake": 0.75,
 			"brakeMult": 0.93,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",

@@ -1,0 +1,19 @@
+{
+	"properties": {},
+	"components": {
+		"moveComponent": {},
+		"renderComponent": {
+			"shapeRef": "hpBonus.json"
+		},
+		"timedComponent": {
+			"time": 30
+		},
+		"collisionComponent": {
+			"side": "Bonus",
+			"radius": 15
+		},
+		"applyBonus": {
+			"bonusName": "hpBonus"
+		}
+	}
+}

@@ -51,6 +51,22 @@ class AbstractBonus implements Bonus {
 	}
 }
 
+class HpBonus implements Bonus {
+	public function new() {}
+
+	public function apply(target: Entity) {
+		target.heal(1);
+	}
+
+	public function isAlive(): Bool {
+		return false;
+	}
+
+	public function update(time: Float) {}
+
+	public function revert(target: Entity) {}
+}
+
 class DoubleFirerate extends AbstractBonus {
 	public function new() {
 		super(20);

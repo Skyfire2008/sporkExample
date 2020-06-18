@@ -5,7 +5,16 @@ import spork.core.Component;
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.game.components.Update;
+import org.skyfire2008.sporkExample.game.components.Init;
 import org.skyfire2008.sporkExample.game.properties.Health;
+
+interface DamageComponent extends Component {
+	@callback
+	function damage(dmg: Int): Void;
+
+	@callback
+	function heal(dmg: Int): Void;
+}
 
 @singular
 interface IsAliveComponent extends Component {
@@ -13,6 +22,31 @@ interface IsAliveComponent extends Component {
 	function isAlive(): Bool;
 	@callback
 	function kill(): Void;
+}
+
+class DisplayHp implements DamageComponent implements InitComponent {
+	private var owner: Entity;
+	private var hp: Health;
+	private var callback: (value: Float) -> Void;
+
+	public function new() {}
+
+	public function onInit(game: Game) {
+		callback = game.playerHpCallback;
+		callback(hp.hp);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		hp = holder.health;
+	}
+
+	public function damage(dmg: Int) {
+		callback(hp.hp);
+	}
+
+	public function heal(dmg: Int) {
+		callback(hp.hp);
+	}
 }
 
 class AlwaysAlive implements IsAliveComponent {
@@ -53,11 +87,11 @@ class TimedComponent implements IsAliveComponent implements UpdateComponent {
 	}
 }
 
-class HpComponent implements IsAliveComponent {
+class HpComponent implements IsAliveComponent implements DamageComponent {
 	private var health: Health;
 	private var owner: Entity;
 
-	public function new(hp: Float) {
+	public function new(hp: Int) {
 		this.health = new Health(hp);
 	}
 
@@ -65,12 +99,20 @@ class HpComponent implements IsAliveComponent {
 		return new HpComponent(health.maxHp);
 	}
 
+	public function damage(dmg: Int) {
+		health.hp -= dmg;
+	}
+
+	public function heal(dmg: Int) {
+		health.hp += dmg;
+	}
+
 	public function isAlive(): Bool {
 		return health.hp > 0;
 	}
 
 	public function kill() {
-		health.hp = 0;
+		owner.damage(health.hp);
 	}
 
 	public function assignProps(holder: PropertyHolder) {

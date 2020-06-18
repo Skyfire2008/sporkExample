@@ -3,10 +3,10 @@ package org.skyfire2008.sporkExample.game.properties;
 import spork.core.PropertyHolder;
 
 class Health {
-	public var hp: Float;
-	public var maxHp(default, null): Float;
+	public var hp: Int;
+	public var maxHp(default, null): Int;
 
-	public function new(maxHp: Float) {
+	public function new(maxHp: Int) {
 		this.maxHp = maxHp;
 		hp = maxHp;
 	}
