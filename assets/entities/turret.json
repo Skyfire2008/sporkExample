@@ -5,7 +5,7 @@
 			"shapeRef": "turret.json"
 		},
 		"hpComponent": {
-			"hp": 5
+			"hp": 3
 		},
 		"collisionComponent": {
 			"side": "Player",
@@ -24,8 +24,13 @@
 				"spawnVel": 600,
 				"spawnNum": 1,
 				"soundSrc": "assets/sound/playerShoot4.wav"
-			}
+			},
+			"aimsAtClosest": true
 		},
-		"getsBonuses": {}
+		"getsBonuses": {},
+		"tempInvulnOnHit": {
+			"invulnTime": 2,
+			"blinkTime": 0.15
+		}
 	}
 }

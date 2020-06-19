@@ -94,16 +94,17 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		game.addControllableEntity(this.owner);
 	}
 
+	//TODO: "ShiftRight" is a hack, remove later
 	public function onKeyDown(code: String) {
 		keys.set(code, true);
-		if (code == fireKey) {
+		if (code == fireKey || code=="ShiftRight") {
 			wep.startSpawn();
 		}
 	}
 
 	public function onKeyUp(code: String) {
 		keys.remove(code);
-		if (code == fireKey) {
+		if (code == fireKey || code=="ShiftRight") {
 			wep.stopSpawn();
 		}
 	}

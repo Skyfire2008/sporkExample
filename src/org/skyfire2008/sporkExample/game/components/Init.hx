@@ -32,12 +32,18 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 	private var game: Game;
 	private var wep: Spawner;
 	private var rotates: Bool;
+	private var aimsAtClosest: Bool;
 
 	public static function fromJson(json: Dynamic): Component {
 		var rotates = false;
 		if (json.rotates != null) {
 			rotates = json.rotates;
 		}
+		var aimsAtClosest = false;
+		if(json.aimsAtClosest != null){
+			aimsAtClosest = json.aimsAtClosest;
+		}
+
 		return new ShootsAtComponent(json.group, new Spawner(json.wep), rotates);
 	}
 
@@ -73,7 +79,20 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 	}>) {
 		if (targetPos == null) {
 			wep.startSpawn();
-			var num = Std.random(targets.length);
+			var num: Int=0;
+			if(aimsAtClosest){
+				var closest: Float = Math.POSITIVE_INFINITY;
+				for(i in 0...targets.length){
+					var current = targets[i];
+					var currentLength = Point.difference(current.pos, pos).length2;
+					if(currentLength<closest){
+						num=i;
+						closest=currentLength;
+					}
+				}
+			}else{
+				num = Std.random(targets.length);
+			}
 			targetPos = targets[num].pos;
 			game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
 		}

@@ -24,7 +24,7 @@
 			"angleRand": 1
 		},
 		"dropsBonusComponent": {
-			"prob": 0.2
+			"prob": 0.3
 		},
 		"countedOnScreen": {
 			"count": 4,

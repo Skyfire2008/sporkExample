@@ -14,7 +14,7 @@
 		},
 		"damagedOnHit": {},
 		"dropsBonusComponent": {
-			"prob": 0.05
+			"prob": 0.06
 		},
 		"countedOnScreen": {
 			"count": 1,

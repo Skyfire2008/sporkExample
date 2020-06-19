@@ -6,7 +6,7 @@
 			"shapeRef": "ship.json"
 		},
 		"hpComponent": {
-			"hp": 100
+			"hp": 10
 		},
 		"controlComponent": {
 			"a": 250,
