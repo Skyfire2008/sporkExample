@@ -43,7 +43,7 @@ class Game {
 	private var createSmallAsteroid: EntityFactoryMethod;
 	private var createUfo: EntityFactoryMethod;
 	private var lvl: Int;
-	public var enemyCount: Map<EnemyType, Int>;
+	private var entityCount: Map<String, Int>;
 	private var currentUfoTime: Float;
 
 	public var playerHpCallback(default, null): (value: Float) -> Void;
@@ -68,9 +68,7 @@ class Game {
 		collidersToRemove.set(Bonus, []);
 
 		lvl = 0;
-		enemyCount = new Map<EnemyType, Int>();
-		enemyCount.set(Asteroid, 0);
-		enemyCount.set(Ufo, 0);
+		entityCount = new Map<String, Int>();
 		currentUfoTime = 0;
 		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
 		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
@@ -94,6 +92,26 @@ class Game {
 
 	private static inline function getMediumAsteroidNum(lvl: Int): Int {
 		return Std.int(4 + lvl / 2);
+	}
+
+	public function addCount(group: String, count: Int){
+		if(entityCount.has(group)){
+			entityCount.set(group, entityCount.get(group)+count);
+		}else{
+			entityCount.set(group, count);
+		}
+	}
+
+	public function removeCount(group: String, count: Int){
+		entityCount.set(group, entityCount.get(group)-count);
+	}
+
+	public function getCount(group: String): Int{
+		if(entityCount.has(group)){
+			return entityCount.get(group);
+		}else{
+			return 0;
+		}
 	}
 
 	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {
@@ -295,7 +313,7 @@ class Game {
 		collidersToRemove.set(Bonus, []);
 
 		// update level and spawn new asteroids
-		if (enemyCount.get(Asteroid) <= 0) {
+		if (getCount("Asteroid") <= 0) {
 			lvl++;
 			waveCallback(lvl);
 			for (i in 0...getSmallAsteroidNum(lvl)) {
@@ -336,7 +354,7 @@ class Game {
 		}
 
 		// spawn ufos
-		if (enemyCount.get(Ufo) < getUfoNum(lvl)) {
+		if (getCount("Ufo") < getUfoNum(lvl)) {
 			currentUfoTime += time;
 			if (currentUfoTime >= getUfoSpawnInterval(lvl)) {
 				currentUfoTime -= getUfoSpawnInterval(lvl);

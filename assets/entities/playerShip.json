@@ -6,13 +6,13 @@
 			"shapeRef": "ship.json"
 		},
 		"hpComponent": {
-			"hp": 10
+			"hp": 100
 		},
 		"controlComponent": {
 			"a": 250,
-			"angA": 12,
-			"maxAngVel": 6,
-			"angBrake": 0.75,
+			"angA": 15,
+			"maxAngVel": 5,
+			"angBrake": 0.7,
 			"brakeMult": 0.93,
 			"fwKey": "KeyW",
 			"leftKey": "KeyA",

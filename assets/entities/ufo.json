@@ -32,7 +32,7 @@
 		},
 		"countedOnScreen": {
 			"count": 1,
-			"type": "Ufo"
+			"group": "Ufo"
 		},
 		"sineMovement": {
 			"amplitude": 120,

@@ -143,7 +143,6 @@ class Main {
 						entFactories.get("turret.json"),
 						entFactories.get("hpBonus.json")
 					]);
-					CountedOnScreen.setup(game);
 
 					// add bg particles
 					for (i in 0...100) {

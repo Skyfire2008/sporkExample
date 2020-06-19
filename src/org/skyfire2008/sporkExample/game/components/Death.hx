@@ -7,7 +7,6 @@ import spork.core.Entity;
 import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.game.Game;
-import org.skyfire2008.sporkExample.game.EnemyType;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
@@ -18,39 +17,23 @@ interface DeathComponent extends Component {
 }
 
 class CountedOnScreen implements DeathComponent implements InitComponent {
-	private static var game: Game;
+	private var game: Game;
 	private var owner: Entity;
 	private var count: Int;
-	private var type: EnemyType;
+	private var group: String;
 
-	public static function fromJson(json: Dynamic): Component {
-		var type: EnemyType = null;
-		if (json.type == "Asteroid") {
-			type = Asteroid;
-		} else if (json.type == "Ufo") {
-			type = Ufo;
-		} else {
-			throw '${json.type} is not an enemy type';
-		}
-
-		return new CountedOnScreen(json.count, type);
-	}
-
-	public static function setup(game: Game) {
-		CountedOnScreen.game = game;
-	}
-
-	public function new(count: Int, type: EnemyType) {
+	public function new(count: Int, group: String) {
 		this.count = count;
-		this.type = type;
+		this.group = group;
 	}
 
-	public function onInit(_: Game) {
-		game.enemyCount.set(type, game.enemyCount.get(type) + count);
+	public function onInit(game: Game) {
+		this.game = game;
+		game.addCount(group, count);
 	}
 
 	public function onDeath() {
-		game.enemyCount.set(type, game.enemyCount.get(type) - count);
+		game.removeCount(group, count);
 	}
 }
 
@@ -76,7 +59,9 @@ class DropsBonusComponent implements DeathComponent {
 	}
 
 	public function onDeath() {
-		if (Math.random() < prob) {
+		var newProb = prob == 1 ? prob : prob / Math.log(game.getCount("Bonus") + 1);
+
+		if (Math.random() < newProb) {
 			var num = Std.random(bonuses.length);
 			game.addEntity(bonuses[num]((holder) -> {
 				holder.position = pos.copy();

@@ -28,7 +28,7 @@
 		},
 		"countedOnScreen": {
 			"count": 4,
-			"type": "Asteroid"
+			"group": "Asteroid"
 		},
 		"targetComponent": {
 			"group": "Enemy"
