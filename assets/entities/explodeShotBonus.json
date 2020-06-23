@@ -18,6 +18,10 @@
 		"countedOnScreen": {
 			"group": "Bonus",
 			"count": 1
+		},
+		"makeSound": {
+			"soundSrc": "assets/sound/powerup.wav",
+			"on": "Hit"
 		}
 	}
 }

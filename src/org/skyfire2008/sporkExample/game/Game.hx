@@ -42,9 +42,12 @@ class Game {
 	private var createMediumAsteroid: EntityFactoryMethod;
 	private var createSmallAsteroid: EntityFactoryMethod;
 	private var createUfo: EntityFactoryMethod;
+	private var createTurret: EntityFactoryMethod;
 	private var lvl: Int;
 	private var entityCount: Map<String, Int>;
 	private var currentUfoTime: Float;
+
+	private var availableTurrets: Int;
 
 	public var playerHpCallback(default, null): (value: Float) -> Void;
 	private var waveCallback: (value: Int) -> Void;
@@ -73,9 +76,12 @@ class Game {
 		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
 		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
 		createUfo = factoryFuncs.get("ufo.json");
+		createTurret = factoryFuncs.get("turret.json");
 
 		this.playerHpCallback = playerHpCallback;
 		this.waveCallback = waveCallback;
+
+		this.availableTurrets = 0;
 	}
 
 	private static inline function getUfoNum(lvl: Int) {
@@ -94,22 +100,37 @@ class Game {
 		return Std.int(4 + lvl / 2);
 	}
 
-	public function addCount(group: String, count: Int){
-		if(entityCount.has(group)){
-			entityCount.set(group, entityCount.get(group)+count);
-		}else{
+	public function placeTurret(pos: Point) {
+		if (availableTurrets > 0) {
+			var ent=createTurret((holder) -> {
+				holder.position = pos.copy();
+				holder.rotation=new Wrapper<Float>(0);
+			});
+			this.addEntity(ent);
+			availableTurrets--;
+		}
+	}
+
+	public function pickUpTurret() {
+		availableTurrets++;
+	}
+
+	public function addCount(group: String, count: Int) {
+		if (entityCount.has(group)) {
+			entityCount.set(group, entityCount.get(group) + count);
+		} else {
 			entityCount.set(group, count);
 		}
 	}
 
-	public function removeCount(group: String, count: Int){
-		entityCount.set(group, entityCount.get(group)-count);
+	public function removeCount(group: String, count: Int) {
+		entityCount.set(group, entityCount.get(group) - count);
 	}
 
-	public function getCount(group: String): Int{
-		if(entityCount.has(group)){
+	public function getCount(group: String): Int {
+		if (entityCount.has(group)) {
 			return entityCount.get(group);
-		}else{
+		} else {
 			return 0;
 		}
 	}

@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample.game.components;
 
+import howler.Howl;
+
 import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.JsonLoader.EntityFactoryMethod;
@@ -9,11 +11,62 @@ import spork.core.Wrapper;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
+import org.skyfire2008.sporkExample.game.components.Hit;
 
 interface DeathComponent extends Component {
 	@callback
 	function onDeath(): Void;
+}
+
+enum On {
+	Death;
+	Hit;
+}
+
+class MakeSound implements DeathComponent implements HitComponent {
+	private var owner: Entity;
+	private var sound: Howl;
+	private var soundSrc: String;
+	private var on: On;
+
+	public static function fromJson(json: Dynamic): Component {
+		var on: On;
+		switch (json.on) {
+			case "Death":
+				on = Death;
+			case "Hit":
+				on = Hit;
+			default:
+				throw 'Unknown event trigger ${json.on} for MakeSound component';
+		}
+
+		var sound = new Howl({src: json.soundSrc});
+
+		return new MakeSound(sound, on);
+	}
+
+	public function new(sound: Howl, on: On) {
+		this.sound = sound;
+		this.on = on;
+	}
+
+	public function attach(owner: Entity){
+		this.owner=owner;
+		switch(on){
+			case Death: owner.deathComponents.push(this);
+			case Hit: owner.hitComponents.push(this);
+		}
+	}
+
+	public function onDeath() {
+		sound.play();
+	}
+
+	public function onHit(collider: Collider) {
+		sound.play();
+	}
 }
 
 class CountedOnScreen implements DeathComponent implements InitComponent {
@@ -59,7 +112,7 @@ class DropsBonusComponent implements DeathComponent {
 	}
 
 	public function onDeath() {
-		var newProb = (prob == 1) ? prob : prob / Math.log(game.getCount("Bonus") + 1);
+		var newProb = (prob == 1) ? prob : prob / (Math.log(game.getCount("Bonus") + 1) / Math.log(2));
 
 		if (Math.random() < newProb) {
 			var num = Std.random(bonuses.length);

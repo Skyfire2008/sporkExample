@@ -22,7 +22,9 @@ class GetsBonuses implements BonusComponent implements InitComponent implements 
 	private var pos: Point;
 	private var radius: Float;
 
+	//TODO: put hp here?
 	private var bonuses: Array<Bonus>;
+	private var turretNum: Int;
 
 	public function new() {
 		bonuses = [];

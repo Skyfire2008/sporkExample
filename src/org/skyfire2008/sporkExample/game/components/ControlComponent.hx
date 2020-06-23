@@ -23,6 +23,7 @@ interface KBComponent extends Component {
 }
 
 class ControlComponent implements KBComponent implements UpdateComponent implements InitComponent {
+	private var game: Game;
 	private var keys: StringMap<Bool>;
 	private var actions: StringMap<(time: Float) -> Void>;
 	private var a: Float;
@@ -42,13 +43,14 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var leftKey: String;
 	private var fireKey: String;
 	private var brakeKey: String;
+	private var turretKey: String;
 	private var angBrake: Float;
 	private var angMult: Float = 0;
 
 	private var soundSrc: String;
 
 	public function new(a: Float, angA: Float, maxAngVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String,
-			fireKey: String, brakeKey: String, soundSrc: String) {
+			fireKey: String, brakeKey: String, turretKey:String, soundSrc: String) {
 		this.a = a;
 		this.angA = angA;
 		this.maxAngVel = maxAngVel;
@@ -59,6 +61,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		this.leftKey = leftKey;
 		this.fireKey = fireKey;
 		this.brakeKey = brakeKey;
+		this.turretKey=turretKey;
 		this.keys = new StringMap<Bool>();
 
 		// assign actions
@@ -91,6 +94,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 
 	public function onInit(game: Game) {
 		wep.init();
+		this.game=game;
 		game.addControllableEntity(this.owner);
 	}
 
@@ -106,6 +110,8 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		keys.remove(code);
 		if (code == fireKey || code=="ShiftRight") {
 			wep.stopSpawn();
+		}else if(code==turretKey){
+			game.placeTurret(pos);
 		}
 	}
 

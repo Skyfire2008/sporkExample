@@ -3,17 +3,17 @@
 	"components": {
 		"moveComponent": {},
 		"renderComponent": {
-			"shapeRef": "tripleShot.json"
+			"shapeRef": "turretBonus.json"
 		},
 		"timedComponent": {
-			"time": 30
+			"time": 45
 		},
 		"collisionComponent": {
 			"side": "Bonus",
 			"radius": 15
 		},
 		"applyBonus": {
-			"bonusName": "tripleShot"
+			"bonusName": "turret"
 		},
 		"countedOnScreen": {
 			"group": "Bonus",

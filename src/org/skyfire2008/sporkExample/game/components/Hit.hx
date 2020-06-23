@@ -1,5 +1,6 @@
 package org.skyfire2008.sporkExample.game.components;
 
+import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
 import org.skyfire2008.sporkExample.game.Bonus.HpBonus;
 
 import haxe.ds.StringMap;
@@ -130,6 +131,9 @@ class ApplyBonus implements HitComponent {
 		},
 		"hpBonus" => () -> {
 			return new HpBonus();
+		},
+		"turret"=>()->{
+			return new TurretBonus();
 		}
 	];
 	private var func: () -> Bonus;

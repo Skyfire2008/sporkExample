@@ -17,4 +17,5 @@ class MyHolder {
 	public var colliderRadius: Float;
 	public var colorMult: Wrapper<Float>;
 	public var scale: Wrapper<Float>;
+	public var turretNum: Wrapper<Int>;
 }

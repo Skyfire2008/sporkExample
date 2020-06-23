@@ -6,10 +6,7 @@ import spork.core.PropertyHolder;
 import spork.core.Component;
 import spork.core.Entity;
 
-import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
-import org.skyfire2008.sporkExample.game.components.Init;
-import org.skyfire2008.sporkExample.game.components.Update;
 
 @singular
 interface PropsComponent extends Component {

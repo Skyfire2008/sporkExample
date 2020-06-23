@@ -24,6 +24,7 @@ import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.util.Scripts;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
 import org.skyfire2008.sporkExample.game.components.Death.CountedOnScreen;
@@ -140,9 +141,10 @@ class Main {
 						entFactories.get("doubleFirerateBonus.json"),
 						entFactories.get("explodeShotBonus.json"),
 						entFactories.get("tripleShotBonus.json"),
-						entFactories.get("turret.json"),
+						entFactories.get("turretBonus.json"),
 						entFactories.get("hpBonus.json")
 					]);
+					TurretBonus.setup(game);
 
 					// add bg particles
 					for (i in 0...100) {

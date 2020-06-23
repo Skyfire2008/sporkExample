@@ -18,6 +18,7 @@
 			"leftKey": "KeyA",
 			"rightKey": "KeyD",
 			"brakeKey": "KeyS",
+			"turretKey": "KeyF",
 			"fireKey": "Space",
 			"soundSrc": "assets/sound/playerShoot5.wav"
 		},
@@ -35,6 +36,10 @@
 		},
 		"exposePlayerWeapon": {},
 		"getsBonuses": {},
-		"displayHp": {}
+		"displayHp": {},
+		"makeSound": {
+			"soundSrc": "assets/sound/explosion.wav",
+			"on": "Hit"
+		}
 	}
 }

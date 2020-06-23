@@ -24,7 +24,7 @@
 			"angleRand": 1
 		},
 		"dropsBonusComponent": {
-			"prob": 0.3
+			"prob": 0.25
 		},
 		"countedOnScreen": {
 			"count": 4,
@@ -32,6 +32,10 @@
 		},
 		"targetComponent": {
 			"group": "Enemy"
+		},
+		"makeSound": {
+			"soundSrc": "assets/sound/explosion2.wav",
+			"on": "Death"
 		}
 	}
 }
