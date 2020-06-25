@@ -115,7 +115,7 @@ class HpComponent implements IsAliveComponent implements DamageComponent {
 		owner.damage(health.hp);
 	}
 
-	public function assignProps(holder: PropertyHolder) {
+	public function createProps(holder: PropertyHolder) {
 		holder.health = health;
 	}
 }

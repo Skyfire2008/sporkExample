@@ -1,8 +1,14 @@
 package org.skyfire2008.sporkExample.util;
 
 #if macro
+import spork.core.EntityDef;
+import spork.core.EntityDef.ComponentDef;
+
+import haxe.DynamicAccess;
 import haxe.Json;
 import haxe.io.Path;
+
+import StringBuf;
 
 import sys.io.File;
 import sys.FileSystem;
@@ -15,6 +21,33 @@ typedef DirContent = {
 
 #if macro
 class Scripts {
+	// used to convert entites' json files to new format
+	public static function changeEntities(src: String): Void {
+		for (file in FileSystem.readDirectory(src)) {
+			var path = Path.join([src, file]);
+			var readFp = File.read(path, false);
+
+			var buf: StringBuf = new StringBuf();
+			while (!readFp.eof()) {
+				buf.add(readFp.readLine());
+			}
+			readFp.close();
+
+			var json: Dynamic = Json.parse(buf.toString());
+			var components: DynamicAccess<Dynamic> = json.components;
+			var newComponents: Array<ComponentDef> = [];
+			for (compoName in components.keys()) {
+				newComponents.push({name: compoName, params: components.get(compoName)});
+			}
+			json.components = newComponents;
+
+			var writeFp = File.write(path, false);
+			writeFp.writeString(Json.stringify(json, null, "	"));
+			writeFp.flush();
+			writeFp.close();
+		}
+	}
+
 	// I use initialization macros instead of writing scripts
 	public static function copyDir(src: String, dst: String): Void {
 		for (file in FileSystem.readDirectory(src)) {

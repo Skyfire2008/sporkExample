@@ -1,16 +1,25 @@
 {
 	"properties": {},
-	"components": {
-		"renderComponent": {
-			"shapeRef": "particle.json"
+	"components": [
+		{
+			"name": "alwaysAlive",
+			"params": {}
 		},
-		"bgParticle": {
-			"focalLength": 200,
-			"minVel": 1,
-			"maxVel": 4,
-			"startZ": 1000,
-			"trailLength": 5
+		{
+			"name": "bgParticle",
+			"params": {
+				"trailLength": 5,
+				"maxVel": 4,
+				"minVel": 1,
+				"startZ": 1000,
+				"focalLength": 200
+			}
 		},
-		"alwaysAlive": {}
-	}
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "particle.json"
+			}
+		}
+	]
 }

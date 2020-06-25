@@ -1,45 +1,81 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"renderComponent": {
-			"shapeRef": "ship.json"
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"hpComponent": {
-			"hp": 10
+		{
+			"name": "tempInvulnOnHit",
+			"params": {
+				"invulnTime": 2,
+				"blinkTime": 0.15
+			}
 		},
-		"controlComponent": {
-			"a": 250,
-			"angA": 15,
-			"maxAngVel": 5,
-			"angBrake": 0.7,
-			"brakeMult": 0.93,
-			"fwKey": "KeyW",
-			"leftKey": "KeyA",
-			"rightKey": "KeyD",
-			"brakeKey": "KeyS",
-			"turretKey": "KeyF",
-			"fireKey": "Space",
-			"soundSrc": "assets/sound/playerShoot5.wav"
+		{
+			"name": "targetComponent",
+			"params": {
+				"group": "Player"
+			}
 		},
-		"collisionComponent": {
-			"side": "Player",
-			"radius": 15
+		{
+			"name": "displayHp",
+			"params": {}
 		},
-		"tempInvulnOnHit": {
-			"invulnTime": 2,
-			"blinkTime": 0.15
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 10
+			}
 		},
-		"damagedOnHit": {},
-		"targetComponent": {
-			"group": "Player"
+		{
+			"name": "getsBonuses",
+			"params": {}
 		},
-		"exposePlayerWeapon": {},
-		"getsBonuses": {},
-		"displayHp": {},
-		"makeSound": {
-			"soundSrc": "assets/sound/explosion.wav",
-			"on": "Hit"
+		{
+			"name": "controlComponent",
+			"params": {
+				"turretKey": "KeyF",
+				"maxAngVel": 5,
+				"a": 250,
+				"leftKey": "KeyA",
+				"brakeKey": "KeyS",
+				"fireKey": "Space",
+				"brakeMult": 0.93,
+				"fwKey": "KeyW",
+				"angBrake": 0.7,
+				"soundSrc": "assets/sound/playerShoot5.wav",
+				"rightKey": "KeyD",
+				"angA": 15
+			}
+		},
+		{
+			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "ship.json"
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Player",
+				"radius": 15
+			}
+		},
+		{
+			"name": "exposePlayerWeapon",
+			"params": {}
+		},
+		{
+			"name": "makeSound",
+			"params": {
+				"on": "Hit",
+				"soundSrc": "assets/sound/explosion.wav"
+			}
 		}
-	}
+	]
 }

@@ -1,43 +1,70 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"animComponent": {
-			"shapeRefs": [
-				"ufo1.json",
-				"ufo2.json"
-			],
-			"frameTime": 0.25
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"hpComponent": {
-			"hp": 3
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "Ufo"
+			}
 		},
-		"collisionComponent": {
-			"side": "Enemy",
-			"radius": 19
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 3
+			}
 		},
-		"damagedOnHit": {},
-		"shootsAtComponent": {
-			"group": "Player",
-			"wep": {
-				"entityName": "enemyBullet.json",
-				"spawnTime": 3,
-				"spawnVel": 300,
-				"spawnNum": 1,
-				"soundSrc": "assets/sound/enemyShoot.wav"
-			},
-			"aimsAtClosest": false
+		{
+			"name": "damagedOnHit",
+			"params": {}
 		},
-		"dropsBonusComponent": {
-			"prob": 1.0
+		{
+			"name": "dropsBonusComponent",
+			"params": {
+				"prob": 1
+			}
 		},
-		"countedOnScreen": {
-			"count": 1,
-			"group": "Ufo"
+		{
+			"name": "sineMovement",
+			"params": {
+				"amplitude": 120,
+				"length": 1280
+			}
 		},
-		"sineMovement": {
-			"amplitude": 120,
-			"length": 1280
+		{
+			"name": "shootsAtComponent",
+			"params": {
+				"wep": {
+					"entityName": "enemyBullet.json",
+					"spawnTime": 3,
+					"spawnNum": 1,
+					"spawnVel": 300,
+					"soundSrc": "assets/sound/enemyShoot.wav"
+				},
+				"group": "Player",
+				"aimsAtClosest": false
+			}
+		},
+		{
+			"name": "animComponent",
+			"params": {
+				"frameTime": 0.25,
+				"shapeRefs": [
+					"ufo1.json",
+					"ufo2.json"
+				]
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 19
+			}
 		}
-	}
+	]
 }

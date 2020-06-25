@@ -1,27 +1,48 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"renderComponent": {
-			"shapeRef": "explodeShot.json"
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"timedComponent": {
-			"time": 30
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "Bonus"
+			}
 		},
-		"collisionComponent": {
-			"side": "Bonus",
-			"radius": 15
+		{
+			"name": "applyBonus",
+			"params": {
+				"bonusName": "explodeShot"
+			}
 		},
-		"applyBonus": {
-			"bonusName": "explodeShot"
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 30
+			}
 		},
-		"countedOnScreen": {
-			"group": "Bonus",
-			"count": 1
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "explodeShot.json"
+			}
 		},
-		"makeSound": {
-			"soundSrc": "assets/sound/powerup.wav",
-			"on": "Hit"
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Bonus",
+				"radius": 15
+			}
+		},
+		{
+			"name": "makeSound",
+			"params": {
+				"on": "Hit",
+				"soundSrc": "assets/sound/powerup.wav"
+			}
 		}
-	}
+	]
 }

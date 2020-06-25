@@ -1,36 +1,60 @@
 {
 	"properties": {},
-	"components": {
-		"renderComponent": {
-			"shapeRef": "turret.json"
+	"components": [
+		{
+			"name": "tempInvulnOnHit",
+			"params": {
+				"invulnTime": 2,
+				"blinkTime": 0.15
+			}
 		},
-		"hpComponent": {
-			"hp": 3
+		{
+			"name": "targetComponent",
+			"params": {
+				"group": "Player"
+			}
 		},
-		"collisionComponent": {
-			"side": "Player",
-			"radius": 12
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 3
+			}
 		},
-		"damagedOnHit": {},
-		"targetComponent": {
-			"group": "Player"
+		{
+			"name": "getsBonuses",
+			"params": {}
 		},
-		"shootsAtComponent": {
-			"rotates": true,
-			"group": "Enemy",
-			"wep": {
-				"entityName": "playerBullet.json",
-				"spawnTime": 1.5,
-				"spawnVel": 600,
-				"spawnNum": 1,
-				"soundSrc": "assets/sound/playerShoot4.wav"
-			},
-			"aimsAtClosest": true
+		{
+			"name": "damagedOnHit",
+			"params": {}
 		},
-		"getsBonuses": {},
-		"tempInvulnOnHit": {
-			"invulnTime": 2,
-			"blinkTime": 0.15
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "turret.json"
+			}
+		},
+		{
+			"name": "shootsAtComponent",
+			"params": {
+				"rotates": true,
+				"wep": {
+					"entityName": "playerBullet.json",
+					"spawnTime": 1.5,
+					"spawnNum": 1,
+					"spawnVel": 600,
+					"soundSrc": "assets/sound/playerShoot4.wav"
+				},
+				"group": "Enemy",
+				"aimsAtClosest": true
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Player",
+				"radius": 12
+			}
 		}
-	}
+	]
 }

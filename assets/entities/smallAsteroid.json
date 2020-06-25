@@ -1,27 +1,51 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"renderComponent": {
-			"shapeRef": "smallAsteroid.json"
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"hpComponent": {
-			"hp": 1
+		{
+			"name": "targetComponent",
+			"params": {
+				"group": "Enemy"
+			}
 		},
-		"collisionComponent": {
-			"side": "Enemy",
-			"radius": 16
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "Asteroid"
+			}
 		},
-		"damagedOnHit": {},
-		"dropsBonusComponent": {
-			"prob": 0.06
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 1
+			}
 		},
-		"countedOnScreen": {
-			"count": 1,
-			"group": "Asteroid"
+		{
+			"name": "damagedOnHit",
+			"params": {}
 		},
-		"targetComponent": {
-			"group": "Enemy"
+		{
+			"name": "dropsBonusComponent",
+			"params": {
+				"prob": 0.06
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "smallAsteroid.json"
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 16
+			}
 		}
-	}
+	]
 }

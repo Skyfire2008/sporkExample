@@ -1,27 +1,48 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"renderComponent": {
-			"shapeRef": "turretBonus.json"
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"timedComponent": {
-			"time": 45
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "Bonus"
+			}
 		},
-		"collisionComponent": {
-			"side": "Bonus",
-			"radius": 15
+		{
+			"name": "applyBonus",
+			"params": {
+				"bonusName": "turret"
+			}
 		},
-		"applyBonus": {
-			"bonusName": "turret"
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 45
+			}
 		},
-		"countedOnScreen": {
-			"group": "Bonus",
-			"count": 1
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "turretBonus.json"
+			}
 		},
-		"makeSound": {
-			"soundSrc": "assets/sound/powerup.wav",
-			"on": "Hit"
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Bonus",
+				"radius": 15
+			}
+		},
+		{
+			"name": "makeSound",
+			"params": {
+				"on": "Hit",
+				"soundSrc": "assets/sound/powerup.wav"
+			}
 		}
-	}
+	]
 }

@@ -6,6 +6,13 @@
 			"params": {}
 		},
 		{
+			"name": "tempInvulnOnHit",
+			"params": {
+				"invulnTime": 1,
+				"blinkTime": 0.15
+			}
+		},
+		{
 			"name": "targetComponent",
 			"params": {
 				"group": "Enemy"
@@ -14,14 +21,14 @@
 		{
 			"name": "countedOnScreen",
 			"params": {
-				"count": 4,
+				"count": 8,
 				"group": "Asteroid"
 			}
 		},
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 5
+				"hp": 10
 			}
 		},
 		{
@@ -44,13 +51,13 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 0.25
+				"prob": 0.3
 			}
 		},
 		{
 			"name": "renderComponent",
 			"params": {
-				"shapeRef": "mediumAsteroid.json"
+				"shapeRef": "hardAsteroid.json"
 			}
 		},
 		{

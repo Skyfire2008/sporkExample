@@ -1,17 +1,32 @@
 {
 	"properties": {},
-	"components": {
-		"moveComponent": {},
-		"renderComponent": {
-			"shapeRef": "bullet.json"
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
 		},
-		"timedComponent": {
-			"time": 2
+		{
+			"name": "diesOnHit",
+			"params": {}
 		},
-		"collisionComponent": {
-			"side": "Player",
-			"radius": 5
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 2
+			}
 		},
-		"diesOnHit": {}
-	}
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "bullet.json"
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Player",
+				"radius": 5
+			}
+		}
+	]
 }
