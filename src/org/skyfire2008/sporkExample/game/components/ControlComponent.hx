@@ -50,7 +50,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var soundSrc: String;
 
 	public function new(a: Float, angA: Float, maxAngVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String,
-			fireKey: String, brakeKey: String, turretKey:String, soundSrc: String) {
+			fireKey: String, brakeKey: String, turretKey: String, soundSrc: String) {
 		this.a = a;
 		this.angA = angA;
 		this.maxAngVel = maxAngVel;
@@ -61,7 +61,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		this.leftKey = leftKey;
 		this.fireKey = fireKey;
 		this.brakeKey = brakeKey;
-		this.turretKey=turretKey;
+		this.turretKey = turretKey;
 		this.keys = new StringMap<Bool>();
 
 		// assign actions
@@ -94,23 +94,23 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 
 	public function onInit(game: Game) {
 		wep.init();
-		this.game=game;
+		this.game = game;
 		game.addControllableEntity(this.owner);
 	}
 
-	//TODO: "ShiftRight" is a hack, remove later
+	// TODO: "ShiftRight" is a hack, remove later
 	public function onKeyDown(code: String) {
 		keys.set(code, true);
-		if (code == fireKey || code=="ShiftRight") {
+		if (code == fireKey || code == "ShiftRight") {
 			wep.startSpawn();
 		}
 	}
 
 	public function onKeyUp(code: String) {
 		keys.remove(code);
-		if (code == fireKey || code=="ShiftRight") {
+		if (code == fireKey || code == "ShiftRight") {
 			wep.stopSpawn();
-		}else if(code==turretKey){
+		} else if (code == turretKey) {
 			game.placeTurret(pos);
 		}
 	}

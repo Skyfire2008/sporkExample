@@ -105,6 +105,9 @@ class HpComponent implements IsAliveComponent implements DamageComponent {
 
 	public function heal(dmg: Int) {
 		health.hp += dmg;
+		if(health.hp>health.maxHp){
+			health.hp=health.maxHp;
+		}
 	}
 
 	public function isAlive(): Bool {

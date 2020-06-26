@@ -19,10 +19,6 @@
 			}
 		},
 		{
-			"name": "displayHp",
-			"params": {}
-		},
-		{
 			"name": "hpComponent",
 			"params": {
 				"hp": 10
@@ -36,12 +32,12 @@
 			"name": "controlComponent",
 			"params": {
 				"turretKey": "KeyF",
-				"maxAngVel": 5,
-				"a": 250,
+				"maxAngVel": 6,
+				"a": 300,
 				"leftKey": "KeyA",
 				"brakeKey": "KeyS",
 				"fireKey": "Space",
-				"brakeMult": 0.93,
+				"brakeMult": 0.91,
 				"fwKey": "KeyW",
 				"angBrake": 0.7,
 				"soundSrc": "assets/sound/playerShoot5.wav",
@@ -51,6 +47,10 @@
 		},
 		{
 			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "displayHp",
 			"params": {}
 		},
 		{

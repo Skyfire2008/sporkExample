@@ -28,7 +28,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 10
+				"hp": 5
 			}
 		},
 		{
@@ -43,9 +43,22 @@
 				"angleRand": 1,
 				"velRand": 50,
 				"spawnNum": 3,
-				"isVelRelative": true,
-				"spawnVel": 100,
+				"isVelRelative": false,
+				"spawnVel": 200,
 				"spreadAngle": 2.1
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "enemyBullet.json",
+				"spawnTime": 1,
+				"angleRand": 0,
+				"velRand": 0,
+				"spawnNum": 6,
+				"isVelRelative": true,
+				"spawnVel": 200,
+				"spreadAngle": 1.047
 			}
 		},
 		{

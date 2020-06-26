@@ -112,7 +112,7 @@ class DropsBonusComponent implements DeathComponent {
 	}
 
 	public function onDeath() {
-		var newProb = (prob == 1) ? prob : prob / (Math.log(game.getCount("Bonus") + 1) / Math.log(2));
+		var newProb = prob / (Math.log(game.getCount("Bonus") + 1) / Math.log(2));
 
 		if (Math.random() < newProb) {
 			var num = Std.random(bonuses.length);

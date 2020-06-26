@@ -37,6 +37,7 @@ class Main {
 
 	private static var playerHpDisplay: Element;
 	private static var waveDisplay: Element;
+	private static var turretDisplay: Element;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
@@ -78,6 +79,7 @@ class Main {
 		// get HTML elements
 		playerHpDisplay = document.getElementById("playerHpDisplay");
 		waveDisplay = document.getElementById("waveDisplay");
+		turretDisplay = document.getElementById("turretDisplay");
 
 		gl = cast(document.getElementById("mainCanvas"), CanvasElement).getContextWebGL();
 		if (gl == null) {
@@ -135,6 +137,8 @@ class Main {
 						playerHpDisplay.innerText = "" + value;
 					}, (value) -> {
 							waveDisplay.innerText = "" + value;
+						}, (value) -> {
+							turretDisplay.innerText = "" + value;
 						});
 					Spawner.setup(game, entFactories);
 					DropsBonusComponent.setup(game, [
