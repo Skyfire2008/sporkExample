@@ -31,18 +31,19 @@
 		{
 			"name": "controlComponent",
 			"params": {
-				"turretKey": "KeyF",
+				"angA": 15,
 				"maxAngVel": 6,
 				"a": 300,
+				"maxVel": 3840,
+				"brakeMult": 0.91,
+				"angBrake": 0.7,
+				"fwKey": "KeyW",
 				"leftKey": "KeyA",
+				"rightKey": "KeyD",
 				"brakeKey": "KeyS",
 				"fireKey": "Space",
-				"brakeMult": 0.91,
-				"fwKey": "KeyW",
-				"angBrake": 0.7,
-				"soundSrc": "assets/sound/playerShoot5.wav",
-				"rightKey": "KeyD",
-				"angA": 15
+				"turretKey": "KeyF",
+				"soundSrc": "assets/sound/playerShoot5.wav"
 			}
 		},
 		{

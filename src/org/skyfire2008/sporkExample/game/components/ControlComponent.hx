@@ -30,6 +30,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var angA: Float;
 	private var maxAngVel: Float;
 	private var brakeMult: Float;
+	private var maxVel: Float;
 
 	private var wep: Spawner;
 	private var owner: Entity;
@@ -49,8 +50,8 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 
 	private var soundSrc: String;
 
-	public function new(a: Float, angA: Float, maxAngVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String, leftKey: String,
-			fireKey: String, brakeKey: String, turretKey: String, soundSrc: String) {
+	public function new(a: Float, angA: Float, maxAngVel: Float, maxVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String,
+			leftKey: String, fireKey: String, brakeKey: String, turretKey: String, soundSrc: String) {
 		this.a = a;
 		this.angA = angA;
 		this.maxAngVel = maxAngVel;
@@ -62,12 +63,18 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		this.fireKey = fireKey;
 		this.brakeKey = brakeKey;
 		this.turretKey = turretKey;
+		this.maxVel = maxVel;
 		this.keys = new StringMap<Bool>();
 
 		// assign actions
 		actions = new StringMap<(time: Float) -> Void>();
 		actions.set(fwKey, (time: Float) -> {
-			vel.add(Point.fromPolar(rotation.value, a * time));
+			var aVec = Point.fromPolar(rotation.value, a * time);
+			var dot = Point.dot(vel, aVec);
+			if (dot > 0) {
+				aVec.mult(1.0 - (vel.length / maxVel));
+			}
+			vel.add(aVec);
 		});
 		actions.set(rightKey, (time: Float) -> {
 			angMult += 1;
@@ -85,7 +92,7 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 			spawnVel: 400,
 			spawnNum: 1,
 			spreadAngle: 5.0 * Math.PI / 180.0,
-			isVelRelative: false,
+			isVelRelative: true,
 			soundSrc: soundSrc
 		});
 
