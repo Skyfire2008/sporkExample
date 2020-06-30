@@ -3,39 +3,36 @@ package org.skyfire2008.sporkExample.util;
 #if macro
 import spork.core.EntityDef;
 import spork.core.EntityDef.ComponentDef;
-
 import haxe.DynamicAccess;
 import haxe.Json;
 import haxe.io.Path;
-
 import StringBuf;
-
 import sys.io.File;
 import sys.FileSystem;
 #end
 
 typedef DirContent = {
-	path: String,
-	kids: Array<DirContent>
+	path:String,
+	kids:Array<DirContent>
 };
 
 #if macro
 class Scripts {
 	// used to convert entites' json files to new format
-	public static function changeEntities(src: String): Void {
+	public static function changeEntities(src:String):Void {
 		for (file in FileSystem.readDirectory(src)) {
 			var path = Path.join([src, file]);
 			var readFp = File.read(path, false);
 
-			var buf: StringBuf = new StringBuf();
+			var buf:StringBuf = new StringBuf();
 			while (!readFp.eof()) {
 				buf.add(readFp.readLine());
 			}
 			readFp.close();
 
-			var json: Dynamic = Json.parse(buf.toString());
-			var components: DynamicAccess<Dynamic> = json.components;
-			var newComponents: Array<ComponentDef> = [];
+			var json:Dynamic = Json.parse(buf.toString());
+			var components:DynamicAccess<Dynamic> = json.components;
+			var newComponents:Array<ComponentDef> = [];
 			for (compoName in components.keys()) {
 				newComponents.push({name: compoName, params: components.get(compoName)});
 			}
@@ -49,16 +46,16 @@ class Scripts {
 	}
 
 	// I use initialization macros instead of writing scripts
-	public static function copyDir(src: String, dst: String): Void {
+	public static function copyDir(src:String, dst:String):Void {
+		if (!FileSystem.exists(dst)) {
+			FileSystem.createDirectory(dst);
+		}
+
 		for (file in FileSystem.readDirectory(src)) {
 			var curSrcPath = Path.join([src, file]);
 			var curDstPath = Path.join([dst, file]);
 
 			if (FileSystem.isDirectory(curSrcPath)) {
-				if (!FileSystem.exists(curDstPath)) {
-					FileSystem.createDirectory(curDstPath);
-				}
-
 				copyDir(curSrcPath, curDstPath);
 			} else {
 				File.copy(curSrcPath, curDstPath);
@@ -66,8 +63,8 @@ class Scripts {
 		}
 	}
 
-	private static function getContent(parent: String, path: String): DirContent {
-		var result: DirContent = {
+	private static function getContent(parent:String, path:String):DirContent {
+		var result:DirContent = {
 			path: path,
 			kids: []
 		};
@@ -84,8 +81,8 @@ class Scripts {
 		return result;
 	}
 
-	public static function createContentsJson(path: String): Void {
-		var contents: Array<DirContent> = [];
+	public static function createContentsJson(path:String):Void {
+		var contents:Array<DirContent> = [];
 
 		for (file in FileSystem.readDirectory(path)) {
 			if (FileSystem.isDirectory(Path.join([path, file]))) {
