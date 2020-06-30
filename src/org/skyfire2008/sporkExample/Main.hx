@@ -38,6 +38,8 @@ class Main {
 	private static var playerHpDisplay: Element;
 	private static var waveDisplay: Element;
 	private static var turretDisplay: Element;
+	private static var preloader: Element;
+	private static var content: Element;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
@@ -80,6 +82,8 @@ class Main {
 		playerHpDisplay = document.getElementById("playerHpDisplay");
 		waveDisplay = document.getElementById("waveDisplay");
 		turretDisplay = document.getElementById("turretDisplay");
+		content = document.getElementById("content");
+		preloader = document.getElementById("preloader");
 
 		gl = cast(document.getElementById("mainCanvas"), CanvasElement).getContextWebGL();
 		if (gl == null) {
@@ -169,6 +173,10 @@ class Main {
 					Browser.window.addEventListener("keyup", (e: KeyboardEvent) -> {
 						game.onKeyUp(e.code);
 					});
+
+					// hide preloader and show content
+					preloader.style.display = "none";
+					content.style.display = "inline";
 				});
 
 				renderer.start();
