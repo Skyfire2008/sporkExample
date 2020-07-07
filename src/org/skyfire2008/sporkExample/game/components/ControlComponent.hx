@@ -10,19 +10,29 @@ import spork.core.Wrapper;
 import howler.Howl;
 
 import org.skyfire2008.sporkExample.geom.Point;
+import org.skyfire2008.sporkExample.game.Controller;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
+import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 
-interface KBComponent extends Component {
-	@callback
-	function onKeyDown(code: String): Void;
+interface KBComponent {
+	function forward(time: Float): Void;
 
-	@callback
-	function onKeyUp(code: String): Void;
+	function brake(time: Float): Void;
+
+	function left(time: Float): Void;
+
+	function right(time: Float): Void;
+
+	function startFire(): Void;
+
+	function stopFire(): Void;
+
+	function deployTurret(): Void;
 }
 
-class ControlComponent implements KBComponent implements UpdateComponent implements InitComponent {
+class ControlComponent implements UpdateComponent implements InitComponent implements DeathComponent implements KBComponent {
 	private var game: Game;
 	private var keys: StringMap<Bool>;
 	private var actions: StringMap<(time: Float) -> Void>;
@@ -39,53 +49,20 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 	private var rotation: Wrapper<Float>;
 	private var angVel: Wrapper<Float>;
 
-	private var fwKey: String;
-	private var rightKey: String;
-	private var leftKey: String;
-	private var fireKey: String;
-	private var brakeKey: String;
-	private var turretKey: String;
 	private var angBrake: Float;
 	private var angMult: Float = 0;
 
 	private var soundSrc: String;
 
-	public function new(a: Float, angA: Float, maxAngVel: Float, maxVel: Float, angBrake: Float, brakeMult: Float, fwKey: String, rightKey: String,
-			leftKey: String, fireKey: String, brakeKey: String, turretKey: String, soundSrc: String) {
+	public function new(a: Float, angA: Float, maxAngVel: Float, maxVel: Float, angBrake: Float, brakeMult: Float, soundSrc: String) {
 		this.a = a;
 		this.angA = angA;
 		this.maxAngVel = maxAngVel;
 		this.angBrake = angBrake;
 		this.brakeMult = brakeMult;
-		this.fwKey = fwKey;
-		this.rightKey = rightKey;
-		this.leftKey = leftKey;
-		this.fireKey = fireKey;
-		this.brakeKey = brakeKey;
-		this.turretKey = turretKey;
 		this.maxVel = maxVel;
-		this.keys = new StringMap<Bool>();
 
 		// assign actions
-		actions = new StringMap<(time: Float) -> Void>();
-		actions.set(fwKey, (time: Float) -> {
-			var aVec = Point.fromPolar(rotation.value, a * time);
-			var dot = Point.dot(vel, aVec);
-			if (dot > 0) {
-				aVec.mult(1.0 - (vel.length / maxVel));
-			}
-			vel.add(aVec);
-		});
-		actions.set(rightKey, (time: Float) -> {
-			angMult += 1;
-		});
-		actions.set(leftKey, (time: Float) -> {
-			angMult -= 1;
-		});
-		actions.set(fireKey, (time: Float) -> {});
-		actions.set(brakeKey, (time: Float) -> {
-			vel.mult(Math.pow(brakeMult, 60 * time));
-		});
 		wep = new Spawner({
 			entityName: "playerBullet.json",
 			spawnTime: 0.5,
@@ -99,38 +76,51 @@ class ControlComponent implements KBComponent implements UpdateComponent impleme
 		this.soundSrc = soundSrc;
 	}
 
+	public function forward(time: Float) {
+		var aVec = Point.fromPolar(rotation.value, a * time);
+		var dot = Point.dot(vel, aVec);
+		if (dot > 0) {
+			aVec.mult(1.0 - (vel.length / maxVel));
+		}
+		vel.add(aVec);
+	}
+
+	public function brake(time: Float) {
+		vel.mult(Math.pow(brakeMult, 60 * time));
+	}
+
+	public function right(time: Float) {
+		angMult += 1;
+	}
+
+	public function left(time: Float) {
+		angMult -= 1;
+	}
+
+	public function startFire() {
+		wep.startSpawn();
+	}
+
+	public function stopFire() {
+		wep.stopSpawn();
+	}
+
+	public function deployTurret() {
+		game.placeTurret(pos);
+	}
+
 	public function onInit(game: Game) {
 		wep.init();
 		this.game = game;
-		game.addControllableEntity(this.owner);
+		Controller.getInstance().addComponent(this);
 	}
 
-	// TODO: "ShiftRight" is a hack, remove later
-	public function onKeyDown(code: String) {
-		keys.set(code, true);
-		if (code == fireKey || code == "ShiftRight") {
-			wep.startSpawn();
-		}
-	}
-
-	public function onKeyUp(code: String) {
-		keys.remove(code);
-		if (code == fireKey || code == "ShiftRight") {
-			wep.stopSpawn();
-		} else if (code == turretKey) {
-			game.placeTurret(pos);
-		}
+	public function onDeath() {
+		Controller.getInstance().removeComponent(this);
 	}
 
 	public function onUpdate(time: Float) {
 		wep.update(time, pos, rotation.value, vel);
-
-		for (key in keys.keys()) {
-			var func = actions.get(key);
-			if (func != null) {
-				func(time);
-			}
-		}
 
 		if (angMult == 0 || sgn(angMult) != sgn(angVel.value)) {
 			angVel.value *= Math.pow(angBrake, 60 * time);

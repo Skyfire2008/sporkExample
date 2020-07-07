@@ -15,6 +15,17 @@
 		font-weight: bold;
 	}
 
+	#pauseStuff {
+		color: red;
+		position: absolute;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
 	@keyframes preloader {
 		0% {
 			opacity: 1;
@@ -28,6 +39,24 @@
 			opacity: 1;
 		}
 	}
+
+	@keyframes bindingKey {
+		0% {
+			opacity: 1;
+		}
+
+		49% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: 0;
+		}
+
+		99% {
+			opacity: 0;
+		}
+	}
 </style>
 
 <body style="background-color: black;">
@@ -38,13 +67,18 @@
 		Loading.....
 	</div>
 	<div id="content" style="display: none;">
-		<canvas id="mainCanvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
-		<div class="display" style="left: 10px; top: 10px;">Lives:</div>
-		<div id="playerHpDisplay" class="display" style="left: 90px; top: 10px;"></div>
-		<div class="display" style="left: 10px; top: 30px;">Wave:</div>
-		<div id="waveDisplay" class="display" style="left: 90px; top: 30px;"></div>
-		<div class="display" style="left: 10px; top: 50px;">Turrets:</div>
-		<div id="turretDisplay" class="display" style="left:90px; top: 50px;">0</div>
+		<div id="inGameStuff">
+			<canvas id="mainCanvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
+			<div class="display" style="left: 10px; top: 10px;">Lives:</div>
+			<div id="playerHpDisplay" class="display" style="left: 90px; top: 10px;"></div>
+			<div class="display" style="left: 10px; top: 30px;">Wave:</div>
+			<div id="waveDisplay" class="display" style="left: 90px; top: 30px;"></div>
+			<div class="display" style="left: 10px; top: 50px;">Turrets:</div>
+			<div id="turretDisplay" class="display" style="left:90px; top: 50px;">0</div>
+		</div>
+		<div id="pauseStuff" style="display: none; left: 400px; top: 200px">
+			<table id="keyBindingTable"></table>
+		</div>
 	</div>
 </body>
 

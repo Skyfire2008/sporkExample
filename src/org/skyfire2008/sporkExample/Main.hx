@@ -1,7 +1,6 @@
 package org.skyfire2008.sporkExample;
 
-import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
-
+import haxe.DynamicAccess;
 import haxe.Json;
 import haxe.ds.StringMap;
 
@@ -9,8 +8,10 @@ import js.Browser;
 import js.lib.Promise;
 import js.html.Element;
 import js.html.KeyboardEvent;
+import js.html.MouseEvent;
 import js.html.Document;
 import js.html.CanvasElement;
+import js.html.TableElement;
 import js.html.webgl.RenderingContext;
 
 import spork.core.JsonLoader;
@@ -22,10 +23,13 @@ import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.util.Util;
 import org.skyfire2008.sporkExample.util.Scripts;
+import org.skyfire2008.sporkExample.util.Settings;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.game.Controller;
 import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
+import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
 import org.skyfire2008.sporkExample.game.components.Death.CountedOnScreen;
 
@@ -40,12 +44,15 @@ class Main {
 	private static var turretDisplay: Element;
 	private static var preloader: Element;
 	private static var content: Element;
+	private static var pauseStuff: Element;
+	private static var keyBindingTable: Element;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
 	private static var entFactories: StringMap<EntityFactoryMethod> = new StringMap<EntityFactoryMethod>();
 
 	private static var game: Game;
+	private static var running: Bool = true;
 
 	private static var prevTime: Float = -1;
 	private static var timeStore: Float = 0;
@@ -66,7 +73,10 @@ class Main {
 		}
 		prevTime = timestamp;
 
-		game.update(delta);
+		if (running) {
+			Controller.getInstance().update(delta);
+			game.update(delta);
+		}
 		Browser.window.requestAnimationFrame(onEnterFrame);
 	}
 
@@ -84,6 +94,8 @@ class Main {
 		turretDisplay = document.getElementById("turretDisplay");
 		content = document.getElementById("content");
 		preloader = document.getElementById("preloader");
+		pauseStuff = document.getElementById("pauseStuff");
+		keyBindingTable = document.getElementById("keyBindingTable");
 
 		gl = cast(document.getElementById("mainCanvas"), CanvasElement).getContextWebGL();
 		if (gl == null) {
@@ -151,11 +163,11 @@ class Main {
 						entFactories.get("tripleShotBonus.json"),
 						entFactories.get("turretBonus.json"),
 						entFactories.get("hpBonus.json")
-					]);
+					], [2, 3, 5, 5, 4]);
 					TurretBonus.setup(game);
 
 					// add bg particles
-					for (i in 0...100) {
+					for (i in 0...1000) {
 						game.addEntity(entFactories.get("bgParticle.json")((holder) -> {}));
 					}
 
@@ -167,12 +179,59 @@ class Main {
 					}));
 
 					Browser.window.requestAnimationFrame(onEnterFrameFirst);
-					Browser.window.addEventListener("keydown", (e: KeyboardEvent) -> {
-						game.onKeyDown(e.code);
-					});
-					Browser.window.addEventListener("keyup", (e: KeyboardEvent) -> {
-						game.onKeyUp(e.code);
-					});
+					var controller = Controller.getInstance();
+					controller.pauseAction = () -> {
+						running = !running;
+						pauseStuff.style.display = running ? "none" : "inline";
+					};
+					controller.register(Browser.window);
+
+					// set up the key bindings table
+					var settings = Settings.getInstance();
+					var bindings: DynamicAccess<String> = cast(settings.keyBindings);
+					for (key in bindings.keys()) {
+						var value = bindings.get(key);
+						var tr = document.createElement("tr");
+
+						var name = document.createElement("td");
+						name.innerText = key + ":";
+						tr.appendChild(name);
+
+						var binding = document.createElement("button");
+						binding.innerText = value;
+
+						// when the button with key binding is clicked...
+						binding.addEventListener("mousedown", (e: MouseEvent) -> {
+							// start animation
+							binding.style.animationName = "bindingKey";
+							binding.style.animationDuration = "0.5s";
+							binding.style.animationIterationCount = "infinite";
+
+							// deregister the controller
+							controller.deregister(Browser.window);
+
+							// listen for the key press
+							var listener: (ev: KeyboardEvent) -> Void = null;
+							listener = (ev: KeyboardEvent) -> {
+								// on key press, update html element
+								ev.stopPropagation();
+								bindings.set(key, ev.code);
+								binding.innerText = ev.code;
+
+								// remap and register the controller
+								controller.remap(settings.keyBindings);
+								controller.register(Browser.window);
+
+								// remove the listener
+								document.removeEventListener("keydown", listener);
+								binding.style.animationName = "";
+							};
+							document.addEventListener("keydown", listener);
+						});
+						tr.appendChild(binding);
+
+						keyBindingTable.appendChild(tr);
+					}
 
 					// hide preloader and show content
 					preloader.style.display = "none";

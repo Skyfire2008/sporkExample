@@ -52,11 +52,13 @@ class MakeSound implements DeathComponent implements HitComponent {
 		this.on = on;
 	}
 
-	public function attach(owner: Entity){
-		this.owner=owner;
-		switch(on){
-			case Death: owner.deathComponents.push(this);
-			case Hit: owner.hitComponents.push(this);
+	public function attach(owner: Entity) {
+		this.owner = owner;
+		switch (on) {
+			case Death:
+				owner.deathComponents.push(this);
+			case Hit:
+				owner.hitComponents.push(this);
 		}
 	}
 
@@ -98,9 +100,19 @@ class DropsBonusComponent implements DeathComponent {
 	private var prob: Float;
 	private var pos: Point;
 
-	public static function setup(game: Game, entityFactories: Array<EntityFactoryMethod>) {
+	public static function setup(game: Game, entityFactories: Array<EntityFactoryMethod>, probs: Array<Int> = null) {
 		DropsBonusComponent.game = game;
-		DropsBonusComponent.bonuses = entityFactories;
+
+		if (probs != null) {
+			DropsBonusComponent.bonuses = [];
+			for (i in 0...entityFactories.length) {
+				for (j in 0...probs[i]) {
+					DropsBonusComponent.bonuses.push(entityFactories[i]);
+				}
+			}
+		} else {
+			DropsBonusComponent.bonuses = entityFactories;
+		}
 	}
 
 	public function new(prob: Float) {

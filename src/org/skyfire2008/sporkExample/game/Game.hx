@@ -25,7 +25,6 @@ class Game {
 	private var renderer: Renderer;
 
 	private var entities: Array<Entity> = [];
-	private var controllableEntitites: Array<Entity> = [];
 
 	private var playerColliders: Array<Collider>;
 	private var enemyColliders: Array<Collider>;
@@ -233,22 +232,6 @@ class Game {
 
 	public function removeCollider(ownerId: Int, side: Side) {
 		collidersToRemove.get(side).push(ownerId);
-	}
-
-	public function addControllableEntity(entity: Entity) {
-		controllableEntitites.push(entity);
-	}
-
-	public function onKeyDown(code: String) {
-		for (entity in controllableEntitites) {
-			entity.onKeyDown(code);
-		}
-	}
-
-	public function onKeyUp(code: String) {
-		for (entity in controllableEntitites) {
-			entity.onKeyUp(code);
-		}
 	}
 
 	public function update(time: Float) {

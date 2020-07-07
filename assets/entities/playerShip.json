@@ -37,12 +37,6 @@
 				"maxVel": 3840,
 				"brakeMult": 0.91,
 				"angBrake": 0.7,
-				"fwKey": "KeyW",
-				"leftKey": "KeyA",
-				"rightKey": "KeyD",
-				"brakeKey": "KeyS",
-				"fireKey": "Space",
-				"turretKey": "KeyF",
 				"soundSrc": "assets/sound/playerShoot5.wav"
 			}
 		},
