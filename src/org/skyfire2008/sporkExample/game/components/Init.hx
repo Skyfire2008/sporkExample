@@ -5,7 +5,6 @@ import spork.core.PropertyHolder;
 import spork.core.Component;
 import spork.core.Wrapper;
 
-import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
@@ -15,9 +14,84 @@ import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
 import org.skyfire2008.sporkExample.game.components.Props.PropsComponent;
 
+using org.skyfire2008.sporkExample.geom.Point;
+
 interface InitComponent extends spork.core.Component {
 	@callback
 	function onInit(game: Game): Void;
+}
+
+class ChasesComponent implements InitComponent implements UpdateComponent {
+	private var group: String;
+	private var owner: Entity;
+	private var angVel: Float;
+	private var game: Game;
+
+	private var pos: Point;
+	private var vel: Point;
+	private var rotation: Wrapper<Float>;
+	private var targetPos: Point = null;
+
+	public function new(group: String, angVel: Float) {
+		this.group = group;
+		this.angVel = angVel;
+	}
+
+	public function onInit(game: Game) {
+		this.game = game;
+		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+	}
+
+	public function onUpdate(time: Float) {
+		if (targetPos != null) {
+			var dir = targetPos.difference(pos);
+
+			var yAxis = new Point(-vel.y, vel.x);
+
+			var angle = angVel * time;
+			var requiredAngle = Math.acos(Point.dot(dir, vel) / (dir.length * vel.length));
+			angle = angle >= requiredAngle ? requiredAngle : angle;
+
+			if (dir.dot(yAxis) > 0) {
+				vel.turn(angle);
+				rotation.value += angle;
+			} else {
+				vel.turn(-angle);
+				rotation.value -= angle;
+			}
+		}
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		pos = holder.position;
+		vel = holder.velocity;
+		rotation = holder.rotation;
+	}
+
+	private function notifyAboutTargets(targets: Array<{
+		id: Int,
+		pos: Point
+	}>) {
+		if (targetPos == null) {
+			var num: Int = 0;
+			var closest: Float = Math.POSITIVE_INFINITY;
+			for (i in 0...targets.length) {
+				var current = targets[i];
+				var currentLength = Point.difference(current.pos, pos).length2;
+				if (currentLength < closest) {
+					num = i;
+					closest = currentLength;
+				}
+			}
+			targetPos = targets[num].pos;
+			game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+		}
+	}
+
+	private function notifyAboutDeath() {
+		targetPos = null;
+		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+	}
 }
 
 class ShootsAtComponent implements InitComponent implements UpdateComponent implements PropsComponent {
@@ -40,7 +114,7 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 			rotates = json.rotates;
 		}
 		var aimsAtClosest = false;
-		if(json.aimsAtClosest != null){
+		if (json.aimsAtClosest != null) {
 			aimsAtClosest = json.aimsAtClosest;
 		}
 
@@ -79,18 +153,18 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 	}>) {
 		if (targetPos == null) {
 			wep.startSpawn();
-			var num: Int=0;
-			if(aimsAtClosest){
+			var num: Int = 0;
+			if (aimsAtClosest) {
 				var closest: Float = Math.POSITIVE_INFINITY;
-				for(i in 0...targets.length){
+				for (i in 0...targets.length) {
 					var current = targets[i];
 					var currentLength = Point.difference(current.pos, pos).length2;
-					if(currentLength<closest){
-						num=i;
-						closest=currentLength;
+					if (currentLength < closest) {
+						num = i;
+						closest = currentLength;
 					}
 				}
-			}else{
+			} else {
 				num = Std.random(targets.length);
 			}
 			targetPos = targets[num].pos;

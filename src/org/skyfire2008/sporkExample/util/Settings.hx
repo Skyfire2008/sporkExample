@@ -30,8 +30,8 @@ class Settings {
 	}
 
 	private function new() {
-		storage = Browser.getLocalStorage();
-		var data = storage.getItem(ItemName);
+		// storage = Browser.getLocalStorage();
+		var data = null; // storage.getItem(ItemName);
 		if (data == null) {
 			this.data = {
 				particleCount: 500,
@@ -42,7 +42,7 @@ class Settings {
 					right: "KeyD",
 					fire: "Space",
 					deployTurret: "KeyF",
-					deployAllTurrets: "KeyR",
+					deployHeavyTurret: "KeyR",
 					pause: "KeyP"
 				}
 			};
@@ -53,7 +53,7 @@ class Settings {
 	}
 
 	public function save() {
-		storage.setItem(ItemName, Json.stringify(data));
+		// storage.setItem(ItemName, Json.stringify(data));
 	}
 
 	// GETTERS AND SETTERS

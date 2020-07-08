@@ -43,6 +43,7 @@ class Game {
 	private var createHardAsteroid: EntityFactoryMethod;
 	private var createUfo: EntityFactoryMethod;
 	private var createTurret: EntityFactoryMethod;
+	private var createHeavyTurret: EntityFactoryMethod;
 	private var lvl: Int;
 	private var entityCount: Map<String, Int>;
 	private var currentUfoTime: Float;
@@ -79,6 +80,7 @@ class Game {
 		createHardAsteroid = factoryFuncs.get("hardAsteroid.json");
 		createUfo = factoryFuncs.get("ufo.json");
 		createTurret = factoryFuncs.get("turret.json");
+		createHeavyTurret = factoryFuncs.get("heavyTurret.json");
 
 		this.playerHpCallback = playerHpCallback;
 		this.waveCallback = waveCallback;
@@ -111,6 +113,18 @@ class Game {
 			});
 			this.addEntity(ent);
 			availableTurrets--;
+			turretCallback(availableTurrets);
+		}
+	}
+
+	public function placeHeavyTurret(pos: Point) {
+		if (availableTurrets >= 5) {
+			var ent = createHeavyTurret((holder) -> {
+				holder.position = pos.copy();
+				holder.rotation = new Wrapper<Float>(0);
+			});
+			this.addEntity(ent);
+			availableTurrets -= 5;
 			turretCallback(availableTurrets);
 		}
 	}

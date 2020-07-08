@@ -15,7 +15,7 @@ typedef KeyBindings = {
 	var right: String;
 	var fire: String;
 	var deployTurret: String;
-	var deployAllTurrets: String;
+	var deployHeavyTurret: String;
 	var pause: String;
 };
 
@@ -87,6 +87,11 @@ class Controller {
 		downActions.set(config.deployTurret, () -> {
 			for (component in components) {
 				component.deployTurret();
+			}
+		});
+		downActions.set(config.deployHeavyTurret, () -> {
+			for (component in components) {
+				component.deployHeavyTurret();
 			}
 		});
 		downActions.set(config.fire, () -> {

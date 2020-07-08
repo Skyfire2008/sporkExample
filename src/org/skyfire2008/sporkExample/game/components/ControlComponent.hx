@@ -30,6 +30,8 @@ interface KBComponent {
 	function stopFire(): Void;
 
 	function deployTurret(): Void;
+
+	function deployHeavyTurret(): Void;
 }
 
 class ControlComponent implements UpdateComponent implements InitComponent implements DeathComponent implements KBComponent {
@@ -107,6 +109,10 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 
 	public function deployTurret() {
 		game.placeTurret(pos);
+	}
+
+	public function deployHeavyTurret() {
+		game.placeHeavyTurret(pos);
 	}
 
 	public function onInit(game: Game) {

@@ -1,0 +1,80 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "tempInvulnOnHit",
+			"params": {
+				"invulnTime": 2,
+				"blinkTime": 0.15
+			}
+		},
+		{
+			"name": "targetComponent",
+			"params": {
+				"group": "Player"
+			}
+		},
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 6
+			}
+		},
+		{
+			"name": "getsBonuses",
+			"params": {}
+		},
+		{
+			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "heavyTurret.json"
+			}
+		},
+		{
+			"name": "shootsAtComponent",
+			"params": {
+				"rotates": true,
+				"wep": {
+					"entityName": "missile.json",
+					"spawnTime": 1.5,
+					"spawnNum": 1,
+					"spawnVel": 600,
+					"soundSrc": "assets/sound/playerShoot6.wav"
+				},
+				"group": "Enemy",
+				"aimsAtClosest": true
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Player",
+				"radius": 14
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "playerBullet.json",
+				"spawnTime": 1,
+				"angleRand": 0,
+				"velRand": 0,
+				"spawnNum": 12,
+				"isVelRelative": false,
+				"spawnVel": 300,
+				"spreadAngle": 0.523
+			}
+		},
+		{
+			"name": "makeSound",
+			"params": {
+				"on": "Death",
+				"soundSrc": "assets/sound/explosion3.wav"
+			}
+		}
+	]
+}

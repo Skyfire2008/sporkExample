@@ -97,12 +97,12 @@ class Spawner {
 
 			var ent = spawnFunc((holder) -> {
 				var angle = i * config.spreadAngle + Util.rand(config.angleRand);
-				angle += rotation - baseAngle;
+				angle -= baseAngle;
 				holder.position = pos.copy();
 				holder.rotation = new Wrapper<Float>(rotation + angle);
 				holder.angVel = new Wrapper<Float>(0);
 
-				holder.velocity = Point.fromPolar(angle, config.spawnVel + Util.rand(config.velRand));
+				holder.velocity = Point.fromPolar(angle+rotation, config.spawnVel + Util.rand(config.velRand));
 				if (config.isVelRelative) {
 					holder.velocity.x += vel.x;
 					holder.velocity.y += vel.y;
