@@ -1,0 +1,77 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 5,
+				"group": "Ufo"
+			}
+		},
+		{
+			"name": "tempInvulnOnHit",
+			"params": {
+				"invulnTime": 1,
+				"blinkTime": 0.15
+			}
+		},
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 5
+			}
+		},
+		{
+			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "dropsBonusComponent",
+			"params": {
+				"prob": 2
+			}
+		},
+		{
+			"name": "sineMovement",
+			"params": {
+				"amplitude": 60,
+				"length": 1280
+			}
+		},
+		{
+			"name": "shootsAtComponent",
+			"params": {
+				"wep": {
+					"entityName": "enemyMissile.json",
+					"spawnTime": 5,
+					"spawnNum": 1,
+					"spawnVel": 200,
+					"soundSrc": "assets/sound/enemyShoot.wav"
+				},
+				"group": "Player",
+				"aimsAtClosest": false
+			}
+		},
+		{
+			"name": "animComponent",
+			"params": {
+				"frameTime": 0.25,
+				"shapeRefs": [
+					"heavyUfo1.json",
+					"heavyUfo2.json"
+				]
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 30
+			}
+		}
+	]
+}

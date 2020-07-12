@@ -9,6 +9,13 @@
 			}
 		},
 		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "Turret"
+			}
+		},
+		{
 			"name": "targetComponent",
 			"params": {
 				"group": "Player"

@@ -1,0 +1,52 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 10
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "enemyMissile.json"
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 12.5
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "enemyBullet.json",
+				"spawnTime": 1,
+				"angleRand": 0,
+				"velRand": 0,
+				"spawnNum": 12,
+				"isVelRelative": false,
+				"spawnVel": 200,
+				"spreadAngle": 0.5235987755982988
+			}
+		},
+		{
+			"name": "chasesComponent",
+			"params": {
+				"group": "Player",
+				"angVel": 2
+			}
+		},
+		{
+			"name": "bounceOnHit",
+			"params": {}
+		}
+	]
+}

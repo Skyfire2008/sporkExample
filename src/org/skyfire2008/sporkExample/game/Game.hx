@@ -1,5 +1,6 @@
 package org.skyfire2008.sporkExample.game;
 
+import js.lib.Math;
 import haxe.ds.StringMap;
 
 import js.lib.Map;
@@ -14,9 +15,6 @@ import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 
 using js.lib.HaxeIterator;
-
-typedef TargetObserver = (Array<{id: Int, pos: Point}>) -> Void;
-typedef TargetDeathObserver = () -> Void;
 
 class Game {
 	public static var fieldWidth(default, never) = 1280;
@@ -34,14 +32,11 @@ class Game {
 	private var bonusGetterColliders: Array<Collider>;
 	private var collidersToRemove: Map<Side, Array<Int>>;
 
-	private var targetGroups: Map<String, Map<Int, Point>>;
-	private var targetObservers: Map<String, Array<TargetObserver>>;
-	private var targetDeathObservers: Map<Int, Array<TargetDeathObserver>>;
-
 	private var createMediumAsteroid: EntityFactoryMethod;
 	private var createSmallAsteroid: EntityFactoryMethod;
 	private var createHardAsteroid: EntityFactoryMethod;
 	private var createUfo: EntityFactoryMethod;
+	private var createHeavyUfo: EntityFactoryMethod;
 	private var createTurret: EntityFactoryMethod;
 	private var createHeavyTurret: EntityFactoryMethod;
 	private var lvl: Int;
@@ -58,9 +53,6 @@ class Game {
 			waveCallback: (value: Int) -> Void, turretCallback: (value: Int) -> Void) {
 		this.renderer = renderer;
 		grid = new UniformGrid(1280, 720, 64, 64);
-		targetGroups = new Map<String, Map<Int, Point>>();
-		targetObservers = new Map<String, Array<TargetObserver>>();
-		targetDeathObservers = new Map<Int, Array<TargetDeathObserver>>();
 
 		playerColliders = [];
 		enemyColliders = [];
@@ -79,6 +71,7 @@ class Game {
 		createSmallAsteroid = factoryFuncs.get("smallAsteroid.json");
 		createHardAsteroid = factoryFuncs.get("hardAsteroid.json");
 		createUfo = factoryFuncs.get("ufo.json");
+		createHeavyUfo = factoryFuncs.get("heavyUfo.json");
 		createTurret = factoryFuncs.get("turret.json");
 		createHeavyTurret = factoryFuncs.get("heavyTurret.json");
 
@@ -152,72 +145,6 @@ class Game {
 		} else {
 			return 0;
 		}
-	}
-
-	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {
-		var group = targetGroups.get(groupName);
-		// if group is empty...
-		if (group == null || group.size == 0) {
-			// add the observer to map
-			var observers = targetObservers.get(groupName);
-			if (observers == null) {
-				targetObservers.set(groupName, [obs]);
-			} else {
-				observers.push(obs);
-			}
-		} else {
-			// if group is not empty, just call the observer
-			var foo: Array<{id: Int, pos: Point}> = [];
-			for (entry in group.entries()) {
-				foo.push({id: entry.key, pos: entry.value});
-			}
-			obs(foo);
-		}
-	}
-
-	public function addTargetDeathObserver(targetId: Int, obs: TargetDeathObserver) {
-		var observers = targetDeathObservers.get(targetId);
-		if (observers == null) {
-			targetDeathObservers.set(targetId, [obs]);
-		} else {
-			observers.push(obs);
-		}
-	}
-
-	/**
-	 * Adds a new target to be aimed at
-	 * @param entId	id of entity that this target represents
-	 * @param pos target's position
-	 * @param groupName name of target group
-	 */
-	public function addTarget(entId: Int, pos: Point, groupName: String) {
-		var group = targetGroups.get(groupName);
-		if (group == null) {
-			group = new Map<Int, Point>();
-			targetGroups.set(groupName, group);
-		}
-		// if group was empty previously, notify target group observers
-		if (group.size == 0) {
-			var observers = targetObservers.get(groupName);
-			if (observers != null) {
-				for (obs in observers) {
-					obs([{id: entId, pos: pos}]);
-				}
-			}
-		}
-		group.set(entId, pos);
-	}
-
-	public function removeTarget(entId: Int, groupName: String) {
-		targetGroups.get(groupName).delete(entId);
-		// notify all observers waiting for death of target and remove them
-		var observers = targetDeathObservers.get(entId);
-		if (observers != null) {
-			for (obs in observers) {
-				obs();
-			}
-		}
-		targetDeathObservers.delete(entId);
 	}
 
 	/**
@@ -389,7 +316,12 @@ class Game {
 				currentUfoTime -= getUfoSpawnInterval(lvl);
 				var maxSpawnNum = Std.int(Math.min(Math.pow(lvl, 1.0 / 3.0), maxUfoNum - getCount("Ufo")));
 				for (i in 0...maxSpawnNum) {
-					var ent = createUfo((holder) -> {
+					var creator = createUfo;
+					if(Math.random()<1.0-10.0/(getCount("Turret")+1)){
+						creator=createHeavyUfo;
+					}
+
+					var ent = creator((holder) -> {
 						holder.position = new Point(0, Math.random() * 720);
 						holder.velocity = new Point((150 + Math.random() * 50) * (Std.random(2) * 2 - 1), 0);
 						holder.rotation = new Wrapper<Float>(0);

@@ -9,6 +9,13 @@
 			}
 		},
 		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 5,
+				"group": "Turret"
+			}
+		},
+		{
 			"name": "targetComponent",
 			"params": {
 				"group": "Player"
@@ -40,9 +47,9 @@
 				"rotates": true,
 				"wep": {
 					"entityName": "missile.json",
-					"spawnTime": 1.5,
+					"spawnTime": 2,
 					"spawnNum": 1,
-					"spawnVel": 600,
+					"spawnVel": 400,
 					"soundSrc": "assets/sound/playerShoot6.wav"
 				},
 				"group": "Enemy",

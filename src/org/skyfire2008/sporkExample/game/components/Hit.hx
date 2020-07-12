@@ -14,15 +14,39 @@ import org.skyfire2008.sporkExample.game.components.Init;
 import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.properties.Health;
 import org.skyfire2008.sporkExample.spatial.Collider;
-import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Bonus.ExplodeShot;
 import org.skyfire2008.sporkExample.game.Bonus.DoubleFirerate;
 import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
 
+using org.skyfire2008.sporkExample.geom.Point;
+
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
+}
+
+class BounceOnHit implements HitComponent {
+	private var owner: Entity;
+	private var pos: Point;
+	private var vel: Point;
+
+	public function new() {}
+
+	public function onHit(collider: Collider) {
+		var axis = pos.difference(collider.pos);
+		if (Point.dot(axis, vel) < 0) {
+			axis.normalize();
+			var len = Point.dot(vel, axis);
+			axis.mult(-2 * len);
+			vel.add(axis);
+		}
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		pos = holder.position;
+		vel = holder.velocity;
+	}
 }
 
 class TempInvulnOnHit implements HitComponent implements UpdateComponent implements InitComponent {
@@ -132,7 +156,7 @@ class ApplyBonus implements HitComponent {
 		"hpBonus" => () -> {
 			return new HpBonus();
 		},
-		"turret"=>()->{
+		"turret" => () -> {
 			return new TurretBonus();
 		}
 	];

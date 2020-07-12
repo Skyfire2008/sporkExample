@@ -167,6 +167,7 @@ class AnimComponent implements UpdateComponent {
 	private var owner: Entity;
 	private var rotation: Wrapper<Float>;
 	private var frameTime: Float;
+	private var colorMult: Wrapper<Float>;
 
 	private var curTime: Float;
 	private var curFrame: Int;
@@ -198,6 +199,7 @@ class AnimComponent implements UpdateComponent {
 	public function new(frames: Array<Shape>, frameTime: Float) {
 		this.frames = frames;
 		this.frameTime = frameTime;
+		this.colorMult = new Wrapper<Float>(1.0);
 		this.curTime = 0;
 		this.curFrame = 0;
 	}
@@ -210,12 +212,16 @@ class AnimComponent implements UpdateComponent {
 		}
 		curFrame = curFrame % frames.length;
 
-		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, rotation.value, 1);
+		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, rotation.value, colorMult.value);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
 		pos = holder.position;
 		rotation = holder.rotation;
+	}
+
+	public function createProps(holder: PropertyHolder) {
+		holder.colorMult = colorMult;
 	}
 }
 

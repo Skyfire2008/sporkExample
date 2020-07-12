@@ -7,6 +7,7 @@ import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
+import org.skyfire2008.sporkExample.game.TargetingSystem;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
 import org.skyfire2008.sporkExample.game.properties.Health;
@@ -25,39 +26,59 @@ class ChasesComponent implements InitComponent implements UpdateComponent {
 	private var group: String;
 	private var owner: Entity;
 	private var angVel: Float;
-	private var game: Game;
+	private var aMult: Float;
+	private var maxVel: Float;
 
 	private var pos: Point;
 	private var vel: Point;
 	private var rotation: Wrapper<Float>;
 	private var targetPos: Point = null;
 
-	public function new(group: String, angVel: Float) {
+	public function new(group: String, ?angVel: Float, ?aMult: Float, ?maxVel: Float) {
 		this.group = group;
+		if (angVel == null) {
+			angVel = 0;
+		}
 		this.angVel = angVel;
+		if (aMult == null) {
+			aMult = 0;
+		}
+		this.aMult = aMult;
+		if (maxVel == null) {
+			maxVel = 0;
+		}
+		this.maxVel = maxVel;
 	}
 
 	public function onInit(game: Game) {
-		this.game = game;
-		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+		TargetingSystem.instance.addTargetGroupObserver(group, this.notifyAboutTargets);
 	}
 
 	public function onUpdate(time: Float) {
 		if (targetPos != null) {
 			var dir = targetPos.difference(pos);
 
-			var yAxis = new Point(-vel.y, vel.x);
+			if (angVel > 0) {
+				var yAxis = new Point(-vel.y, vel.x);
 
-			var angle = angVel * time;
-			var requiredAngle = Math.acos(Point.dot(dir, vel) / (dir.length * vel.length));
-			angle = angle >= requiredAngle ? requiredAngle : angle;
+				var angle = angVel * time;
+				var requiredAngle = Math.acos(Point.dot(dir, vel) / (dir.length * vel.length));
+				angle = angle >= requiredAngle ? requiredAngle : angle;
 
-			if (dir.dot(yAxis) > 0) {
-				vel.turn(angle);
-				rotation.value += angle;
+				if (dir.dot(yAxis) > 0) {
+					vel.turn(angle);
+					rotation.value += angle;
+				} else {
+					vel.turn(-angle);
+					rotation.value -= angle;
+				}
 			} else {
-				vel.turn(-angle);
-				rotation.value -= angle;
+				dir.normalize();
+				var scalarProj = Point.dot(dir, vel);
+				var proj = dir.scale(scalarProj);
+				var rej = Point.difference(vel, proj);
+				vel.sub(rej.scale(Math.pow(0.99, 60 * time)));
+				vel.add(dir.scale(aMult * time));
 			}
 		}
 	}
@@ -84,13 +105,13 @@ class ChasesComponent implements InitComponent implements UpdateComponent {
 				}
 			}
 			targetPos = targets[num].pos;
-			game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+			TargetingSystem.instance.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
 		}
 	}
 
 	private function notifyAboutDeath() {
 		targetPos = null;
-		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+		TargetingSystem.instance.addTargetGroupObserver(group, this.notifyAboutTargets);
 	}
 }
 
@@ -103,7 +124,6 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 	private var rotation: Wrapper<Float>;
 
 	private var targetPos: Point = null;
-	private var game: Game;
 	private var wep: Spawner;
 	private var rotates: Bool;
 	private var aimsAtClosest: Bool;
@@ -128,9 +148,8 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 	}
 
 	public function onInit(game: Game) {
-		this.game = game;
 		wep.init();
-		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+		TargetingSystem.instance.addTargetGroupObserver(group, this.notifyAboutTargets);
 	}
 
 	public function onUpdate(time: Float) {
@@ -168,14 +187,14 @@ class ShootsAtComponent implements InitComponent implements UpdateComponent impl
 				num = Std.random(targets.length);
 			}
 			targetPos = targets[num].pos;
-			game.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
+			TargetingSystem.instance.addTargetDeathObserver(targets[num].id, this.notifyAboutDeath);
 		}
 	}
 
 	private function notifyAboutDeath() {
 		wep.stopSpawn();
 		targetPos = null;
-		game.addTargetGroupObserver(group, this.notifyAboutTargets);
+		TargetingSystem.instance.addTargetGroupObserver(group, this.notifyAboutTargets);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
@@ -194,19 +213,17 @@ class TargetComponent implements InitComponent implements DeathComponent {
 	private var owner: Entity;
 
 	private var pos: Point;
-	private var game: Game;
 
 	public function new(group: String) {
 		this.group = group;
 	}
 
 	public function onInit(game: Game) {
-		game.addTarget(owner.id, pos, group);
-		this.game = game;
+		TargetingSystem.instance.addTarget(owner.id, pos, group);
 	}
 
 	public function onDeath() {
-		game.removeTarget(owner.id, group);
+		TargetingSystem.instance.removeTarget(owner.id, group);
 	}
 
 	public function assignProps(holder: PropertyHolder) {

@@ -1,0 +1,33 @@
+{
+	"points": [
+	  {"x": -5, "y": -5, "color": "#ff0000"},
+	  {"x": 0, "y": -15, "color": "#ff0000"},
+	  {"x": 5, "y": -5, "color": "#ff0000"},
+	  {"x": 5, "y": 5, "color": "#ff0000"},
+	  {"x": -5, "y": 5, "color": "#ff0000"},
+	  {"x": 0, "y": 5, "color": "#ffffff"},
+	  {"x": 5, "y": 10, "color": "#ffffff"},
+	  {"x": -5, "y": 10, "color": "#ffffff"},
+	  {"x": -5, "y": -5, "color": "#ffffff"},
+	  {"x": 5, "y": -5, "color": "#ffffff"},
+	  {"x": -5, "y": 0, "color": "#ffffff"},
+	  {"x": -7.5, "y": 5, "color": "#ffffff"},
+	  {"x": -5, "y": 5, "color": "#ffffff"},
+	  {"x": 5, "y": 5, "color": "#ffffff"},
+	  {"x": 7.5, "y": 5, "color": "#ffffff"},
+	  {"x": 5, "y": 0, "color": "#ffffff"}
+	],"lines": [
+	  {"from": 0, "to": 1},
+	  {"from": 1, "to": 2},
+	  {"from": 2, "to": 3},
+	  {"from": 3, "to": 4},
+	  {"from": 0, "to": 4},
+	  {"from": 5, "to": 6},
+	  {"from": 6, "to": 7},
+	  {"from": 5, "to": 7},
+	  {"from": 8, "to": 9},
+	  {"from": 13, "to": 14},
+	  {"from": 14, "to": 15},
+	  {"from": 10, "to": 11},
+	  {"from": 11, "to": 12}
+  ]}
