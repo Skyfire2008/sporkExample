@@ -1,6 +1,7 @@
 package org.skyfire2008.sporkExample.game;
 
 import js.lib.Math;
+
 import haxe.ds.StringMap;
 
 import js.lib.Map;
@@ -178,6 +179,8 @@ class Game {
 	public function update(time: Float) {
 		renderer.clear();
 
+		ScoringSystem.instance.update(time);
+
 		// update every entity
 		for (entity in entities) {
 			entity.onUpdate(time);
@@ -317,8 +320,8 @@ class Game {
 				var maxSpawnNum = Std.int(Math.min(Math.pow(lvl, 1.0 / 3.0), maxUfoNum - getCount("Ufo")));
 				for (i in 0...maxSpawnNum) {
 					var creator = createUfo;
-					if(Math.random()<1.0-10.0/(getCount("Turret")+1)){
-						creator=createHeavyUfo;
+					if (Math.random() < 1.0 - 25.0 / (getCount("Turret") + 1)) {
+						creator = createHeavyUfo;
 					}
 
 					var ent = creator((holder) -> {

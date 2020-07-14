@@ -72,6 +72,12 @@
 				"side": "Enemy",
 				"radius": 30
 			}
+		},
+		{
+			"name": "addScoreOnDeath",
+			"params": {
+				"score": 10
+			}
 		}
 	]
 }

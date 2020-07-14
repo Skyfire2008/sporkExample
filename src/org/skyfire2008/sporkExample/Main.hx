@@ -27,6 +27,7 @@ import org.skyfire2008.sporkExample.util.Settings;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Controller;
+import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
@@ -46,6 +47,8 @@ class Main {
 	private static var content: Element;
 	private static var pauseStuff: Element;
 	private static var keyBindingTable: Element;
+	private static var scoreDisplay: Element;
+	private static var multDisplay: Element;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
@@ -96,6 +99,14 @@ class Main {
 		preloader = document.getElementById("preloader");
 		pauseStuff = document.getElementById("pauseStuff");
 		keyBindingTable = document.getElementById("keyBindingTable");
+		scoreDisplay = document.getElementById("scoreDisplay");
+		multDisplay = document.getElementById("multDisplay");
+
+		ScoringSystem.init((score) -> {
+			scoreDisplay.innerText = "" + score;
+		}, (mult) -> {
+				multDisplay.innerText = "x" + mult;
+			}, 4);
 
 		gl = cast(document.getElementById("mainCanvas"), CanvasElement).getContextWebGL();
 		if (gl == null) {

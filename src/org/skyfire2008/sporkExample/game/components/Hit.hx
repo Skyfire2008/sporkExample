@@ -15,6 +15,7 @@ import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.properties.Health;
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.Game;
+import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.game.Bonus.ExplodeShot;
 import org.skyfire2008.sporkExample.game.Bonus.DoubleFirerate;
 import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
@@ -24,6 +25,16 @@ using org.skyfire2008.sporkExample.geom.Point;
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
+}
+
+class ResetMultOnHit implements HitComponent {
+	private var owner: Entity;
+
+	public function new() {}
+
+	public function onHit(collider: Collider) {
+		ScoringSystem.instance.resetMult();
+	}
 }
 
 class BounceOnHit implements HitComponent {

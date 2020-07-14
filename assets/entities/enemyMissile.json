@@ -8,7 +8,7 @@
 		{
 			"name": "timedComponent",
 			"params": {
-				"time": 10
+				"time": 5
 			}
 		},
 		{
@@ -41,7 +41,8 @@
 			"name": "chasesComponent",
 			"params": {
 				"group": "Player",
-				"angVel": 2
+				"angVel": 2,
+				"diesOnHit": true
 			}
 		},
 		{

@@ -71,6 +71,10 @@
 				"on": "Hit",
 				"soundSrc": "assets/sound/explosion.wav"
 			}
+		},
+		{
+			"name": "resetMultOnHit",
+			"params": {}
 		}
 	]
 }

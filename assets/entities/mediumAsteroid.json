@@ -66,6 +66,12 @@
 				"on": "Death",
 				"soundSrc": "assets/sound/explosion2.wav"
 			}
+		},
+		{
+			"name": "addScoreOnDeath",
+			"params": {
+				"score": 5
+			}
 		}
 	]
 }

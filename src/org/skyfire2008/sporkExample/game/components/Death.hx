@@ -11,6 +11,7 @@ import spork.core.Wrapper;
 import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner;
+import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.spatial.Collider;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 import org.skyfire2008.sporkExample.game.components.Hit;
@@ -23,6 +24,19 @@ interface DeathComponent extends Component {
 enum On {
 	Death;
 	Hit;
+}
+
+class AddScoreOnDeath implements DeathComponent {
+	private var owner: Entity;
+	private var score: Int;
+
+	public function new(score: Int) {
+		this.score = score;
+	}
+
+	public function onDeath() {
+		ScoringSystem.instance.addScore(score);
+	}
 }
 
 class MakeSound implements DeathComponent implements HitComponent {

@@ -10,7 +10,7 @@ import org.skyfire2008.sporkExample.game.Game;
 import org.skyfire2008.sporkExample.game.TargetingSystem;
 import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Side;
-import org.skyfire2008.sporkExample.game.properties.Health;
+import org.skyfire2008.sporkExample.game.components.Hit.HitComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 import org.skyfire2008.sporkExample.game.components.Update.UpdateComponent;
 import org.skyfire2008.sporkExample.game.components.Props.PropsComponent;
@@ -22,19 +22,20 @@ interface InitComponent extends spork.core.Component {
 	function onInit(game: Game): Void;
 }
 
-class ChasesComponent implements InitComponent implements UpdateComponent {
+class ChasesComponent implements InitComponent implements UpdateComponent implements HitComponent {
 	private var group: String;
 	private var owner: Entity;
 	private var angVel: Float;
 	private var aMult: Float;
 	private var maxVel: Float;
+	private var diesOnHit: Bool;
 
 	private var pos: Point;
 	private var vel: Point;
 	private var rotation: Wrapper<Float>;
 	private var targetPos: Point = null;
 
-	public function new(group: String, ?angVel: Float, ?aMult: Float, ?maxVel: Float) {
+	public function new(group: String, ?angVel: Float, ?aMult: Float, ?maxVel: Float, ?diesOnHit: Bool) {
 		this.group = group;
 		if (angVel == null) {
 			angVel = 0;
@@ -48,10 +49,30 @@ class ChasesComponent implements InitComponent implements UpdateComponent {
 			maxVel = 0;
 		}
 		this.maxVel = maxVel;
+		if (diesOnHit == null) {
+			diesOnHit = false;
+		}
+		this.diesOnHit = diesOnHit;
 	}
 
 	public function onInit(game: Game) {
 		TargetingSystem.instance.addTargetGroupObserver(group, this.notifyAboutTargets);
+	}
+
+	public function attach(owner: Entity) {
+		this.owner = owner;
+		owner.initComponents.push(this);
+		owner.updateComponents.push(this);
+		if (diesOnHit) {
+			owner.hitComponents.push(this);
+		}
+	}
+
+	public function onHit(collider: Collider) {
+		// this is actually a bad idea, instead save ids of targets and compare them
+		if (collider.pos == targetPos) {
+			owner.kill();
+		}
 	}
 
 	public function onUpdate(time: Float) {
