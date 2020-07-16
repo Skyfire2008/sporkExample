@@ -280,7 +280,7 @@ class Game {
 						holder.position.y = 720 * Math.random();
 					}
 
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 100);
+					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 80);
 
 					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
 					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));
@@ -290,7 +290,7 @@ class Game {
 
 			for (i in 0...getMediumAsteroidNum(lvl)) {
 				var creationFunc = createMediumAsteroid;
-				if (Math.random() < lvl / 100.0) {
+				if (Math.sqrt(Math.random()) < lvl / 100.0) {
 					creationFunc = createHardAsteroid;
 				}
 				var ent = creationFunc((holder) -> {
@@ -302,7 +302,7 @@ class Game {
 						holder.position.y = 720 * Math.random();
 					}
 
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 50);
+					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 40);
 
 					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
 					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));

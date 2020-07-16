@@ -22,6 +22,7 @@ class ScoringSystem {
 		this.multDecayTime = multDecayTime;
 		score = 0;
 		mult = 1;
+		multPoints = 0;
 		nextMultPoints = calcNextMultPoints(mult);
 	}
 

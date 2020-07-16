@@ -12,8 +12,11 @@ import js.html.MouseEvent;
 import js.html.Document;
 import js.html.CanvasElement;
 import js.html.TableElement;
+import js.html.InputElement;
+import js.html.Event;
 import js.html.webgl.RenderingContext;
 
+import spork.core.Entity;
 import spork.core.JsonLoader;
 import spork.core.JsonLoader.EntityFactoryMethod;
 import spork.core.Wrapper;
@@ -49,6 +52,10 @@ class Main {
 	private static var keyBindingTable: Element;
 	private static var scoreDisplay: Element;
 	private static var multDisplay: Element;
+	private static var bgParticleCount: InputElement;
+
+	private static var bgParticles: Array<Entity> = [];
+	private static var bgParticleCreator: EntityFactoryMethod;
 
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
@@ -101,6 +108,22 @@ class Main {
 		keyBindingTable = document.getElementById("keyBindingTable");
 		scoreDisplay = document.getElementById("scoreDisplay");
 		multDisplay = document.getElementById("multDisplay");
+		bgParticleCount = cast(document.getElementById("bgParticleCount"));
+		bgParticleCount.addEventListener("change", (e: Dynamic) -> {
+			var number: Int = e.target.value >= 0 ? e.target.value : 0;
+			if (number > bgParticles.length) {
+				for (i in bgParticles.length...number) {
+					var ent=bgParticleCreator((holder) -> {});
+					game.addEntity(ent);
+					bgParticles.push(ent);
+				}
+			}else{
+				for(i in number...bgParticles.length){
+					bgParticles[i].kill();
+				}
+				bgParticles.resize(number);
+			}
+		});
 
 		ScoringSystem.init((score) -> {
 			scoreDisplay.innerText = "" + score;
@@ -178,8 +201,11 @@ class Main {
 					TurretBonus.setup(game);
 
 					// add bg particles
+					bgParticleCreator = entFactories.get("bgParticle.json");
 					for (i in 0...1000) {
-						game.addEntity(entFactories.get("bgParticle.json")((holder) -> {}));
+						var ent = bgParticleCreator((holder) -> {});
+						bgParticles.push(ent);
+						game.addEntity(ent);
 					}
 
 					game.addEntity(entFactories.get("playerShip.json")((holder) -> {

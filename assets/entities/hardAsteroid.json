@@ -44,7 +44,7 @@
 				"velRand": 50,
 				"spawnNum": 3,
 				"isVelRelative": false,
-				"spawnVel": 200,
+				"spawnVel": 100,
 				"spreadAngle": 2.1
 			}
 		},
@@ -57,7 +57,7 @@
 				"velRand": 0,
 				"spawnNum": 6,
 				"isVelRelative": false,
-				"spawnVel": 100,
+				"spawnVel": 200,
 				"spreadAngle": 1.047
 			}
 		},

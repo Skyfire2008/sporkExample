@@ -9,6 +9,7 @@ import spork.core.Wrapper;
 
 using org.skyfire2008.sporkExample.geom.Point;
 
+import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 import org.skyfire2008.sporkExample.graphics.Renderer;
 import org.skyfire2008.sporkExample.graphics.Shape;
 
