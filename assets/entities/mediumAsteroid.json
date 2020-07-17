@@ -29,6 +29,20 @@
 			"params": {}
 		},
 		{
+			"name": "hitSpawnComponent",
+			"params": {
+				"spawnAtCollider": true,
+				"entityName": "spark.json",
+				"spawnTime": 1,
+				"angleRand": 0.5,
+				"velRand": 50,
+				"spawnNum": 3,
+				"isVelRelative": true,
+				"spawnVel": 200,
+				"spreadAngle": 0
+			}
+		},
+		{
 			"name": "deathSpawnComponent",
 			"params": {
 				"entityName": "smallAsteroid.json",
@@ -39,6 +53,19 @@
 				"isVelRelative": true,
 				"spawnVel": 100,
 				"spreadAngle": 2.1
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "spark.json",
+				"spawnTime": 1,
+				"angleRand": 0.5,
+				"velRand": 50,
+				"spawnNum": 12,
+				"isVelRelative": false,
+				"spawnVel": 150,
+				"spreadAngle": 0.5
 			}
 		},
 		{

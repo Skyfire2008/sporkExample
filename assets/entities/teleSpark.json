@@ -1,0 +1,41 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "alwaysAlive",
+			"params": {}
+		},
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 0.5
+			}
+		},
+		{
+			"name": "changeScaleComponent",
+			"params": {
+				"startScale": 10,
+				"stopScale": 0,
+				"changeTime": 0.5
+			}
+		},
+		{
+			"name": "changeColorMultComponent",
+			"params": {
+				"startMult": 1,
+				"stopMult": 0.25,
+				"changeTime": 0.5
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "teleSpark.json"
+			}
+		}
+	]
+}

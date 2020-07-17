@@ -137,7 +137,7 @@ class ExplodeShot extends AbstractBonus {
 
 	public override function apply(target: Entity) {
 		index = target.getWep().extraComponents.push(() -> {
-			return new HitSpawnComponent(spawner);
+			return new HitSpawnComponent(spawner, false);
 		});
 	}
 

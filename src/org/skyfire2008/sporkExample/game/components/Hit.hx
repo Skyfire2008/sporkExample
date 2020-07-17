@@ -124,13 +124,15 @@ class HitSpawnComponent implements HitComponent implements InitComponent {
 	private var rotation: Wrapper<Float>;
 	private var vel: Point;
 	private var owner: Entity;
+	private var spawnAtCollider: Bool;
 
 	public static function fromJson(json: Dynamic): Component {
-		return new HitSpawnComponent(new Spawner(json));
+		return new HitSpawnComponent(new Spawner(json), json.spawnAtCollider);
 	}
 
-	public function new(spawner: Spawner) {
+	public function new(spawner: Spawner, spawnAtCollider: Bool) {
 		this.spawner = spawner;
+		this.spawnAtCollider = spawnAtCollider;
 	}
 
 	public function assignProps(holder: PropertyHolder) {
@@ -140,11 +142,15 @@ class HitSpawnComponent implements HitComponent implements InitComponent {
 	}
 
 	public function clone(): Component {
-		return new HitSpawnComponent(spawner.clone());
+		return new HitSpawnComponent(spawner.clone(), spawnAtCollider);
 	}
 
 	public function onHit(collider: Collider) {
-		spawner.spawn(pos, rotation.value, vel);
+		if (spawnAtCollider) {
+			spawner.spawn(collider.pos, Point.difference(collider.pos, pos).angle, vel);
+		} else {
+			spawner.spawn(pos, rotation.value, vel);
+		}
 	}
 
 	public function onInit(game: Game) {

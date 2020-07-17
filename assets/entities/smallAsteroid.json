@@ -25,6 +25,19 @@
 			}
 		},
 		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "spark.json",
+				"spawnTime": 1,
+				"angleRand": 1,
+				"velRand": 50,
+				"spawnNum": 6,
+				"isVelRelative": false,
+				"spawnVel": 150,
+				"spreadAngle": 0.5
+			}
+		},
+		{
 			"name": "damagedOnHit",
 			"params": {}
 		},

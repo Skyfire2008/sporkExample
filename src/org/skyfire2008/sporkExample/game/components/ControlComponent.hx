@@ -17,7 +17,9 @@ import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
 
 interface KBComponent {
-	function forward(time: Float): Void;
+	function startAccelerate(): Void;
+
+	function stopAccelerate(): Void;
 
 	function brake(time: Float): Void;
 
@@ -32,6 +34,8 @@ interface KBComponent {
 	function deployTurret(): Void;
 
 	function deployHeavyTurret(): Void;
+
+	function teleport(): Void;
 }
 
 class ControlComponent implements UpdateComponent implements InitComponent implements DeathComponent implements KBComponent {
@@ -43,8 +47,11 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 	private var maxAngVel: Float;
 	private var brakeMult: Float;
 	private var maxVel: Float;
+	private var mju: Float;
+	private var accelerating: Bool = false;
 
 	private var wep: Spawner;
+	private var teleSpawner: Spawner;
 	private var owner: Entity;
 	private var vel: Point;
 	private var pos: Point;
@@ -56,15 +63,15 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 
 	private var soundSrc: String;
 
-	public function new(a: Float, angA: Float, maxAngVel: Float, maxVel: Float, angBrake: Float, brakeMult: Float, soundSrc: String) {
+	public function new(a: Float, angA: Float, maxAngVel: Float, maxVel: Float, angBrake: Float, brakeMult: Float, mju: Float, soundSrc: String) {
 		this.a = a;
 		this.angA = angA;
 		this.maxAngVel = maxAngVel;
 		this.angBrake = angBrake;
 		this.brakeMult = brakeMult;
 		this.maxVel = maxVel;
+		this.mju = mju;
 
-		// assign actions
 		wep = new Spawner({
 			entityName: "playerBullet.json",
 			spawnTime: 0.5,
@@ -75,16 +82,26 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 			soundSrc: soundSrc
 		});
 
+		teleSpawner = new Spawner({
+			entityName: "teleSpark.json",
+			spawnTime: 1,
+			spawnVel: 100,
+			velRand: 200,
+			spawnNum: 30,
+			spreadAngle: 0,
+			angleRand: 2 * Math.PI,
+			isVelRelative: true
+		});
+
 		this.soundSrc = soundSrc;
 	}
 
-	public function forward(time: Float) {
-		var aVec = Point.fromPolar(rotation.value, a * time);
-		var dot = Point.dot(vel, aVec);
-		if (dot > 0) {
-			aVec.mult(1.0 - (vel.length / maxVel));
-		}
-		vel.add(aVec);
+	public function startAccelerate() {
+		accelerating = true;
+	}
+
+	public function stopAccelerate() {
+		accelerating = false;
 	}
 
 	public function brake(time: Float) {
@@ -115,8 +132,15 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		game.placeHeavyTurret(pos);
 	}
 
+	public function teleport() {
+		pos.x = Math.random() * 1280;
+		pos.y = Math.random() * 720;
+		teleSpawner.spawn(pos, rotation.value, vel);
+	}
+
 	public function onInit(game: Game) {
 		wep.init();
+		teleSpawner.init();
 		this.game = game;
 		Controller.getInstance().addComponent(this);
 	}
@@ -127,6 +151,21 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 
 	public function onUpdate(time: Float) {
 		wep.update(time, pos, rotation.value, vel);
+
+		if (accelerating) {
+			var aVec = Point.fromPolar(rotation.value, a * time);
+			var dot = Point.dot(vel, aVec);
+			if (dot > 0) {
+				aVec.mult(1.0 - (vel.length / maxVel));
+			} else {
+				// vel.mult(mju);
+			}
+			vel.add(aVec);
+		} else {
+			// vel.mult(mju);
+		}
+
+		vel.mult(mju);
 
 		if (angMult == 0 || sgn(angMult) != sgn(angVel.value)) {
 			angVel.value *= Math.pow(angBrake, 60 * time);

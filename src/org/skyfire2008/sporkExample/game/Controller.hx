@@ -16,6 +16,7 @@ typedef KeyBindings = {
 	var fire: String;
 	var deployTurret: String;
 	var deployHeavyTurret: String;
+	var teleport: String;
 	var pause: String;
 };
 
@@ -52,6 +53,10 @@ class Controller {
 		return inst;
 	}
 
+	public function reset() {
+		components = [];
+	}
+
 	public function addComponent(component: KBComponent) {
 		components.push(component);
 	}
@@ -62,11 +67,6 @@ class Controller {
 
 	public function remap(config: KeyBindings) {
 		heldActions.clear();
-		heldActions.set(config.forward, (time) -> {
-			for (component in components) {
-				component.forward(time);
-			}
-		});
 		heldActions.set(config.brake, (time) -> {
 			for (component in components) {
 				component.brake(time);
@@ -84,6 +84,11 @@ class Controller {
 		});
 
 		downActions.clear();
+		downActions.set(config.forward, () -> {
+			for (component in components) {
+				component.startAccelerate();
+			}
+		});
 		downActions.set(config.deployTurret, () -> {
 			for (component in components) {
 				component.deployTurret();
@@ -104,9 +109,19 @@ class Controller {
 		});
 
 		upActions.clear();
+		upActions.set(config.forward, () -> {
+			for (component in components) {
+				component.stopAccelerate();
+			}
+		});
 		upActions.set(config.fire, () -> {
 			for (component in components) {
 				component.stopFire();
+			}
+		});
+		upActions.set(config.teleport, () -> {
+			for (component in components) {
+				component.teleport();
 			}
 		});
 	}

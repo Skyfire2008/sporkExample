@@ -83,6 +83,25 @@ class Game {
 		this.availableTurrets = 0;
 	}
 
+	public function restart() {
+		entities = [];
+		grid.reset();
+		playerColliders = [];
+		enemyColliders = [];
+		bonusColliders = [];
+		bonusGrid.reset();
+		bonusGetterColliders = [];
+		collidersToRemove = new Map<Side, Array<Int>>();
+		collidersToRemove.set(Player, []);
+		collidersToRemove.set(Enemy, []);
+		collidersToRemove.set(Bonus, []);
+
+		lvl = 0;
+		entityCount = new Map<String, Int>();
+		currentUfoTime = 0;
+		this.availableTurrets = 0;
+	}
+
 	private static inline function getUfoNum(lvl: Int) {
 		return Std.int(Math.sqrt(lvl));
 	}
@@ -152,9 +171,13 @@ class Game {
 	 * Adds a new entity to the game
 	 * @param entity entity to add
 	 */
-	public function addEntity(entity: Entity) {
+	public function addEntity(entity: Entity, addToFront: Bool = false) {
 		entity.onInit(this);
-		entities.push(entity);
+		if (addToFront) {
+			entities.unshift(entity);
+		} else {
+			entities.push(entity);
+		}
 	}
 
 	public function addBonusGetter(collider: Collider) {

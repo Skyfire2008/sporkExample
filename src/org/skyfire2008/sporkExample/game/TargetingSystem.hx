@@ -22,6 +22,12 @@ class TargetingSystem {
 		targetDeathObservers = new Map<Int, Array<TargetDeathObserver>>();
 	}
 
+	public function reset() {
+		targetGroups.clear();
+		targetDeathObservers.clear();
+		targetObservers.clear();
+	}
+
 	public function addTargetGroupObserver(groupName: String, obs: TargetObserver) {
 		var group = targetGroups.get(groupName);
 		// if group is empty...

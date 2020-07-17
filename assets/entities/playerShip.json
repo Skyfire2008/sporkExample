@@ -31,12 +31,13 @@
 		{
 			"name": "controlComponent",
 			"params": {
-				"angA": 15,
-				"maxAngVel": 6,
-				"a": 300,
-				"maxVel": 3840,
-				"brakeMult": 0.91,
-				"angBrake": 0.7,
+				"angA": 20,
+				"maxAngVel": 5.25,
+				"a": 250,
+				"maxVel": 2000,
+				"brakeMult": 0.92,
+				"angBrake": 0.5,
+				"mju": 0.9955,
 				"soundSrc": "assets/sound/playerShoot5.wav"
 			}
 		},

@@ -40,9 +40,10 @@ class Settings {
 					brake: "KeyS",
 					left: "KeyA",
 					right: "KeyD",
-					fire: "Space",
-					deployTurret: "KeyF",
-					deployHeavyTurret: "KeyR",
+					fire: "KeyJ",
+					deployTurret: "KeyK",
+					deployHeavyTurret: "KeyL",
+					teleport: "KeyI",
 					pause: "KeyP"
 				}
 			};

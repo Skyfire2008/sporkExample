@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample;
 
+import org.skyfire2008.sporkExample.game.TargetingSystem;
+
 import haxe.DynamicAccess;
 import haxe.Json;
 import haxe.ds.StringMap;
@@ -53,6 +55,7 @@ class Main {
 	private static var scoreDisplay: Element;
 	private static var multDisplay: Element;
 	private static var bgParticleCount: InputElement;
+	private static var restartButton: Element;
 
 	private static var bgParticles: Array<Entity> = [];
 	private static var bgParticleCreator: EntityFactoryMethod;
@@ -108,17 +111,41 @@ class Main {
 		keyBindingTable = document.getElementById("keyBindingTable");
 		scoreDisplay = document.getElementById("scoreDisplay");
 		multDisplay = document.getElementById("multDisplay");
+		restartButton = document.getElementById("restartButton");
+		restartButton.addEventListener("click", (e) -> {
+			renderer.clear();
+			game.restart();
+			Controller.getInstance().reset();
+			game.addEntity(entFactories.get("playerShip.json")((holder) -> {
+				holder.position = new Point(640, 360);
+				holder.rotation = new Wrapper<Float>(0);
+				holder.velocity = new Point(0, 0);
+				holder.angVel = new Wrapper<Float>(0);
+			}));
+
+			bgParticleCreator = entFactories.get("bgParticle.json");
+			for (i in 0...Std.parseInt(bgParticleCount.value)) {
+				var ent = bgParticleCreator((holder) -> {});
+				bgParticles.push(ent);
+				game.addEntity(ent, true);
+			}
+
+			TargetingSystem.instance.reset();
+			ScoringSystem.instance.reset();
+
+			Controller.getInstance().pauseAction();
+		});
 		bgParticleCount = cast(document.getElementById("bgParticleCount"));
 		bgParticleCount.addEventListener("change", (e: Dynamic) -> {
 			var number: Int = e.target.value >= 0 ? e.target.value : 0;
 			if (number > bgParticles.length) {
 				for (i in bgParticles.length...number) {
-					var ent=bgParticleCreator((holder) -> {});
-					game.addEntity(ent);
+					var ent = bgParticleCreator((holder) -> {});
+					game.addEntity(ent, true);
 					bgParticles.push(ent);
 				}
-			}else{
-				for(i in number...bgParticles.length){
+			} else {
+				for (i in number...bgParticles.length) {
 					bgParticles[i].kill();
 				}
 				bgParticles.resize(number);

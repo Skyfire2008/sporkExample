@@ -47,7 +47,7 @@ class BgParticle implements UpdateComponent {
 		pos = new Point(640, 360);
 		while (pos.x == 640 && pos.y == 360) {
 			pos.x = Math.random() * 1280;
-			pos.y = Math.random() * 640;
+			pos.y = Math.random() * 720;
 		}
 		this.projPos = new Point();
 		calcProj();
@@ -223,6 +223,54 @@ class AnimComponent implements UpdateComponent {
 
 	public function createProps(holder: PropertyHolder) {
 		holder.colorMult = colorMult;
+	}
+}
+
+class ChangeColorMultComponent implements UpdateComponent {
+	private var owner: Entity;
+	private var mult: Wrapper<Float>;
+	private var startMult: Float;
+	private var stopMult: Float;
+	private var changeTime: Float;
+	private var totalTime: Float = 0;
+
+	public function new(startMult: Float, stopMult: Float, changeTime: Float) {
+		this.startMult = startMult;
+		this.stopMult = stopMult;
+		this.changeTime = changeTime;
+	}
+
+	public function onUpdate(time: Float) {
+		totalTime += time;
+		mult.value = startMult + (stopMult - startMult) * totalTime / changeTime;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		mult = holder.colorMult;
+	}
+}
+
+class ChangeScaleComponent implements UpdateComponent {
+	private var owner: Entity;
+	private var scale: Wrapper<Float>;
+	private var startScale: Float;
+	private var stopScale: Float;
+	private var changeTime: Float;
+	private var totalTime: Float = 0;
+
+	public function new(startScale: Float, stopScale: Float, changeTime: Float) {
+		this.startScale = startScale;
+		this.stopScale = stopScale;
+		this.changeTime = changeTime;
+	}
+
+	public function onUpdate(time: Float) {
+		totalTime += time;
+		scale.value = startScale + (stopScale - startScale) * totalTime / changeTime;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		scale = holder.scale;
 	}
 }
 
