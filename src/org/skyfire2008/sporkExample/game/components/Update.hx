@@ -18,6 +18,69 @@ interface UpdateComponent extends Component {
 	function onUpdate(time: Float): Void;
 }
 
+typedef SegmentData = {
+	var pos: Point;
+	var rotation: Float;
+}
+
+class TimeToLiveCircle implements UpdateComponent implements InitComponent {
+	private var owner: Entity;
+	private var pos: Point;
+	private var segmentNum: Int;
+	private var radius: Float;
+	private var timeToLive: Wrapper<Float>;
+	private var totalTime: Float;
+	private var colorMult = 255.0;
+
+	private var segLength: Float;
+	private var segments: Array<SegmentData>;
+
+	private static var segmentShape: Shape;
+
+	public static function setSegment(shape: Shape) {
+		segmentShape = shape;
+	}
+
+	public function new(segmentNum: Int, radius: Float) {
+		this.segmentNum = segmentNum;
+		this.radius = radius;
+	}
+
+	public function onInit(game: Game) {
+		var angle = 2 * Math.PI / segmentNum;
+		var polygonAngle = Math.PI - angle;
+		segLength = 2 * Math.sin(angle / 2) * radius;
+		segments = [];
+
+		for (i in 0...segmentNum) {
+			segments.push({
+				rotation: polygonAngle / 2 + i * angle,
+				pos: Point.fromPolar(i * angle, radius)
+			});
+		}
+	}
+
+	public function onUpdate(time: Float) {
+		if (segmentNum * timeToLive.value / totalTime < segments.length - 1) {
+			segments.shift();
+			if (segments.length == 1) {
+				colorMult = 1;
+			}
+		}
+
+		for (segment in segments) {
+			var currentPos = Point.translate(pos, segment.pos);
+			Renderer.instance.render(segmentShape, currentPos.x, currentPos.y, segment.rotation, segLength, colorMult);
+		}
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		pos = holder.position;
+		timeToLive = holder.timeToLive;
+		totalTime = timeToLive.value;
+	}
+}
+
 class BgParticle implements UpdateComponent {
 	private var owner: Entity;
 	private var scale: Wrapper<Float>;
@@ -174,14 +237,9 @@ class AnimComponent implements UpdateComponent {
 	private var curFrame: Int;
 
 	private static var shapes: StringMap<Shape>;
-	private static var renderer: Renderer;
 
 	public static function setShapes(shapes: StringMap<Shape>) {
 		AnimComponent.shapes = shapes;
-	}
-
-	public static function setRenderer(renderer: Renderer) {
-		AnimComponent.renderer = renderer;
 	}
 
 	public static function fromJson(json: Dynamic): AnimComponent {
@@ -213,7 +271,7 @@ class AnimComponent implements UpdateComponent {
 		}
 		curFrame = curFrame % frames.length;
 
-		AnimComponent.renderer.render(frames[curFrame], pos.x, pos.y, rotation.value, colorMult.value);
+		Renderer.instance.render(frames[curFrame], pos.x, pos.y, rotation.value, colorMult.value);
 	}
 
 	public function assignProps(holder: PropertyHolder) {
@@ -283,14 +341,9 @@ class RenderComponent implements UpdateComponent {
 	private var scale: Wrapper<Float>;
 
 	private static var shapes: StringMap<Shape>;
-	private static var renderer: Renderer;
 
 	public static function setShapes(shapes: StringMap<Shape>) {
 		RenderComponent.shapes = shapes;
-	}
-
-	public static function setRenderer(renderer: Renderer) {
-		RenderComponent.renderer = renderer;
 	}
 
 	/**
@@ -313,7 +366,7 @@ class RenderComponent implements UpdateComponent {
 	}
 
 	public function onUpdate(time: Float): Void {
-		RenderComponent.renderer.render(shape, pos.x, pos.y, rotation.value, scale.value, colorMult.value);
+		Renderer.instance.render(shape, pos.x, pos.y, rotation.value, scale.value, colorMult.value);
 	}
 
 	public function assignProps(holder: PropertyHolder) {

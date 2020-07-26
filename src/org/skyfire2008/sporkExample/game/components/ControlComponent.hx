@@ -153,19 +153,28 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		wep.update(time, pos, rotation.value, vel);
 
 		if (accelerating) {
-			var aVec = Point.fromPolar(rotation.value, a * time);
-			var dot = Point.dot(vel, aVec);
+			var aVec = Point.fromPolar(rotation.value, 1.0);
+			/*var velLength = vel.length;
+			var dot = Point.dot(vel, aVec) / velLength;
 			if (dot > 0) {
-				aVec.mult(1.0 - (vel.length / maxVel));
+				var mult = dot * (1.0 - (velLength / maxVel)) + (1.0 - dot);
+				aVec.mult(mult);
 			} else {
 				// vel.mult(mju);
-			}
+			}*/
+
+			aVec.mult(a * time);
+
 			vel.add(aVec);
 		} else {
 			// vel.mult(mju);
 		}
 
 		vel.mult(mju);
+		var velLength = vel.length;
+		if(vel.length>maxVel){
+			vel.mult(maxVel/velLength);
+		}
 
 		if (angMult == 0 || sgn(angMult) != sgn(angVel.value)) {
 			angVel.value *= Math.pow(angBrake, 60 * time);

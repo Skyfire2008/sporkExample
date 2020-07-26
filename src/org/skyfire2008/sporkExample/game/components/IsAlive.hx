@@ -3,6 +3,7 @@ package org.skyfire2008.sporkExample.game.components;
 import spork.core.PropertyHolder;
 import spork.core.Component;
 import spork.core.Entity;
+import spork.core.Wrapper;
 
 import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.components.Init;
@@ -67,23 +68,33 @@ class AlwaysAlive implements IsAliveComponent {
 }
 
 class TimedComponent implements IsAliveComponent implements UpdateComponent {
-	private var time: Float;
+	private var maxTime: Float;
+	private var timeToLive: Wrapper<Float>;
 	private var owner: Entity;
 
 	public function new(time: Float) {
-		this.time = time;
+		this.maxTime = time;
+		this.timeToLive = new Wrapper<Float>(time);
+	}
+
+	public function clone() {
+		return new TimedComponent(maxTime);
 	}
 
 	public function isAlive(): Bool {
-		return time > 0;
+		return timeToLive.value > 0;
 	}
 
 	public function kill() {
-		time = 0;
+		timeToLive.value = 0;
 	}
 
 	public function onUpdate(time: Float) {
-		this.time -= time;
+		this.timeToLive.value -= time;
+	}
+
+	public function createProps(holder: PropertyHolder) {
+		holder.timeToLive = this.timeToLive;
 	}
 }
 
@@ -105,8 +116,8 @@ class HpComponent implements IsAliveComponent implements DamageComponent {
 
 	public function heal(dmg: Int) {
 		health.hp += dmg;
-		if(health.hp>health.maxHp){
-			health.hp=health.maxHp;
+		if (health.hp > health.maxHp) {
+			health.hp = health.maxHp;
 		}
 	}
 

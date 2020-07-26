@@ -43,6 +43,13 @@
 				"on": "Hit",
 				"soundSrc": "assets/sound/powerup.wav"
 			}
+		},
+		{
+			"name": "timeToLiveCircle",
+			"params": {
+				"radius": 12.5,
+				"segmentNum": 8
+			}
 		}
 	]
 }

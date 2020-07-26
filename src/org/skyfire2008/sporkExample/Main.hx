@@ -1,5 +1,6 @@
 package org.skyfire2008.sporkExample;
 
+import org.skyfire2008.sporkExample.game.components.Update.TimeToLiveCircle;
 import org.skyfire2008.sporkExample.game.TargetingSystem;
 
 import haxe.DynamicAccess;
@@ -113,6 +114,9 @@ class Main {
 		multDisplay = document.getElementById("multDisplay");
 		restartButton = document.getElementById("restartButton");
 		restartButton.addEventListener("click", (e) -> {
+			TargetingSystem.instance.reset();
+			ScoringSystem.instance.reset();
+
 			renderer.clear();
 			game.restart();
 			Controller.getInstance().reset();
@@ -129,9 +133,6 @@ class Main {
 				bgParticles.push(ent);
 				game.addEntity(ent, true);
 			}
-
-			TargetingSystem.instance.reset();
-			ScoringSystem.instance.reset();
 
 			Controller.getInstance().pauseAction();
 		});
@@ -193,9 +194,9 @@ class Main {
 				// when shaders are loaded, set the shapes for render component and init the renderer
 				RenderComponent.setShapes(shapes);
 				AnimComponent.setShapes(shapes);
+				TimeToLiveCircle.setSegment(shapes.get("segment.json"));
 				renderer = new Renderer(gl, shaders[0], shaders[1]);
-				RenderComponent.setRenderer(renderer);
-				AnimComponent.setRenderer(renderer);
+				Renderer.setInstance(renderer);
 				return;
 			}));
 
@@ -303,7 +304,6 @@ class Main {
 				});
 
 				renderer.start();
-				renderer.render(shapes.get("smallAsteroid.json"), 120, 120, 0, 1);
 			});
 		});
 	}

@@ -21,7 +21,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 10
+				"hp": 5
 			}
 		},
 		{
@@ -32,10 +32,10 @@
 			"name": "controlComponent",
 			"params": {
 				"angA": 20,
-				"maxAngVel": 5.25,
-				"a": 250,
+				"maxAngVel": 5,
+				"a": 200,
 				"maxVel": 2000,
-				"brakeMult": 0.92,
+				"brakeMult": 0.93,
 				"angBrake": 0.5,
 				"mju": 0.9955,
 				"soundSrc": "assets/sound/playerShoot5.wav"

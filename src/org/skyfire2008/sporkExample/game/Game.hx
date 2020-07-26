@@ -103,11 +103,11 @@ class Game {
 	}
 
 	private static inline function getUfoNum(lvl: Int) {
-		return Std.int(Math.sqrt(lvl));
+		return Std.int(Math.pow(lvl, 5 / 12));
 	}
 
 	private static inline function getUfoSpawnInterval(lvl: Int) {
-		return 5 + 5 / Math.sqrt(lvl);
+		return 7.5 + 7.5 / Math.sqrt(lvl);
 	}
 
 	private static inline function getSmallAsteroidNum(lvl: Int): Int {
@@ -115,7 +115,7 @@ class Game {
 	}
 
 	private static inline function getMediumAsteroidNum(lvl: Int): Int {
-		return Std.int(4 + lvl / 2);
+		return Std.int(5 + lvl / 4);
 	}
 
 	public function placeTurret(pos: Point) {
@@ -303,7 +303,7 @@ class Game {
 						holder.position.y = 720 * Math.random();
 					}
 
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 80);
+					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 50);
 
 					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
 					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));
@@ -325,7 +325,7 @@ class Game {
 						holder.position.y = 720 * Math.random();
 					}
 
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 40);
+					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 20);
 
 					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
 					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));

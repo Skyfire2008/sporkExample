@@ -18,4 +18,5 @@ class MyHolder {
 	public var colorMult: Wrapper<Float>;
 	public var scale: Wrapper<Float>;
 	public var turretNum: Wrapper<Int>;
+	public var timeToLive: Wrapper<Float>;
 }

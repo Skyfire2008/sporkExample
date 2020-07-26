@@ -48,10 +48,10 @@
 				"entityName": "smallAsteroid.json",
 				"spawnTime": 1,
 				"angleRand": 1,
-				"velRand": 50,
+				"velRand": 25,
 				"spawnNum": 3,
 				"isVelRelative": true,
-				"spawnVel": 100,
+				"spawnVel": 50,
 				"spreadAngle": 2.1
 			}
 		},

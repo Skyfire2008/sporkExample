@@ -7,8 +7,6 @@ import js.html.webgl.extension.OESVertexArrayObject;
 import js.html.webgl.Shader;
 import js.html.webgl.UniformLocation;
 
-import org.skyfire2008.sporkExample.geom.Point;
-
 // adapted from TDS
 class Renderer {
 	public var gl(default, null): RenderingContext;
@@ -19,6 +17,12 @@ class Renderer {
 	private var posLoc: UniformLocation;
 	private var scaleLoc: UniformLocation;
 	private var colorMultLoc: UniformLocation;
+
+	public static var instance(default, null): Renderer;
+
+	public static function setInstance(instance: Renderer) {
+		Renderer.instance = instance;
+	}
 
 	public function new(gl: RenderingContext, vertSrc: String, fragSrc: String) {
 		this.gl = gl;
