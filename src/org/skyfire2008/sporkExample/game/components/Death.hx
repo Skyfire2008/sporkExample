@@ -26,6 +26,21 @@ enum On {
 	Hit;
 }
 
+class GameOverOnDeath implements DeathComponent {
+	private var owner: Entity;
+	private static var callback: () -> Void;
+
+	public static function init(callback: () -> Void) {
+		GameOverOnDeath.callback = callback;
+	}
+
+	public function new() {}
+
+	public function onDeath() {
+		callback();
+	}
+}
+
 class AddScoreOnDeath implements DeathComponent {
 	private var owner: Entity;
 	private var score: Int;

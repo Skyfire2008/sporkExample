@@ -33,7 +33,7 @@
 			"params": {
 				"angA": 20,
 				"maxAngVel": 5,
-				"a": 200,
+				"a": 225,
 				"maxVel": 2000,
 				"brakeMult": 0.93,
 				"angBrake": 0.5,
@@ -75,6 +75,10 @@
 		},
 		{
 			"name": "resetMultOnHit",
+			"params": {}
+		},
+		{
+			"name": "gameOverOnDeath",
 			"params": {}
 		}
 	]

@@ -79,16 +79,19 @@
 			<div id="scoreDisplay" class="display" style="left:90px; top: 670px;">0</div>
 			<div class="display" class="display" style="left:10px; top: 690px;">Mult:</div>
 			<div id="multDisplay" class="display" style="left:90px; top: 690px;">x1</div>
-
-			<div id="gameOverDisplay" class="display" style="display: none; font-size: 72px; left: 450px; top: 300px">
-				Game Over</div>
 		</div>
-		<div id="pauseStuff" style="display: none; left: 400px; top: 200px">
+		<div id="pauseStuff" style="display: none; left: 400px; top: 250px">
 			<table id="keyBindingTable"></table>
 			<label for="bgParticleCount">Background particle number:</label>
 			<input id="bgParticleCount" type="number" value="1000" min="0"></input>
 			<br />
-			<button id="restartButton">Restart!</button>
+		</div>
+		<div id="gameOverStuff" style="display: none">
+			<div class="display" style="font-size: 72px; left: 450px; top: 100px">
+				Game Over</div>
+			<div id="gameOverMessage" class="display" style="left: 450px; top: 180px"></div>
+			<button id="restartButton"
+				style="font-size: 20px; position: absolute; left: 600px; top: 210px">Restart!</button>
 		</div>
 	</div>
 </body>

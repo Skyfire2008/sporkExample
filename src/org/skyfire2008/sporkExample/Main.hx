@@ -38,7 +38,7 @@ import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
-import org.skyfire2008.sporkExample.game.components.Death.CountedOnScreen;
+import org.skyfire2008.sporkExample.game.components.Death.GameOverOnDeath;
 
 using Lambda;
 
@@ -57,6 +57,9 @@ class Main {
 	private static var multDisplay: Element;
 	private static var bgParticleCount: InputElement;
 	private static var restartButton: Element;
+
+	private static var gameOverStuff: Element;
+	private static var gameOverMessage: Element;
 
 	private static var bgParticles: Array<Entity> = [];
 	private static var bgParticleCreator: EntityFactoryMethod;
@@ -113,6 +116,8 @@ class Main {
 		scoreDisplay = document.getElementById("scoreDisplay");
 		multDisplay = document.getElementById("multDisplay");
 		restartButton = document.getElementById("restartButton");
+		gameOverStuff = document.getElementById("gameOverStuff");
+		gameOverMessage = document.getElementById("gameOverMessage");
 		restartButton.addEventListener("click", (e) -> {
 			TargetingSystem.instance.reset();
 			ScoringSystem.instance.reset();
@@ -128,13 +133,15 @@ class Main {
 			}));
 
 			bgParticleCreator = entFactories.get("bgParticle.json");
+			bgParticles = [];
 			for (i in 0...Std.parseInt(bgParticleCount.value)) {
 				var ent = bgParticleCreator((holder) -> {});
 				bgParticles.push(ent);
 				game.addEntity(ent, true);
 			}
 
-			Controller.getInstance().pauseAction();
+			// hide game over message
+			gameOverStuff.style.display = "none";
 		});
 		bgParticleCount = cast(document.getElementById("bgParticleCount"));
 		bgParticleCount.addEventListener("change", (e: Dynamic) -> {
@@ -151,6 +158,12 @@ class Main {
 				}
 				bgParticles.resize(number);
 			}
+		});
+
+		GameOverOnDeath.init(() -> {
+			ScoringSystem.instance.freeze();
+			gameOverStuff.style.display = "inline";
+			gameOverMessage.innerText = 'You have reached ${ScoringSystem.instance.score} points with a maximum multiplier of ${ScoringSystem.instance.maxMult}';
 		});
 
 		ScoringSystem.init((score) -> {

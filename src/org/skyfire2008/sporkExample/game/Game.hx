@@ -99,7 +99,8 @@ class Game {
 		lvl = 0;
 		entityCount = new Map<String, Int>();
 		currentUfoTime = 0;
-		this.availableTurrets = 0;
+		availableTurrets = 0;
+		turretCallback(availableTurrets);
 	}
 
 	private static inline function getUfoNum(lvl: Int) {

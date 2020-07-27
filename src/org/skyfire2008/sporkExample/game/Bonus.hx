@@ -51,26 +51,26 @@ class AbstractBonus implements Bonus {
 	}
 }
 
-class TurretBonus implements Bonus{
+class TurretBonus implements Bonus {
 	private static var game: Game;
 
-	public static function setup(game: Game){
-		TurretBonus.game=game;
+	public static function setup(game: Game) {
+		TurretBonus.game = game;
 	}
 
-	public function new(){}
+	public function new() {}
 
-	public function apply(target: Entity){
+	public function apply(target: Entity) {
 		game.pickUpTurret();
 	}
 
-	public function isAlive(): Bool{
+	public function isAlive(): Bool {
 		return false;
 	}
 
-	public function revert(target: Entity){}
+	public function revert(target: Entity) {}
 
-	public function update(time: Float){}
+	public function update(time: Float) {}
 }
 
 class HpBonus implements Bonus {

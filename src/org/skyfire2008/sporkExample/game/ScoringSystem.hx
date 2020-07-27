@@ -5,12 +5,14 @@ class ScoringSystem {
 
 	public var score(default, null): Int;
 	public var mult(default, null): Int;
+	public var maxMult(default, null): Int;
 	public var nextMultPoints(default, null): Float;
 	public var multPoints(default, null): Float;
 
 	private var scoreCallback: (Int) -> Void;
 	private var multCallback: (Int) -> Void;
 	private var multDecayTime(default, null): Float;
+	private var running: Bool = true;
 
 	public static function init(scoreCallback: (Int) -> Void, multCallback: (Int) -> Void, multDecayTime: Float) {
 		ScoringSystem.instance = new ScoringSystem(scoreCallback, multCallback, multDecayTime);
@@ -22,34 +24,42 @@ class ScoringSystem {
 		this.multDecayTime = multDecayTime;
 		score = 0;
 		mult = 1;
+		maxMult = 1;
 		multPoints = 0;
 		nextMultPoints = calcNextMultPoints(mult);
 	}
 
 	public function update(time: Float) {
-		multPoints -= time / multDecayTime * nextMultPoints;
-		if (multPoints < 0) {
-			mult--;
-			if (mult < 1) {
-				mult = 1;
-			}
-			nextMultPoints = calcNextMultPoints(mult);
-			multPoints += nextMultPoints;
+		if (running) {
+			multPoints -= time / multDecayTime * nextMultPoints;
+			if (multPoints < 0) {
+				mult--;
+				if (mult < 1) {
+					mult = 1;
+				}
+				nextMultPoints = calcNextMultPoints(mult);
+				multPoints += nextMultPoints;
 
-			multCallback(mult);
+				multCallback(mult);
+			}
 		}
 	}
 
 	public function addScore(extraScore: Int) {
-		score += extraScore * mult;
-		multPoints += extraScore;
-		while (multPoints > nextMultPoints) {
-			multPoints -= nextMultPoints;
-			mult++;
-			multCallback(mult);
-			nextMultPoints = calcNextMultPoints(mult);
+		if (running) {
+			score += extraScore * mult;
+			multPoints += extraScore;
+			while (multPoints > nextMultPoints) {
+				multPoints -= nextMultPoints;
+				mult++;
+				if (mult > maxMult) {
+					maxMult = mult;
+				}
+				multCallback(mult);
+				nextMultPoints = calcNextMultPoints(mult);
+			}
+			scoreCallback(score);
 		}
-		scoreCallback(score);
 	}
 
 	public function resetMult() {
@@ -61,11 +71,15 @@ class ScoringSystem {
 
 	public function reset() {
 		resetMult();
+		maxMult = 1;
 		score = 0;
+		running = true;
+		multCallback(mult);
+		scoreCallback(score);
 	}
 
 	public function freeze() {
-		// here's an idea: replace instance with another implementation of ScoringSystem, whose methods are just empty
+		running = false;
 	}
 
 	private static function calcNextMultPoints(mult: Int): Float {
