@@ -1,0 +1,33 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "alwaysAlive",
+			"params": {}
+		},
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 0.3
+			}
+		},
+		{
+			"name": "changeScaleComponent",
+			"params": {
+				"startScale": 16,
+				"stopScale": 0,
+				"changeTime": 0.3
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "spark2.json"
+			}
+		}
+	]
+}

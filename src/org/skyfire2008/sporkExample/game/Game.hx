@@ -119,6 +119,32 @@ class Game {
 		return Std.int(5 + lvl / 4);
 	}
 
+	private static inline function spawnAsteroid(creationFunc: EntityFactoryMethod, speed: Float, angVel: Float): Entity {
+		return creationFunc((holder) -> {
+			holder.position = new Point();
+
+			if (Std.random(2) == 0) {
+				holder.position.x = 1280 * Math.random();
+			} else {
+				holder.position.y = 720 * Math.random();
+			}
+
+			holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, speed);
+
+			holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
+			holder.angVel = new Wrapper<Float>(angVel * 2 * (Math.random() - 0.5));
+		});
+	}
+
+	private static inline function spawnUfo(creationFunc: EntityFactoryMethod, avgSpeed: Float, varSpeed: Float): Entity {
+		return creationFunc((holder) -> {
+			holder.position = new Point(0, Math.random() * 720);
+			holder.velocity = new Point((avgSpeed + Math.random() * varSpeed) * (Std.random(2) * 2 - 1), 0);
+			holder.rotation = new Wrapper<Float>(0);
+			holder.angVel = new Wrapper<Float>(0);
+		});
+	}
+
 	public function placeTurret(pos: Point) {
 		if (availableTurrets > 0) {
 			var ent = createTurret((holder) -> {
@@ -295,20 +321,7 @@ class Game {
 			lvl++;
 			waveCallback(lvl);
 			for (i in 0...getSmallAsteroidNum(lvl)) {
-				var ent = createSmallAsteroid((holder) -> {
-					holder.position = new Point();
-
-					if (Std.random(2) == 0) {
-						holder.position.x = 1280 * Math.random();
-					} else {
-						holder.position.y = 720 * Math.random();
-					}
-
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 50);
-
-					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
-					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));
-				});
+				var ent = spawnAsteroid(createSmallAsteroid, 50, Math.PI);
 				this.addEntity(ent);
 			}
 
@@ -317,20 +330,7 @@ class Game {
 				if (Math.sqrt(Math.random()) < lvl / 100.0) {
 					creationFunc = createHardAsteroid;
 				}
-				var ent = creationFunc((holder) -> {
-					holder.position = new Point();
-
-					if (Std.random(2) == 0) {
-						holder.position.x = 1280 * Math.random();
-					} else {
-						holder.position.y = 720 * Math.random();
-					}
-
-					holder.velocity = Point.fromPolar(Math.random() * Math.PI * 2, 20);
-
-					holder.rotation = new Wrapper<Float>(2 * Math.PI * Math.random());
-					holder.angVel = new Wrapper<Float>(Math.PI * (Math.random() - 0.5));
-				});
+				var ent = spawnAsteroid(creationFunc, 20, Math.PI / 2);
 				this.addEntity(ent);
 			}
 		}
@@ -345,17 +345,10 @@ class Game {
 				for (i in 0...maxSpawnNum) {
 					var creator = createUfo;
 					if (Math.random() < 1.0 - 25.0 / (getCount("Turret") + 1)) {
-						creator = createHeavyUfo;
+						this.addEntity(spawnUfo(createHeavyUfo, 75, 15));
+					} else {
+						this.addEntity(spawnUfo(createUfo, 125, 25));
 					}
-
-					var ent = creator((holder) -> {
-						holder.position = new Point(0, Math.random() * 720);
-						holder.velocity = new Point((150 + Math.random() * 50) * (Std.random(2) * 2 - 1), 0);
-						holder.rotation = new Wrapper<Float>(0);
-						holder.angVel = new Wrapper<Float>(0);
-					});
-
-					this.addEntity(ent);
 				}
 			}
 		}
