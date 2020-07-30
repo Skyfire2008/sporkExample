@@ -96,16 +96,14 @@ class BgParticle implements UpdateComponent {
 	private var startZ: Float;
 	private var minVel: Float;
 	private var maxVel: Float;
-	private var trailLength: Float;
 
-	public function new(focalLength: Float, startZ: Float, minVel: Float, maxVel: Float, trailLength: Float) {
+	public function new(focalLength: Float, startZ: Float, minVel: Float, maxVel: Float) {
 		this.focalLength = focalLength;
 		this.startZ = startZ;
 		this.minVel = minVel;
 		this.maxVel = maxVel;
-		this.trailLength = trailLength;
 
-		z = startZ;
+		z = Math.random() * startZ;
 		zVel = minVel + Math.random() * (maxVel - minVel);
 		pos = new Point(640, 360);
 		while (pos.x == 640 && pos.y == 360) {
@@ -129,17 +127,17 @@ class BgParticle implements UpdateComponent {
 	}
 
 	public function onUpdate(time: Float) {
-		if (z <= 0 || projPos.x > 1280 || projPos.x < 0 || projPos.y > 720 || projPos.y < 0) {
+		if (z <= -focalLength || projPos.x > 1280 || projPos.x < 0 || projPos.y > 720 || projPos.y < 0) {
 			z = startZ;
 			calcProj();
 		}
 
-		z -= zVel;
+		z -= zVel * time;
 		var prevProj = projPos.copy();
 		calcProj();
 		prevProj.sub(projPos);
-		scale.value = Math.max(trailLength * prevProj.length, 1.0);
-		colorMult.value = (startZ - z) / startZ;
+		scale.value = Math.max(prevProj.length, 1.0);
+		colorMult.value = Math.min((startZ - z) / startZ, 1.0);
 	}
 
 	private inline function calcProj() {

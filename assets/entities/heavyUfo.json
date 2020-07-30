@@ -22,7 +22,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 5
+				"hp": 7
 			}
 		},
 		{
@@ -64,7 +64,7 @@
 					"spawnTime": 5,
 					"spawnNum": 1,
 					"spawnVel": 200,
-					"soundSrc": "assets/sound/enemyShoot.wav"
+					"soundSrc": "assets/sound/enemyShootHeavy.wav"
 				},
 				"group": "Player",
 				"aimsAtClosest": false

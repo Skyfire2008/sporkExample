@@ -33,8 +33,8 @@
 			"params": {
 				"angA": 20,
 				"maxAngVel": 5,
-				"a": 225,
-				"maxVel": 2000,
+				"a": 210,
+				"maxVel": 2100,
 				"brakeMult": 0.93,
 				"angBrake": 0.5,
 				"mju": 0.9955,

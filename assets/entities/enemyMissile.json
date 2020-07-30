@@ -46,6 +46,13 @@
 			}
 		},
 		{
+			"name": "makeSound",
+			"params": {
+				"on": "Death",
+				"soundSrc": "assets/sound/explosion4.wav"
+			}
+		},
+		{
 			"name": "bounceOnHit",
 			"params": {}
 		}

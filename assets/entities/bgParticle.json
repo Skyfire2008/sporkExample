@@ -8,11 +8,10 @@
 		{
 			"name": "bgParticle",
 			"params": {
-				"trailLength": 5,
-				"maxVel": 4,
-				"minVel": 1,
-				"startZ": 1000,
-				"focalLength": 200
+				"maxVel": 210,
+				"minVel": 60,
+				"startZ": 100,
+				"focalLength": 400
 			}
 		},
 		{
