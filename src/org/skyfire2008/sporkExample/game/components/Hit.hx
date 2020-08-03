@@ -1,14 +1,12 @@
 package org.skyfire2008.sporkExample.game.components;
 
-import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
-import org.skyfire2008.sporkExample.game.Bonus.HpBonus;
-
 import haxe.ds.StringMap;
 
 import spork.core.Component;
 import spork.core.PropertyHolder;
 import spork.core.Entity;
 import spork.core.Wrapper;
+import spork.core.JsonLoader.EntityFactoryMethod;
 
 import org.skyfire2008.sporkExample.game.components.Init;
 import org.skyfire2008.sporkExample.game.components.Update;
@@ -19,12 +17,43 @@ import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.game.Bonus.ExplodeShot;
 import org.skyfire2008.sporkExample.game.Bonus.DoubleFirerate;
 import org.skyfire2008.sporkExample.game.Bonus.TripleShot;
+import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
+import org.skyfire2008.sporkExample.game.Bonus.HpBonus;
 
 using org.skyfire2008.sporkExample.geom.Point;
 
 interface HitComponent extends Component {
 	@callback
 	function onHit(collider: Collider): Void;
+}
+
+class SpawnsHealthShip implements HitComponent {
+	private var owner: Entity;
+	private var health: Health;
+	private static var game: Game;
+	private static var healthShipSpawnFunc: EntityFactoryMethod;
+
+	public static function init(game: Game, healthShipSpawnFunc: EntityFactoryMethod) {
+		SpawnsHealthShip.game = game;
+		SpawnsHealthShip.healthShipSpawnFunc = healthShipSpawnFunc;
+	}
+
+	public function new() {}
+
+	public function onHit(collider: Collider) {
+		if (health.hp == 1 && game.getCount("HealthShip") == 0) {
+			game.addEntity(healthShipSpawnFunc((holder) -> {
+				holder.position = new Point(0, 360);
+				holder.velocity = new Point(100, 0);
+				holder.rotation = new Wrapper<Float>(0);
+				holder.angVel = new Wrapper<Float>(0);
+			}));
+		}
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		health = holder.health;
+	}
 }
 
 class ResetMultOnHit implements HitComponent {

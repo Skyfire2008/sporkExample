@@ -47,7 +47,7 @@
 				"rotates": true,
 				"wep": {
 					"entityName": "missile.json",
-					"spawnTime": 1.5,
+					"spawnTime": 2,
 					"spawnNum": 1,
 					"spawnVel": 400,
 					"soundSrc": "assets/sound/playerShoot6.wav"

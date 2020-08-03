@@ -80,6 +80,10 @@
 		{
 			"name": "gameOverOnDeath",
 			"params": {}
+		},
+		{
+			"name": "spawnsHealthShip",
+			"params": {}
 		}
 	]
 }

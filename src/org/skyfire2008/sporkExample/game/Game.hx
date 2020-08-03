@@ -41,6 +41,7 @@ class Game {
 	private var createTurret: EntityFactoryMethod;
 	private var createHeavyTurret: EntityFactoryMethod;
 	private var lvl: Int;
+	private var spawnDelay: Float;
 	private var entityCount: Map<String, Int>;
 	private var currentUfoTime: Float;
 
@@ -66,6 +67,7 @@ class Game {
 		collidersToRemove.set(Bonus, []);
 
 		lvl = 0;
+		spawnDelay = 0;
 		entityCount = new Map<String, Int>();
 		currentUfoTime = 0;
 		createMediumAsteroid = factoryFuncs.get("mediumAsteroid.json");
@@ -318,20 +320,25 @@ class Game {
 
 		// update level and spawn new asteroids
 		if (getCount("Asteroid") <= 0) {
-			lvl++;
-			waveCallback(lvl);
-			for (i in 0...getSmallAsteroidNum(lvl)) {
-				var ent = spawnAsteroid(createSmallAsteroid, 50, Math.PI);
-				this.addEntity(ent);
-			}
-
-			for (i in 0...getMediumAsteroidNum(lvl)) {
-				var creationFunc = createMediumAsteroid;
-				if (Math.sqrt(Math.random()) < lvl / 100.0) {
-					creationFunc = createHardAsteroid;
+			if (spawnDelay < 1) { // 1 sec delay before spawning
+				spawnDelay += time;
+			} else {
+				spawnDelay = 0;
+				lvl++;
+				waveCallback(lvl);
+				for (i in 0...getSmallAsteroidNum(lvl)) {
+					var ent = spawnAsteroid(createSmallAsteroid, 50, Math.PI);
+					this.addEntity(ent);
 				}
-				var ent = spawnAsteroid(creationFunc, 20, Math.PI / 2);
-				this.addEntity(ent);
+
+				for (i in 0...getMediumAsteroidNum(lvl)) {
+					var creationFunc = createMediumAsteroid;
+					if (Math.sqrt(Math.random()) < lvl / 100.0) {
+						creationFunc = createHardAsteroid;
+					}
+					var ent = spawnAsteroid(creationFunc, 20, Math.PI / 2);
+					this.addEntity(ent);
+				}
 			}
 		}
 

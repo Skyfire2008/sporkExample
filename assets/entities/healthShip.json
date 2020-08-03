@@ -1,0 +1,96 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "countedOnScreen",
+			"params": {
+				"count": 1,
+				"group": "HealthShip"
+			}
+		},
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 3
+			}
+		},
+		{
+			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "hitSpawnComponent",
+			"params": {
+				"spawnAtCollider": true,
+				"entityName": "spark2.json",
+				"spawnTime": 1,
+				"angleRand": 0.5,
+				"velRand": 100,
+				"spawnNum": 2,
+				"isVelRelative": true,
+				"spawnVel": 250,
+				"spreadAngle": 0.1
+			}
+		},
+		{
+			"name": "sineMovement",
+			"params": {
+				"amplitude": 20,
+				"length": 2560
+			}
+		},
+		{
+			"name": "animComponent",
+			"params": {
+				"frameTime": 0.25,
+				"shapeRefs": [
+					"heavyUfo1.json",
+					"heavyUfo2.json"
+				]
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 30
+			}
+		},
+		{
+			"name": "addScoreOnDeath",
+			"params": {
+				"score": 5
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "spark2.json",
+				"spawnTime": 1,
+				"angleRand": 1,
+				"velRand": 50,
+				"spawnNum": 6,
+				"isVelRelative": false,
+				"spawnVel": 200,
+				"spreadAngle": 0.5
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "hpBonus.json",
+				"spawnTime": 1,
+				"angleRand": 0,
+				"velRand": 0,
+				"spawnNum": 2,
+				"isVelRelative": false,
+				"spawnVel": 0,
+				"spreadAngle": 0
+			}
+		}
+	]
+}

@@ -35,6 +35,7 @@ import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Controller;
 import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
+import org.skyfire2008.sporkExample.game.components.Hit.SpawnsHealthShip;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
@@ -240,6 +241,7 @@ class Main {
 						entFactories.get("hpBonus.json")
 					], [2, 3, 5, 5, 4]);
 					TurretBonus.setup(game);
+					SpawnsHealthShip.init(game, entFactories.get("healthShip.json"));
 
 					// add bg particles
 					bgParticleCreator = entFactories.get("bgParticle.json");
