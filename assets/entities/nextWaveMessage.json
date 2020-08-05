@@ -1,0 +1,25 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 2
+			}
+		},
+		{
+			"name": "changeColorMultComponent",
+			"params": {
+				"startMult": 1,
+				"stopMult": 0,
+				"changeTime": 2
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "nextWaveMessage.json"
+			}
+		}
+	]
+}

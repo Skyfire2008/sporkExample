@@ -40,6 +40,7 @@ class Game {
 	private var createHeavyUfo: EntityFactoryMethod;
 	private var createTurret: EntityFactoryMethod;
 	private var createHeavyTurret: EntityFactoryMethod;
+	private var createNextWaveMessage: EntityFactoryMethod;
 	private var lvl: Int;
 	private var spawnDelay: Float;
 	private var entityCount: Map<String, Int>;
@@ -77,6 +78,7 @@ class Game {
 		createHeavyUfo = factoryFuncs.get("heavyUfo.json");
 		createTurret = factoryFuncs.get("turret.json");
 		createHeavyTurret = factoryFuncs.get("heavyTurret.json");
+		createNextWaveMessage = factoryFuncs.get("nextWaveMessage.json");
 
 		this.playerHpCallback = playerHpCallback;
 		this.waveCallback = waveCallback;
@@ -320,7 +322,14 @@ class Game {
 
 		// update level and spawn new asteroids
 		if (getCount("Asteroid") <= 0) {
-			if (spawnDelay < 1) { // 1 sec delay before spawning
+			if (spawnDelay < 2) { // 2 sec delay before spawning
+				if (spawnDelay == 0) {
+					addEntity(createNextWaveMessage((holder) -> {
+						holder.position = new Point(640, 360);
+						holder.angVel = new Wrapper<Float>(0);
+						holder.rotation = new Wrapper<Float>(0);
+					}));
+				}
 				spawnDelay += time;
 			} else {
 				spawnDelay = 0;

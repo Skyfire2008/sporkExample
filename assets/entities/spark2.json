@@ -6,10 +6,6 @@
 			"params": {}
 		},
 		{
-			"name": "alwaysAlive",
-			"params": {}
-		},
-		{
 			"name": "timedComponent",
 			"params": {
 				"time": 0.3
