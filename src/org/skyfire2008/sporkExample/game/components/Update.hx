@@ -23,6 +23,47 @@ typedef SegmentData = {
 	var rotation: Float;
 }
 
+class Blink implements UpdateComponent {
+	private var owner: Entity;
+	private var func: (time: Float) -> Float;
+	private var colorMult: Wrapper<Float>;
+	private var totalTime: Float = 0;
+
+	private static function sine(phase: Float, length: Float, min: Float, max: Float, time: Float) {
+		var lenMult = 2 * Math.PI / length;
+		var result = -Math.cos(time * lenMult + phase);
+		return min + (max - min) * (result + 1) / 2;
+	}
+
+	public static function fromJson(json: Dynamic): Blink {
+		switch (json.form) {
+			case "Sine":
+				return new Blink(Blink.sine.bind(json.phase, json.length, json.min, json.max));
+			default:
+				throw 'No such waveform as ${json.form}!';
+				return null;
+		}
+	}
+
+	public function new(func: (time: Float) -> Float) {
+		this.func = func;
+	}
+
+	public function clone() {
+		return new Blink(func);
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		colorMult = holder.colorMult;
+	}
+
+	public function onUpdate(time: Float) {
+		totalTime += time;
+		colorMult.value = func(totalTime);
+		trace(totalTime + ": " + colorMult.value);
+	}
+}
+
 class TimeToLiveCircle implements UpdateComponent implements InitComponent {
 	private var owner: Entity;
 	private var pos: Point;

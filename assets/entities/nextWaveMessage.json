@@ -2,23 +2,25 @@
 	"properties": {},
 	"components": [
 		{
-			"name": "timedComponent",
+			"name": "blink",
 			"params": {
-				"time": 2
-			}
-		},
-		{
-			"name": "changeColorMultComponent",
-			"params": {
-				"startMult": 1,
-				"stopMult": 0,
-				"changeTime": 2
+				"form": "Sine",
+				"phase": 0.25,
+				"min": 0,
+				"max": 1,
+				"length": 0.5
 			}
 		},
 		{
 			"name": "renderComponent",
 			"params": {
 				"shapeRef": "nextWaveMessage.json"
+			}
+		},
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 2
 			}
 		}
 	]

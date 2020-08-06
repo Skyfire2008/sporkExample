@@ -18,6 +18,7 @@ import js.html.TableElement;
 import js.html.InputElement;
 import js.html.Event;
 import js.html.webgl.RenderingContext;
+import js.html.webgl.GL;
 
 import spork.core.Entity;
 import spork.core.JsonLoader;
@@ -177,6 +178,8 @@ class Main {
 		if (gl == null) {
 			Browser.alert("WebGL is not supported!");
 		}
+		gl.enable(GL.BLEND);
+		gl.blendFunc(GL.ONE, GL.ONE);
 
 		// load assets
 		var loadPromises: Array<Promise<Void>> = [];
