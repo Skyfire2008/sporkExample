@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample.game.components;
 
+import org.skyfire2008.sporkExample.game.Bonus.MagnetBonus;
+
 import haxe.ds.StringMap;
 
 import spork.core.Component;
@@ -204,6 +206,9 @@ class ApplyBonus implements HitComponent {
 		},
 		"turret" => () -> {
 			return new TurretBonus();
+		},
+		"magnetBonus" => () -> {
+			return new MagnetBonus();
 		}
 	];
 	private var func: () -> Bonus;

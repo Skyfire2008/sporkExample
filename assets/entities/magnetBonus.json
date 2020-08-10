@@ -15,19 +15,19 @@
 		{
 			"name": "applyBonus",
 			"params": {
-				"bonusName": "hpBonus"
+				"bonusName": "magnetBonus"
 			}
 		},
 		{
 			"name": "timedComponent",
 			"params": {
-				"time": 60
+				"time": 20
 			}
 		},
 		{
 			"name": "renderComponent",
 			"params": {
-				"shapeRef": "hpBonus.json"
+				"shapeRef": "magnet.json"
 			}
 		},
 		{

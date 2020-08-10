@@ -84,7 +84,7 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 0.3
+				"prob": 0.4
 			}
 		},
 		{

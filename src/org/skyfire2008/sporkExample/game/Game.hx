@@ -28,7 +28,7 @@ class Game {
 	private var playerColliders: Array<Collider>;
 	private var enemyColliders: Array<Collider>;
 	private var grid: UniformGrid;
-	private var bonusColliders: Array<Collider>;
+	public var bonusColliders(default, null): Array<Collider>;
 	private var bonusGrid: UniformGrid;
 	private var bonusGetterColliders: Array<Collider>;
 	private var collidersToRemove: Map<Side, Array<Int>>;

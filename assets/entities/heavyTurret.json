@@ -24,7 +24,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 6
+				"hp": 5
 			}
 		},
 		{
@@ -48,6 +48,7 @@
 				"wep": {
 					"entityName": "missile.json",
 					"spawnTime": 2,
+					"spreadAngle": 0.1,
 					"spawnNum": 1,
 					"spawnVel": 400,
 					"soundSrc": "assets/sound/playerShoot6.wav"

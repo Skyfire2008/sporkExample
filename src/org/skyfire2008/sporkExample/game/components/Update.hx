@@ -60,7 +60,6 @@ class Blink implements UpdateComponent {
 	public function onUpdate(time: Float) {
 		totalTime += time;
 		colorMult.value = func(totalTime);
-		trace(totalTime + ": " + colorMult.value);
 	}
 }
 

@@ -6,6 +6,12 @@
 			"params": {}
 		},
 		{
+			"name": "targetComponent",
+			"params": {
+				"group": "Enemy"
+			}
+		},
+		{
 			"name": "countedOnScreen",
 			"params": {
 				"count": 1,

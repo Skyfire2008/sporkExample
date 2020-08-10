@@ -2,6 +2,7 @@ package org.skyfire2008.sporkExample.game;
 
 import spork.core.Entity;
 
+import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.game.Spawner.SpawnerConfig;
 import org.skyfire2008.sporkExample.game.components.Hit.HitSpawnComponent;
 
@@ -10,7 +11,7 @@ interface Bonus {
 	 * Applies the bonus to target, thus making it stronger
 	 * @param target entity that the bonus is applied to
 	 */
-	function apply(target: Entity): Void;
+	function apply(target: Entity, ?pos: Point): Void;
 
 	/**
 	 * Removes the bonus from target, reverting it to previous state
@@ -34,7 +35,7 @@ class AbstractBonus implements Bonus {
 		this.time = maxTime;
 	}
 
-	public function apply(target: Entity) {
+	public function apply(target: Entity, ?pos: Point) {
 		throw 'Method apply of class AbstractBonus is not implemented!';
 	}
 
@@ -51,6 +52,36 @@ class AbstractBonus implements Bonus {
 	}
 }
 
+class MagnetBonus extends AbstractBonus {
+	private static var game: Game;
+
+	private var ownerPos: Point;
+
+	public static function setup(game: Game) {
+		MagnetBonus.game = game;
+	}
+
+	public function new() {
+		super(12);
+	}
+
+	public override function apply(target: Entity, ?pos: Point) {
+		ownerPos = pos;
+	}
+
+	public override function revert(target: Entity) {}
+
+	public override function update(time: Float) {
+		for (bonusCol in game.bonusColliders) {
+			var vec = Point.difference(ownerPos, bonusCol.pos);
+			vec.normalize();
+			vec.mult(100 * time);
+			bonusCol.pos.add(vec);
+		}
+		super.update(time);
+	}
+}
+
 class TurretBonus implements Bonus {
 	private static var game: Game;
 
@@ -60,7 +91,7 @@ class TurretBonus implements Bonus {
 
 	public function new() {}
 
-	public function apply(target: Entity) {
+	public function apply(target: Entity, ?pos: Point) {
 		game.pickUpTurret();
 	}
 
@@ -76,7 +107,7 @@ class TurretBonus implements Bonus {
 class HpBonus implements Bonus {
 	public function new() {}
 
-	public function apply(target: Entity) {
+	public function apply(target: Entity, ?pos: Point) {
 		target.heal(1);
 	}
 
@@ -91,10 +122,10 @@ class HpBonus implements Bonus {
 
 class DoubleFirerate extends AbstractBonus {
 	public function new() {
-		super(20);
+		super(22);
 	}
 
-	public override function apply(target: Entity) {
+	public override function apply(target: Entity, ?pos: Point) {
 		target.getWep().config.spawnTime *= 0.5;
 	}
 
@@ -105,10 +136,10 @@ class DoubleFirerate extends AbstractBonus {
 
 class TripleShot extends AbstractBonus {
 	public function new() {
-		super(10);
+		super(12);
 	}
 
-	public override function apply(target: Entity) {
+	public override function apply(target: Entity, ?pos: Point) {
 		target.getWep().config.spawnNum += 2;
 	}
 
@@ -131,11 +162,11 @@ class ExplodeShot extends AbstractBonus {
 	private var index: Int;
 
 	public function new() {
-		super(10);
+		super(12);
 		spawner = new Spawner(config);
 	}
 
-	public override function apply(target: Entity) {
+	public override function apply(target: Entity, ?pos: Point) {
 		index = target.getWep().extraComponents.push(() -> {
 			return new HitSpawnComponent(spawner, false);
 		});

@@ -1,8 +1,5 @@
 package org.skyfire2008.sporkExample;
 
-import org.skyfire2008.sporkExample.game.components.Update.TimeToLiveCircle;
-import org.skyfire2008.sporkExample.game.TargetingSystem;
-
 import haxe.DynamicAccess;
 import haxe.Json;
 import haxe.ds.StringMap;
@@ -25,6 +22,8 @@ import spork.core.JsonLoader;
 import spork.core.JsonLoader.EntityFactoryMethod;
 import spork.core.Wrapper;
 
+import io.newgrounds.NG;
+
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
@@ -36,11 +35,14 @@ import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.Controller;
 import org.skyfire2008.sporkExample.game.ScoringSystem;
 import org.skyfire2008.sporkExample.game.Bonus.TurretBonus;
+import org.skyfire2008.sporkExample.game.Bonus.MagnetBonus;
 import org.skyfire2008.sporkExample.game.components.Hit.SpawnsHealthShip;
 import org.skyfire2008.sporkExample.game.components.Update.RenderComponent;
 import org.skyfire2008.sporkExample.game.components.Update.AnimComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DropsBonusComponent;
 import org.skyfire2008.sporkExample.game.components.Death.GameOverOnDeath;
+import org.skyfire2008.sporkExample.game.components.Update.TimeToLiveCircle;
+import org.skyfire2008.sporkExample.game.TargetingSystem;
 
 using Lambda;
 
@@ -228,6 +230,11 @@ class Main {
 				}
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
+					NG.create("50541:e3cjoqwZ", null);
+					NG.onCoreReady.add(() -> {
+						trace("woot!");
+					});
+
 					game = new Game(renderer, entFactories, (value) -> {
 						playerHpDisplay.innerText = "" + value;
 					}, (value) -> {
@@ -241,9 +248,11 @@ class Main {
 						entFactories.get("explodeShotBonus.json"),
 						entFactories.get("tripleShotBonus.json"),
 						entFactories.get("turretBonus.json"),
-						entFactories.get("hpBonus.json")
-					], [2, 3, 5, 5, 4]);
+						entFactories.get("hpBonus.json"),
+						entFactories.get("magnetBonus.json")
+					], [2, 4, 5, 3, 4, 1]);
 					TurretBonus.setup(game);
+					MagnetBonus.setup(game);
 					SpawnsHealthShip.init(game, entFactories.get("healthShip.json"));
 
 					// add bg particles
