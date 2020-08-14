@@ -221,6 +221,14 @@ class Main {
 
 			Promise.all(loadPromises).then((_) -> {
 				// when all shapes and renderer are loaded, load the entities
+				DropsBonusComponent.setup([
+					"doubleFirerate" => 2,
+					"explodeShot" => 4,
+					"tripleShot" => 5,
+					"turretBonus" => 3,
+					"hpBonus" => 3
+				]);
+
 				var entPromises: Array<Promise<Void>> = [];
 				for (ent in entsDir.kids) {
 					entPromises.push(Util.fetchFile('assets/entities/${ent.path}').then((file) -> {
@@ -243,14 +251,7 @@ class Main {
 							turretDisplay.innerText = "" + value;
 						});
 					Spawner.setup(game, entFactories);
-					DropsBonusComponent.setup(game, [
-						entFactories.get("doubleFirerateBonus.json"),
-						entFactories.get("explodeShotBonus.json"),
-						entFactories.get("tripleShotBonus.json"),
-						entFactories.get("turretBonus.json"),
-						entFactories.get("hpBonus.json"),
-						entFactories.get("magnetBonus.json")
-					], [2, 4, 5, 3, 4, 1]);
+					DropsBonusComponent.setGame(game);
 					TurretBonus.setup(game);
 					MagnetBonus.setup(game);
 					SpawnsHealthShip.init(game, entFactories.get("healthShip.json"));

@@ -1,5 +1,6 @@
 package org.skyfire2008.sporkExample.game;
 
+import spork.core.JsonLoader.EntityFactoryMethod;
 import spork.core.Entity;
 
 import org.skyfire2008.sporkExample.geom.Point;

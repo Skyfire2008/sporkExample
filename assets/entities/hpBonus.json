@@ -21,7 +21,7 @@
 		{
 			"name": "timedComponent",
 			"params": {
-				"time": 60
+				"time": 45
 			}
 		},
 		{

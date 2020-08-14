@@ -214,12 +214,16 @@ class ApplyBonus implements HitComponent {
 	private var func: () -> Bonus;
 	private var bonusName: String;
 
-	private function new(bonusName: String) {
-		this.bonusName = bonusName;
-		func = bonuses.get(bonusName);
+	public static function fromJson(json: Dynamic): ApplyBonus {
+		var func = bonuses.get(json.bonusName);
 		if (func == null) {
-			throw 'No bonus $bonusName exists';
+			throw 'No bonus ${json.bonusName} exists';
 		}
+		return new ApplyBonus(func);
+	}
+
+	public function new(func: () -> Bonus) {
+		this.func = func;
 	}
 
 	public function onHit(collider: Collider) {

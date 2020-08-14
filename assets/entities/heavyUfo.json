@@ -14,7 +14,7 @@
 		{
 			"name": "countedOnScreen",
 			"params": {
-				"count": 5,
+				"count": 3,
 				"group": "Ufo"
 			}
 		},
@@ -52,7 +52,11 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 2
+				"prob": 2,
+				"myProbs": {
+					"magnetBonus": 1,
+					"doubleFirerate": 2
+				}
 			}
 		},
 		{
