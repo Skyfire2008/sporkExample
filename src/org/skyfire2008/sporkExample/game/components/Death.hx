@@ -252,7 +252,6 @@ class DropsBonusComponent implements DeathComponent {
 			myBonuses = DropsBonusComponent.makeBonusArray(probs);
 		}
 
-		trace(myBonuses);
 		return new DropsBonusComponent(json.prob, myBonuses);
 	}
 

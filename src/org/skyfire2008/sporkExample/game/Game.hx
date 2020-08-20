@@ -108,7 +108,7 @@ class Game {
 	}
 
 	private static inline function getUfoNum(lvl: Int) {
-		return Std.int(Math.pow(lvl, 5 / 12));
+		return Std.int(Math.pow(lvl, 3 / 5));
 	}
 
 	private static inline function getUfoSpawnInterval(lvl: Int) {

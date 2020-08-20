@@ -28,7 +28,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 8
+				"hp": 10
 			}
 		},
 		{
@@ -71,9 +71,10 @@
 			"params": {
 				"wep": {
 					"entityName": "enemyMissile.json",
-					"spawnTime": 5,
+					"spawnTime": 4,
 					"spawnNum": 1,
 					"spawnVel": 200,
+					"randomize": true,
 					"soundSrc": "assets/sound/enemyShootHeavy.wav"
 				},
 				"group": "Player",

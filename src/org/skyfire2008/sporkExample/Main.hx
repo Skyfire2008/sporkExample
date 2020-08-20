@@ -11,9 +11,8 @@ import js.html.KeyboardEvent;
 import js.html.MouseEvent;
 import js.html.Document;
 import js.html.CanvasElement;
-import js.html.TableElement;
+import js.html.ButtonElement;
 import js.html.InputElement;
-import js.html.Event;
 import js.html.webgl.RenderingContext;
 import js.html.webgl.GL;
 
@@ -61,6 +60,8 @@ class Main {
 	private static var multDisplay: Element;
 	private static var bgParticleCount: InputElement;
 	private static var restartButton: Element;
+	private static var loginButton: ButtonElement;
+	private static var submitButton: ButtonElement;
 
 	private static var gameOverStuff: Element;
 	private static var gameOverMessage: Element;
@@ -122,6 +123,20 @@ class Main {
 		restartButton = document.getElementById("restartButton");
 		gameOverStuff = document.getElementById("gameOverStuff");
 		gameOverMessage = document.getElementById("gameOverMessage");
+		loginButton = cast document.getElementById("loginButton");
+		submitButton = cast document.getElementById("submitButton");
+		loginButton.onclick = (e) -> {
+			// Browser.window.open(NG.core.passportUrl);
+			NG.core.requestLogin(() -> {
+				loginButton.disabled = true;
+				submitButton.disabled = false;
+			}, null, () -> {
+					trace("login failed");
+				});
+		};
+		submitButton.addEventListener("click", (e) -> {
+			NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
+		});
 		restartButton.addEventListener("click", (e) -> {
 			TargetingSystem.instance.reset();
 			ScoringSystem.instance.reset();
@@ -166,6 +181,7 @@ class Main {
 
 		GameOverOnDeath.init(() -> {
 			ScoringSystem.instance.freeze();
+			NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
 			gameOverStuff.style.display = "inline";
 			gameOverMessage.innerText = 'You have reached ${ScoringSystem.instance.score} points with a maximum multiplier of ${ScoringSystem.instance.maxMult}';
 		});
@@ -238,9 +254,30 @@ class Main {
 				}
 				// when all entities are loaded, create the game object
 				Promise.all(entPromises).then((_) -> {
-					NG.create("50541:e3cjoqwZ", null);
 					NG.onCoreReady.add(() -> {
-						trace("woot!");
+						trace("Connected to newgrounds!");
+						NG.core.initEncryption("hGiNjvxog7dz7ay53hVR3w==");
+
+						if (!NG.core.loggedIn) {
+							submitButton.disabled = true;
+						}
+
+						NG.core.requestScoreBoards(() -> {
+							var scoreboard = NG.core.scoreBoards.get(9343);
+							scoreboard.onUpdate.add(() -> {
+								for (score in scoreboard.scores) {
+									trace(score.user, score.value);
+								}
+							});
+							scoreboard.requestScores();
+						}, (error) -> {
+								trace(error);
+								trace("Could not fetch scoreboards");
+							});
+					});
+					NG.createAndCheckSession("50541:e3cjoqwZ", null, (error) -> {
+						trace(error);
+						trace("Could not create session");
 					});
 
 					game = new Game(renderer, entFactories, (value) -> {

@@ -21,6 +21,7 @@ typedef SpawnerConfig = {
 	@:optional var spreadAngle: Float;
 	@:optional var angleRand: Float;
 	@:optional var soundSrc: String;
+	@:optional var randomize: Bool;
 }
 
 class Spawner {
@@ -54,6 +55,9 @@ class Spawner {
 		if (config.soundSrc != null) {
 			howl = new Howl({src: [config.soundSrc]});
 		}
+		if (config.randomize == true) {
+			this.curTime = Math.random() * config.spawnTime;
+		}
 		this.config = config;
 
 		extraComponents = [];
@@ -73,7 +77,8 @@ class Spawner {
 			velRand: config.velRand,
 			spreadAngle: config.spreadAngle,
 			angleRand: config.angleRand,
-			soundSrc: config.soundSrc
+			soundSrc: config.soundSrc,
+			randomize: config.randomize
 		});
 	}
 
@@ -102,7 +107,7 @@ class Spawner {
 				holder.rotation = new Wrapper<Float>(rotation + angle);
 				holder.angVel = new Wrapper<Float>(0);
 
-				holder.velocity = Point.fromPolar(angle+rotation, config.spawnVel + Util.rand(config.velRand));
+				holder.velocity = Point.fromPolar(angle + rotation, config.spawnVel + Util.rand(config.velRand));
 				if (config.isVelRelative) {
 					holder.velocity.x += vel.x;
 					holder.velocity.y += vel.y;

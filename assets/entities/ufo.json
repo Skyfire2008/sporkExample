@@ -14,7 +14,7 @@
 		{
 			"name": "countedOnScreen",
 			"params": {
-				"count": 1,
+				"count": 2,
 				"group": "Ufo"
 			}
 		},
