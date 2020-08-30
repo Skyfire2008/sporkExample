@@ -45,7 +45,14 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 1
+				"prob": 1,
+				"myProbs": {
+					"doubleFirerate": 2,
+					"explodeShot": 4,
+					"tripleShot": 5,
+					"turretBonus": 4,
+					"hpBonus": 3
+				}
 			}
 		},
 		{

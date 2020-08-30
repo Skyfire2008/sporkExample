@@ -23,6 +23,9 @@ import spork.core.Wrapper;
 
 import io.newgrounds.NG;
 
+import knockout.Knockout;
+
+import org.skyfire2008.sporkExample.ui.Scoreboard;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
@@ -109,6 +112,8 @@ class Main {
 
 	private static function init() {
 		document = Browser.document;
+
+		Scoreboard.register();
 
 		// get HTML elements
 		playerHpDisplay = document.getElementById("playerHpDisplay");
@@ -327,7 +332,9 @@ class Main {
 						name.innerText = key + ":";
 						tr.appendChild(name);
 
+						var buttonTd = document.createElement("td");
 						var binding = document.createElement("button");
+						buttonTd.appendChild(binding);
 						binding.innerText = value;
 
 						// when the button with key binding is clicked...
@@ -358,7 +365,7 @@ class Main {
 							};
 							document.addEventListener("keydown", listener);
 						});
-						tr.appendChild(binding);
+						tr.appendChild(buttonTd);
 
 						keyBindingTable.appendChild(tr);
 					}

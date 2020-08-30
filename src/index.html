@@ -7,6 +7,11 @@
 </head>
 
 <style>
+	table,
+	td {
+		border: 1px solid white;
+	}
+
 	.display {
 		color: red;
 		position: absolute;
@@ -60,6 +65,7 @@
 </style>
 
 <body style="background-color: black;">
+	<script src="knockout-3.2.0.js"></script>
 	<script src="sporkExample.js"></script>
 	<script src="howler.core.js"></script>
 	<div id="preloader" class="display"
@@ -98,6 +104,8 @@
 				in</button>
 			<button id="submitButton"
 				style="font-size: 20px; position: absolute; left: 720px; top: 240px">Submit</button>
+			<scoreboard params="id: 9343" class="display"
+				style="color: lime; position: absolute; left: 495px; top: 270px"></scoreboard>
 		</div>
 	</div>
 </body>

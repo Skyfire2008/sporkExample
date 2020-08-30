@@ -46,10 +46,12 @@
 		{
 			"name": "animComponent",
 			"params": {
-				"frameTime": 0.25,
+				"frameTime": 0.125,
 				"shapeRefs": [
-					"heavyUfo1.json",
-					"heavyUfo2.json"
+					"healthShip1.json",
+					"healthShip2.json",
+					"healthShip3.json",
+					"healthShip2.json"
 				]
 			}
 		},
@@ -57,7 +59,7 @@
 			"name": "collisionComponent",
 			"params": {
 				"side": "Enemy",
-				"radius": 30
+				"radius": 20
 			}
 		},
 		{
