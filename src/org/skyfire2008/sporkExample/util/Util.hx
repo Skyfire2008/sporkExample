@@ -5,6 +5,14 @@ import js.html.ProgressEvent;
 import js.lib.Promise;
 
 class Util {
+	public static inline function max(a: Int, b: Int): Int {
+		return a > b ? a : b;
+	}
+
+	public static inline function min(a: Int, b: Int): Int {
+		return a < b ? a : b;
+	}
+
 	public static inline function rand(val: Float): Float {
 		return val * (Math.random() - 0.5);
 	}
