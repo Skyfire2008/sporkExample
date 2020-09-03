@@ -41,6 +41,7 @@ class Game {
 	private var createTurret: EntityFactoryMethod;
 	private var createHeavyTurret: EntityFactoryMethod;
 	private var createNextWaveMessage: EntityFactoryMethod;
+	private var createShielder: EntityFactoryMethod;
 	private var lvl: Int;
 	private var spawnDelay: Float;
 	private var entityCount: Map<String, Int>;
@@ -79,6 +80,7 @@ class Game {
 		createTurret = factoryFuncs.get("turret.json");
 		createHeavyTurret = factoryFuncs.get("heavyTurret.json");
 		createNextWaveMessage = factoryFuncs.get("nextWaveMessage.json");
+		createShielder = factoryFuncs.get("shielder.json");
 
 		this.playerHpCallback = playerHpCallback;
 		this.waveCallback = waveCallback;
@@ -359,11 +361,20 @@ class Game {
 				currentUfoTime -= getUfoSpawnInterval(lvl);
 				var maxSpawnNum = Std.int(Math.min(Math.pow(lvl, 1.0 / 3.0), maxUfoNum - getCount("Ufo")));
 				for (i in 0...maxSpawnNum) {
-					var creator = createUfo;
 					if (Math.random() < 1.0 - 25.0 / (getCount("Turret") + 1)) {
 						this.addEntity(spawnUfo(createHeavyUfo, 75, 15));
 					} else {
 						this.addEntity(spawnUfo(createUfo, 125, 25));
+					}
+
+					if (Math.random() < (ScoringSystem.instance.mult - 30)/70) {
+						for (i in 0...5) {
+							var shielder = createShielder((holder) -> {
+								holder.position = new Point(0, 0);
+								holder.rotation = new Wrapper<Float>(i * Math.PI / 3);
+							});
+							this.addEntity(shielder);
+						}
 					}
 				}
 			}

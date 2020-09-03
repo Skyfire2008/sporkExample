@@ -1,0 +1,75 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "hpComponent",
+			"params": {
+				"hp": 280
+			}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "spark2.json",
+				"spawnTime": 1,
+				"angleRand": 1,
+				"velRand": 50,
+				"spawnNum": 6,
+				"isVelRelative": false,
+				"spawnVel": 150,
+				"spreadAngle": 0.5
+			}
+		},
+		{
+			"name": "damagedOnHit",
+			"params": {}
+		},
+		{
+			"name": "hitSpawnComponent",
+			"params": {
+				"spawnAtCollider": true,
+				"entityName": "spark2.json",
+				"spawnTime": 1,
+				"angleRand": 0.5,
+				"velRand": 100,
+				"spawnNum": 2,
+				"isVelRelative": false,
+				"spawnVel": 250,
+				"spreadAngle": 0.1
+			}
+		},
+		{
+			"name": "dropsBonusComponent",
+			"params": {
+				"prob": 0.0
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "shield.json"
+			}
+		},
+		{
+			"name": "collisionComponent",
+			"params": {
+				"side": "Enemy",
+				"radius": 40
+			}
+		},
+		{
+			"name": "addScoreOnDeath",
+			"params": {
+				"score": 10
+			}
+		},
+		{
+			"name": "spinsAround",
+			"params": {
+				"group": "Enemy",
+				"angVel": 0.3,
+				"radius": 80.0
+			}
+		}
+	]
+}

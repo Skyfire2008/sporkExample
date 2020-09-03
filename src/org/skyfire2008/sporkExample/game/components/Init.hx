@@ -22,6 +22,64 @@ interface InitComponent extends spork.core.Component {
 	function onInit(game: Game): Void;
 }
 
+class SpinsAround implements InitComponent implements UpdateComponent {
+	private var group: String;
+	private var owner: Entity;
+	private var angVel: Float;
+	private var radius: Float;
+
+	private var pos: Point;
+	private var targetPos: Point;
+	private var rotation: Wrapper<Float>;
+
+	public function new(group: String, angVel: Float, radius: Float) {
+		this.group = group;
+		this.angVel = angVel;
+		this.radius = radius;
+	}
+
+	public function assignProps(holder: PropertyHolder) {
+		this.pos = holder.position;
+		this.rotation = holder.rotation;
+	}
+
+	public function onInit(game: Game) {
+		TargetingSystem.instance.addTargetGroupObserver(group, notifyAboutTargets);
+	}
+
+	public function onUpdate(time: Float) {
+		rotation.value += angVel * time;
+		var relPos = Point.fromPolar(rotation.value, radius);
+		pos.x = relPos.x;
+		pos.y = relPos.y;
+		pos.add(targetPos);
+
+		// wrap
+		if (pos.x < 0) {
+			pos.x += Game.fieldWidth;
+		} else if (pos.x > Game.fieldWidth) {
+			pos.x -= Game.fieldWidth;
+		}
+
+		if (pos.y < 0) {
+			pos.y += Game.fieldHeight;
+		} else if (pos.y > Game.fieldHeight) {
+			pos.y -= Game.fieldHeight;
+		}
+	}
+
+	private function notifyAboutTargets(targets: Array<{
+		id: Int,
+		pos: Point
+	}>) {
+		var target = targets[targets.length - 1];
+		targetPos = target.pos;
+		TargetingSystem.instance.addTargetDeathObserver(target.id, () -> {
+			owner.kill();
+		});
+	}
+}
+
 class ChasesComponent implements InitComponent implements UpdateComponent implements HitComponent {
 	private var group: String;
 	private var owner: Entity;
