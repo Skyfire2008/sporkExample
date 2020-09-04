@@ -1,5 +1,7 @@
 package org.skyfire2008.sporkExample.util;
 
+import js.lib.Object;
+
 import haxe.Json;
 
 import js.Browser;
@@ -30,31 +32,44 @@ class Settings {
 	}
 
 	private function new() {
-		// storage = Browser.getLocalStorage();
-		var data = null; // storage.getItem(ItemName);
-		if (data == null) {
-			this.data = {
-				particleCount: 500,
-				keyBindings: {
-					forward: "KeyW",
-					brake: "KeyS",
-					left: "KeyA",
-					right: "KeyD",
-					fire: "KeyJ",
-					deployTurret: "KeyK",
-					deployHeavyTurret: "KeyL",
-					teleport: "KeyI",
-					pause: "KeyP"
-				}
-			};
-			save();
+		var data = null;
+		storage = null;
+
+		try {
+			storage = Browser.getLocalStorage();
+			data = storage.getItem(ItemName);
+		} catch (e) {
+			trace("Could not get local storage, exception: " + e);
+		}
+
+		this.data = {
+			particleCount: 500,
+			keyBindings: {
+				forward: "KeyW",
+				brake: "KeyS",
+				left: "KeyA",
+				right: "KeyD",
+				fire: "KeyJ",
+				deployTurret: "KeyK",
+				deployHeavyTurret: "KeyL",
+				teleport: "KeyI",
+				pause: "KeyP"
+			}
+		};
+
+		if (data != null) {
+			var parsedData = Json.parse(data);
+			this.data.keyBindings = Object.assign(this.data.keyBindings, parsedData.keyBindings);
+			this.data.particleCount = parsedData.particleCount != null ? parsedData.particleCount : this.data.particleCount;
 		} else {
-			this.data = Json.parse(data);
+			save();
 		}
 	}
 
 	public function save() {
-		// storage.setItem(ItemName, Json.stringify(data));
+		if (storage != null) {
+			storage.setItem(ItemName, Json.stringify(data));
+		}
 	}
 
 	// GETTERS AND SETTERS

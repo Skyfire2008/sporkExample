@@ -41,7 +41,11 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 0.0
+				"prob": 0.5,
+				"myProbs": {
+					"turretBonus": 2,
+					"hpBonus": 1
+				}
 			}
 		},
 		{

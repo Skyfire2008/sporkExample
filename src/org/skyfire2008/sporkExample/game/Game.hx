@@ -367,7 +367,7 @@ class Game {
 						this.addEntity(spawnUfo(createUfo, 125, 25));
 					}
 
-					if (Math.random() < (ScoringSystem.instance.mult - 30)/70) {
+					if (Math.random() < (ScoringSystem.instance.mult - 20) / 70) {
 						for (i in 0...5) {
 							var shielder = createShielder((holder) -> {
 								holder.position = new Point(0, 0);

@@ -168,8 +168,12 @@ class Main {
 			gameOverStuff.style.display = "none";
 		});
 		bgParticleCount = cast(document.getElementById("bgParticleCount"));
+		bgParticleCount.value = "" + Settings.getInstance().particleCount;
 		bgParticleCount.addEventListener("change", (e: Dynamic) -> {
 			var number: Int = e.target.value >= 0 ? e.target.value : 0;
+			Settings.getInstance().particleCount = number;
+			Settings.getInstance().save();
+
 			if (number > bgParticles.length) {
 				for (i in bgParticles.length...number) {
 					var ent = bgParticleCreator((holder) -> {});
@@ -186,7 +190,7 @@ class Main {
 
 		GameOverOnDeath.init(() -> {
 			ScoringSystem.instance.freeze();
-			NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
+			// NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
 			gameOverStuff.style.display = "inline";
 			gameOverMessage.innerText = 'You have reached ${ScoringSystem.instance.score} points with a maximum multiplier of ${ScoringSystem.instance.maxMult}';
 		});
@@ -300,7 +304,7 @@ class Main {
 
 					// add bg particles
 					bgParticleCreator = entFactories.get("bgParticle.json");
-					for (i in 0...1000) {
+					for (i in 0...Settings.getInstance().particleCount) {
 						var ent = bgParticleCreator((holder) -> {});
 						bgParticles.push(ent);
 						game.addEntity(ent);
@@ -357,6 +361,7 @@ class Main {
 
 								// remap and register the controller
 								controller.remap(settings.keyBindings);
+								settings.save();
 								controller.register(Browser.window);
 
 								// remove the listener
