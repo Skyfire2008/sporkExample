@@ -76,7 +76,7 @@ class MagnetBonus extends AbstractBonus {
 		for (bonusCol in game.bonusColliders) {
 			var vec = Point.difference(ownerPos, bonusCol.pos);
 			vec.normalize();
-			vec.mult(100 * time);
+			vec.mult(80 * time);
 			bonusCol.pos.add(vec);
 		}
 		super.update(time);
@@ -123,7 +123,7 @@ class HpBonus implements Bonus {
 
 class DoubleFirerate extends AbstractBonus {
 	public function new() {
-		super(22);
+		super(10);
 	}
 
 	public override function apply(target: Entity, ?pos: Point) {
@@ -137,7 +137,7 @@ class DoubleFirerate extends AbstractBonus {
 
 class TripleShot extends AbstractBonus {
 	public function new() {
-		super(12);
+		super(10);
 	}
 
 	public override function apply(target: Entity, ?pos: Point) {
@@ -160,20 +160,22 @@ class ExplodeShot extends AbstractBonus {
 		isVelRelative: true
 	};
 	private var spawner: Spawner;
-	private var index: Int;
+
+	private var func: () -> spork.core.Component;
 
 	public function new() {
-		super(12);
+		super(10);
 		spawner = new Spawner(config);
+		func = () -> {
+			return new HitSpawnComponent(spawner, false);
+		};
 	}
 
 	public override function apply(target: Entity, ?pos: Point) {
-		index = target.getWep().extraComponents.push(() -> {
-			return new HitSpawnComponent(spawner, false);
-		});
+		target.getWep().extraComponents.push(func);
 	}
 
 	public override function revert(target: Entity) {
-		target.getWep().extraComponents = target.getWep().extraComponents.splice(index, 1);
+		target.getWep().extraComponents.remove(func);
 	}
 }

@@ -140,7 +140,7 @@ class Main {
 				});
 		};
 		submitButton.addEventListener("click", (e) -> {
-			NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
+			NG.core.scoreBoards.get(9449).postScore(ScoringSystem.instance.score);
 		});
 		restartButton.addEventListener("click", (e) -> {
 			TargetingSystem.instance.reset();
@@ -190,7 +190,6 @@ class Main {
 
 		GameOverOnDeath.init(() -> {
 			ScoringSystem.instance.freeze();
-			// NG.core.scoreBoards.get(9343).postScore(ScoringSystem.instance.score);
 			gameOverStuff.style.display = "inline";
 			gameOverMessage.innerText = 'You have reached ${ScoringSystem.instance.score} points with a maximum multiplier of ${ScoringSystem.instance.maxMult}';
 		});
@@ -272,7 +271,7 @@ class Main {
 						}
 
 						NG.core.requestScoreBoards(() -> {
-							var scoreboard = NG.core.scoreBoards.get(9343);
+							var scoreboard = NG.core.scoreBoards.get(9449);
 							scoreboard.onUpdate.add(() -> {
 								for (score in scoreboard.scores) {
 									trace(score.user, score.value);

@@ -58,6 +58,8 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 	private var rotation: Wrapper<Float>;
 	private var angVel: Wrapper<Float>;
 
+	private var teleportSound: Howl;
+
 	private var angBrake: Float;
 	private var angMult: Float = 0;
 
@@ -93,6 +95,7 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 			isVelRelative: true
 		});
 
+		this.teleportSound = new Howl({src: ["assets/sound/teleport.wav"]});
 		this.soundSrc = soundSrc;
 	}
 
@@ -136,6 +139,9 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		pos.x = Math.random() * 1280;
 		pos.y = Math.random() * 720;
 		teleSpawner.spawn(pos, rotation.value, vel);
+		if(!teleportSound.playing()){
+			teleportSound.play();
+		}
 	}
 
 	public function onInit(game: Game) {
