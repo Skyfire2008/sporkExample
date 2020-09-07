@@ -6,6 +6,7 @@ import haxe.ds.StringMap;
 
 import js.Browser;
 import js.lib.Promise;
+import js.html.VisibilityState;
 import js.html.Element;
 import js.html.KeyboardEvent;
 import js.html.MouseEvent;
@@ -114,6 +115,13 @@ class Main {
 		document = Browser.document;
 
 		Scoreboard.register();
+
+		document.addEventListener("visibilitychange", (e) -> {
+			if (document.visibilityState == VisibilityState.HIDDEN) {
+				running = false;
+				pauseStuff.style.display = running ? "none" : "inline";
+			}
+		});
 
 		// get HTML elements
 		playerHpDisplay = document.getElementById("playerHpDisplay");

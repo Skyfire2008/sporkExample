@@ -50,7 +50,7 @@
 					"doubleFirerate": 2,
 					"explodeShot": 4,
 					"tripleShot": 5,
-					"turretBonus": 4,
+					"turretBonus": 5,
 					"hpBonus": 3
 				}
 			}
