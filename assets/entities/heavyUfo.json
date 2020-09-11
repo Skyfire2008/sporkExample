@@ -54,8 +54,8 @@
 			"params": {
 				"prob": 2.5,
 				"myProbs": {
-					"magnetBonus": 1,
-					"doubleFirerate": 2
+					"magnetBonus": 4,
+					"doubleFirerate": 5
 				}
 			}
 		},

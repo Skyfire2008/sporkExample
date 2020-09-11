@@ -27,6 +27,7 @@ import io.newgrounds.NG;
 import knockout.Knockout;
 
 import org.skyfire2008.sporkExample.ui.Scoreboard;
+import org.skyfire2008.sporkExample.ui.Hints;
 import org.skyfire2008.sporkExample.geom.Point;
 import org.skyfire2008.sporkExample.graphics.Shape;
 import org.skyfire2008.sporkExample.graphics.Renderer;
@@ -79,6 +80,7 @@ class Main {
 
 	private static var game: Game;
 	private static var running: Bool = true;
+	private static var over: Bool = false;
 
 	private static var prevTime: Float = -1;
 	private static var timeStore: Float = 0;
@@ -106,6 +108,18 @@ class Main {
 		Browser.window.requestAnimationFrame(onEnterFrame);
 	}
 
+	private static function pause() {
+		running = false;
+		pauseStuff.style.display = running ? "none" : "inline";
+		gameOverStuff.style.display = over ? "none" : gameOverStuff.style.display;
+	}
+
+	private static function togglePause() {
+		running = !running;
+		pauseStuff.style.display = running ? "none" : "inline";
+		gameOverStuff.style.display = (over && running) ? "inline" : "none";
+	}
+
 	private static function onEnterFrameFirst(timestamp: Float) {
 		prevTime = timestamp;
 		Browser.window.requestAnimationFrame(onEnterFrame);
@@ -114,12 +128,12 @@ class Main {
 	private static function init() {
 		document = Browser.document;
 
+		Hints.register();
 		Scoreboard.register();
 
 		document.addEventListener("visibilitychange", (e) -> {
 			if (document.visibilityState == VisibilityState.HIDDEN) {
-				running = false;
-				pauseStuff.style.display = running ? "none" : "inline";
+				pause();
 			}
 		});
 
@@ -173,6 +187,7 @@ class Main {
 			}
 
 			// hide game over message
+			over = false;
 			gameOverStuff.style.display = "none";
 		});
 		bgParticleCount = cast(document.getElementById("bgParticleCount"));
@@ -197,6 +212,7 @@ class Main {
 		});
 
 		GameOverOnDeath.init(() -> {
+			over = true;
 			ScoringSystem.instance.freeze();
 			gameOverStuff.style.display = "inline";
 			gameOverMessage.innerText = 'You have reached ${ScoringSystem.instance.score} points with a maximum multiplier of ${ScoringSystem.instance.maxMult}';
@@ -326,10 +342,7 @@ class Main {
 
 					Browser.window.requestAnimationFrame(onEnterFrameFirst);
 					var controller = Controller.getInstance();
-					controller.pauseAction = () -> {
-						running = !running;
-						pauseStuff.style.display = running ? "none" : "inline";
-					};
+					controller.pauseAction = togglePause;
 					controller.register(Browser.window);
 
 					// set up the key bindings table

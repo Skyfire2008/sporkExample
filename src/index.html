@@ -22,7 +22,6 @@
 
 	#pauseStuff {
 		color: red;
-		position: absolute;
 		font-size: 20px;
 		font-weight: bold;
 	}
@@ -86,11 +85,23 @@
 			<div class="display" class="display" style="left:10px; top: 690px;">Mult:</div>
 			<div id="multDisplay" class="display" style="left:90px; top: 690px;">x1</div>
 		</div>
-		<div id="pauseStuff" style="display: none; left: 400px; top: 250px">
-			<table id="keyBindingTable"></table>
-			<label for="bgParticleCount">Background particle number:</label>
-			<input id="bgParticleCount" type="number" value="1000" min="0"></input>
-			<br />
+		<div id="pauseStuff" style="display: none;">
+			<div class="display" style="font-size: 72px; top: 150px; left: 500px">Paused</div>
+			<table style="top: 232px; left: 150px; position: absolute;" id="keyBindingTable">
+				<thead>
+					<tr>
+						<th colspan="2">Controls</th>
+					</tr>
+				</thead>
+			</table>
+			<div style="top: 533px; left: 150px; position: absolute;">
+				<label for="bgParticleCount">Background particle number:</label>
+				<input id="bgParticleCount" type="number" value="1000" min="0"></input>
+			</div>
+			<hints style="position: absolute; left: 150px; top: 560px; color: lime;"
+				params="fileName: 'assets/hints.txt'"></hints>
+			<div style="top: 232px; left: 900px; font-size: 48px">Thanks:</div>
+
 		</div>
 		<div id="gameOverStuff" style="display: none">
 			<div class="display" style="font-size: 72px; left: 450px; top: 100px">

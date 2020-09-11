@@ -361,7 +361,7 @@ class Game {
 				currentUfoTime -= getUfoSpawnInterval(lvl);
 				var maxSpawnNum = Std.int(Math.min(Math.pow(lvl, 1.0 / 3.0), maxUfoNum - getCount("Ufo")));
 				for (i in 0...maxSpawnNum) {
-					if (Math.random() < 1.0 - 25.0 / (getCount("Turret") + 1)) {
+					if (Math.random() < 1.0 - Math.sqrt(25.0 / (getCount("Turret") + 1))) {
 						this.addEntity(spawnUfo(createHeavyUfo, 75, 15));
 					} else {
 						this.addEntity(spawnUfo(createUfo, 125, 25));
