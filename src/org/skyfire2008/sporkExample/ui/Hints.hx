@@ -45,12 +45,11 @@ class Hints {
 			template: "
 				<div data-bind='if: hints().length>0'>
 					<div>Hint:</div>
-					<span data-bind='text: hints()[hintNum()]'></span>
-					<br/>
+					<div style='width: 900px; min-height: 50px; ' data-bind='text: hints()[hintNum()]'></div>
 					<div style='display: flex;'>
-						<button data-bind='click: decHintNum; enable: hintNum()>0'><<</button>
-						<div data-bind='text: hintNum()'></div>
-						<button data-bind='click: incHintNum; enable: hintNum<hints().length-1'>>></button>
+						<button data-bind='click: decHintNum, disable: hintNum()<=0'><<</button>
+						<div style='width: 30px; text-align: center;' data-bind='text: hintNum()'></div>
+						<button data-bind='click: incHintNum, disable: hintNum()>=hints().length-1'>>></button>
 					</div>
 				</div>
 			"

@@ -301,7 +301,7 @@ class Main {
 									trace(score.user, score.value);
 								}
 							});
-							scoreboard.requestScores();
+							scoreboard.requestScores(1000);
 						}, (error) -> {
 								trace(error);
 								trace("Could not fetch scoreboards");
