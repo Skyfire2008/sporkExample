@@ -52,9 +52,9 @@
 		{
 			"name": "dropsBonusComponent",
 			"params": {
-				"prob": 2.5,
+				"prob": 3,
 				"myProbs": {
-					"magnetBonus": 4,
+					"magnetBonus": 3,
 					"doubleFirerate": 5
 				}
 			}

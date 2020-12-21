@@ -27,6 +27,7 @@ class Controller {
 	private var heldKeys: Set<String>;
 
 	private var downActions: Map<String, DownAction>;
+	private var onceActions: Map<String, DownAction>; // down actions that execute without repeat
 	private var upActions: Map<String, DownAction>;
 	private var heldActions: Map<String, HeldAction>;
 
@@ -38,6 +39,7 @@ class Controller {
 
 	private function new(config: KeyBindings) {
 		downActions = new Map<String, DownAction>();
+		onceActions = new Map<String, DownAction>();
 		upActions = new Map<String, DownAction>();
 		heldActions = new Map<String, HeldAction>();
 		components = [];
@@ -107,6 +109,11 @@ class Controller {
 		downActions.set(config.pause, () -> {
 			pauseAction();
 		});
+		onceActions.set(config.teleport, () -> {
+			for (component in components) {
+				component.teleport();
+			}
+		});
 
 		upActions.clear();
 		upActions.set(config.forward, () -> {
@@ -119,14 +126,14 @@ class Controller {
 				component.stopFire();
 			}
 		});
-		upActions.set(config.teleport, () -> {
-			for (component in components) {
-				component.teleport();
-			}
-		});
 	}
 
 	private function onKeyDown(e: KeyboardEvent) {
+		var onceAction = onceActions.get(e.code);
+		if (onceAction != null && !heldKeys.has(e.code)) {
+			onceAction();
+		}
+
 		heldKeys.add(e.code);
 		var action = downActions.get(e.code);
 		if (action != null) {

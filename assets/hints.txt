@@ -1,7 +1,8 @@
 The fewer powerups lie on the playing field(except for health powerups), the higher is the probability that another one will drop, so pick them up!
+All powerups stack with each other, so don't worry about picking up two same powerups in a row, their effect will double.
 This game has no overhealing, so leave those health powerups until you need them.
 The outer white ring around the powerup shows the time it has until it disappears.
-You turrets can also pick up powerups, you can use it together with a magnet to heal or temporarily buff them.
+No matter what you've heard, turrets cannot actually pick up powerups.
 Background particle effect causing motion sickness? You can set the number of particles to 0 in the pause menu.
 Control scheme is uncomfortable? You can rebind those keys in the pause menu.
 Settings not saving inbetween sessions? You probably need to enable third-party cookies.

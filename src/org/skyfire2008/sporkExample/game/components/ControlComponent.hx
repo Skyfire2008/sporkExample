@@ -15,6 +15,7 @@ import org.skyfire2008.sporkExample.game.Spawner;
 import org.skyfire2008.sporkExample.game.components.Update;
 import org.skyfire2008.sporkExample.game.components.Init.InitComponent;
 import org.skyfire2008.sporkExample.game.components.Death.DeathComponent;
+import org.skyfire2008.sporkExample.game.components.IsAlive.AlwaysAlive;
 
 interface KBComponent {
 	function startAccelerate(): Void;
@@ -49,6 +50,12 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 	private var maxVel: Float;
 	private var mju: Float;
 	private var accelerating: Bool = false;
+	private var flames: Entity;
+	private var flamesColor: Wrapper<Float>;
+	private var flamesPos: Point;
+	private var flamesRotation: Wrapper<Float>;
+	private var flamesTime: Float = 0;
+	private var flamesScale: Wrapper<Float>;
 
 	private var wep: Spawner;
 	private var teleSpawner: Spawner;
@@ -97,14 +104,34 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 
 		this.teleportSound = new Howl({src: ["assets/sound/teleport.wav"]});
 		this.soundSrc = soundSrc;
+
+		this.flames = new Entity();
+		var holder = new PropertyHolder();
+		flamesPos = new Point();
+		flamesRotation = new Wrapper<Float>(0);
+		holder.position = flamesPos;
+		holder.rotation = flamesRotation;
+		var foo = RenderComponent.fromJson({shapeRef: "shipFlames.json"});
+		var bar = new AlwaysAlive();
+		foo.createProps(holder);
+		bar.createProps(holder);
+		foo.assignProps(holder);
+		bar.assignProps(holder);
+		foo.attach(flames);
+		bar.attach(flames);
+		this.flamesScale = holder.scale;
+		this.flamesColor = holder.colorMult;
+		this.flamesColor.value = 0.0;
 	}
 
 	public function startAccelerate() {
 		accelerating = true;
+		flamesColor.value = 1.0;
 	}
 
 	public function stopAccelerate() {
 		accelerating = false;
+		flamesColor.value = 0.0;
 	}
 
 	public function brake(time: Float) {
@@ -139,7 +166,7 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		pos.x = Math.random() * 1280;
 		pos.y = Math.random() * 720;
 		teleSpawner.spawn(pos, rotation.value, vel);
-		if(!teleportSound.playing()){
+		if (!teleportSound.playing()) {
 			teleportSound.play();
 		}
 	}
@@ -149,10 +176,13 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		teleSpawner.init();
 		this.game = game;
 		Controller.getInstance().addComponent(this);
+
+		game.addEntity(flames);
 	}
 
 	public function onDeath() {
 		Controller.getInstance().removeComponent(this);
+		flames.kill();
 	}
 
 	public function onUpdate(time: Float) {
@@ -162,6 +192,8 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 			var aVec = Point.fromPolar(rotation.value, 1.0);
 			aVec.mult(a * time);
 			vel.add(aVec);
+			flamesTime += time;
+			flamesScale.value = Math.sin(flamesTime * 25) / 4 + 1.25;
 		}
 
 		vel.mult(mju);
@@ -182,6 +214,12 @@ class ControlComponent implements UpdateComponent implements InitComponent imple
 		}
 
 		angMult = 0;
+
+		flamesPos.x = pos.x;
+		flamesPos.y = pos.y;
+		flamesPos.add(Point.fromPolar(rotation.value, -10));
+		flamesPos.add(Point.scale(vel, time));
+		flamesRotation.value = rotation.value + angVel.value * time;
 	}
 
 	private inline function sgn(a: Float): Int {

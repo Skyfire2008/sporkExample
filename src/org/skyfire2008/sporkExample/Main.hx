@@ -270,11 +270,11 @@ class Main {
 			Promise.all(loadPromises).then((_) -> {
 				// when all shapes and renderer are loaded, load the entities
 				DropsBonusComponent.setup([
-					"doubleFirerate" => 2,
-					"explodeShot" => 4,
+					"doubleFirerate" => 4,
+					"explodeShot" => 5,
 					"tripleShot" => 5,
-					"turretBonus" => 3,
-					"hpBonus" => 3
+					"turretBonus" => 1,
+					"hpBonus" => 4
 				]);
 
 				var entPromises: Array<Promise<Void>> = [];

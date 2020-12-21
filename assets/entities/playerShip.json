@@ -6,6 +6,12 @@
 			"params": {}
 		},
 		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "ship.json"
+			}
+		},
+		{
 			"name": "tempInvulnOnHit",
 			"params": {
 				"invulnTime": 2,
@@ -48,12 +54,6 @@
 		{
 			"name": "displayHp",
 			"params": {}
-		},
-		{
-			"name": "renderComponent",
-			"params": {
-				"shapeRef": "ship.json"
-			}
 		},
 		{
 			"name": "collisionComponent",

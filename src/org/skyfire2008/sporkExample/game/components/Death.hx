@@ -211,22 +211,22 @@ class DropsBonusComponent implements DeathComponent {
 
 	public static function setup(probs: StringMap<Int> = null) {
 		DropsBonusComponent.factories = new StringMap<EntityFactoryMethod>();
-		factories.set("doubleFirerate", DropsBonusComponent.makeBonus(1, 30, "doubleFirerate.json", () -> {
+		factories.set("doubleFirerate", DropsBonusComponent.makeBonus(1, 20, "doubleFirerate.json", () -> {
 			return new DoubleFirerate();
 		}));
-		factories.set("explodeShot", DropsBonusComponent.makeBonus(1, 30, "explodeShot.json", () -> {
+		factories.set("explodeShot", DropsBonusComponent.makeBonus(1, 20, "explodeShot.json", () -> {
 			return new ExplodeShot();
 		}));
-		factories.set("tripleShot", DropsBonusComponent.makeBonus(1, 30, "tripleShot.json", () -> {
+		factories.set("tripleShot", DropsBonusComponent.makeBonus(1, 20, "tripleShot.json", () -> {
 			return new TripleShot();
 		}));
-		factories.set("turretBonus", DropsBonusComponent.makeBonus(1, 30, "turretBonus.json", () -> {
+		factories.set("turretBonus", DropsBonusComponent.makeBonus(1, 20, "turretBonus.json", () -> {
 			return new TurretBonus();
 		}));
-		factories.set("hpBonus", DropsBonusComponent.makeBonus(0, 45, "hpBonus.json", () -> {
+		factories.set("hpBonus", DropsBonusComponent.makeBonus(0, 40, "hpBonus.json", () -> {
 			return new HpBonus();
 		}));
-		factories.set("magnetBonus", DropsBonusComponent.makeBonus(3, 30, "magnet.json", () -> {
+		factories.set("magnetBonus", DropsBonusComponent.makeBonus(5, 20, "magnet.json", () -> {
 			return new MagnetBonus();
 		}));
 

@@ -66,6 +66,10 @@
 		text-shadow: 0px 0px 4px;
 	}
 
+	#gameOverStuff button {
+		font-size: 20px;
+	}
+
 	button {
 		cursor: pointer;
 	}
@@ -147,17 +151,17 @@
 			<div class="display" style="font-size: 72px; left: 450px; top: 100px">
 				Game Over</div>
 			<div id="gameOverMessage" class="display" style="left: 450px; top: 180px"></div>
-			<div class="display" style="left: 250px; top: 200px">This game uses a Newgrounds scorebaord. If you want to
+			<div class="display" style="left: 250px; top: 200px">This game uses a Newgrounds scoreboard. If you want to
 				submit your score, you have to log in
 				first.</div>
-			<button id="restartButton"
-				style="font-size: 20px; position: absolute; left: 540px; top: 240px">Restart!</button>
-			<button id="loginButton" style="font-size: 20px; position: absolute; left: 640px; top: 240px">Log
-				in</button>
-			<button id="submitButton"
-				style="font-size: 20px; position: absolute; left: 720px; top: 240px">Submit</button>
-			<scoreboard params="id: 9449" class="display"
-				style="color: lime; position: absolute; left: 345px; top: 270px"></scoreboard>
+			<div style="font-size: 20px; position: absolute; left: 540px; top: 240px">
+				<button id="restartButton">Restart!</button>
+				<button id="loginButton">Log in</button>
+				<button id="submitButton">Submit</button>
+			</div>
+			<scoreboard params=" id: 9449" class="display"
+				style="color: lime; position: absolute; left: 345px; top: 270px">
+			</scoreboard>
 		</div>
 	</div>
 </body>

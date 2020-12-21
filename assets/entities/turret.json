@@ -28,10 +28,6 @@
 			}
 		},
 		{
-			"name": "getsBonuses",
-			"params": {}
-		},
-		{
 			"name": "damagedOnHit",
 			"params": {}
 		},
@@ -49,7 +45,7 @@
 					"entityName": "playerBullet.json",
 					"spawnTime": 1.5,
 					"spreadAngle": 0.1,
-					"spawnNum": 1,
+					"spawnNum": 3,
 					"spawnVel": 600,
 					"soundSrc": "assets/sound/playerShoot4.wav"
 				},
