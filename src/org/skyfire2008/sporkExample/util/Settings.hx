@@ -11,6 +11,8 @@ import org.skyfire2008.sporkExample.game.Controller.KeyBindings;
 
 typedef SettingsData = {
 	var particleCount: Int;
+	var masterVolume: Int;
+	var musicVolume: Int;
 	var keyBindings: KeyBindings;
 }
 
@@ -23,6 +25,8 @@ class Settings {
 
 	public var keyBindings(get, set): KeyBindings;
 	public var particleCount(get, set): Int;
+	public var masterVolume(get, set): Int;
+	public var musicVolume(get, set): Int;
 
 	public static function getInstance(): Settings {
 		if (inst == null) {
@@ -44,6 +48,8 @@ class Settings {
 
 		this.data = {
 			particleCount: 500,
+			masterVolume: 100,
+			musicVolume: 50,
 			keyBindings: {
 				forward: "KeyW",
 				brake: "KeyS",
@@ -61,6 +67,8 @@ class Settings {
 			var parsedData = Json.parse(data);
 			this.data.keyBindings = Object.assign(this.data.keyBindings, parsedData.keyBindings);
 			this.data.particleCount = parsedData.particleCount != null ? parsedData.particleCount : this.data.particleCount;
+			this.data.masterVolume = this.data.masterVolume != null ? parsedData.masterVolume : this.data.masterVolume;
+			this.data.musicVolume = this.data.musicVolume != null ? parsedData.musicVolume : this.data.musicVolume;
 		} else {
 			save();
 		}
@@ -92,5 +100,23 @@ class Settings {
 		}
 		data.particleCount = particleCount;
 		return data.particleCount;
+	}
+
+	private function get_masterVolume(): Int {
+		return data.masterVolume;
+	}
+
+	private function set_masterVolume(value: Int): Int {
+		data.masterVolume = value;
+		return data.masterVolume;
+	}
+
+	private function get_musicVolume(): Int {
+		return data.musicVolume;
+	}
+
+	private function set_musicVolume(value: Int): Int {
+		data.musicVolume = value;
+		return data.musicVolume;
 	}
 }

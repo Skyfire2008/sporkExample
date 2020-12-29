@@ -24,7 +24,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 3
+				"hp": 4
 			}
 		},
 		{
@@ -43,7 +43,7 @@
 				"rotates": true,
 				"wep": {
 					"entityName": "playerBullet.json",
-					"spawnTime": 1.5,
+					"spawnTime": 1,
 					"spreadAngle": 0.1,
 					"spawnNum": 3,
 					"spawnVel": 600,

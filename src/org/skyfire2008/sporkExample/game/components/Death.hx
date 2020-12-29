@@ -226,7 +226,7 @@ class DropsBonusComponent implements DeathComponent {
 		factories.set("hpBonus", DropsBonusComponent.makeBonus(0, 40, "hpBonus.json", () -> {
 			return new HpBonus();
 		}));
-		factories.set("magnetBonus", DropsBonusComponent.makeBonus(5, 20, "magnet.json", () -> {
+		factories.set("magnetBonus", DropsBonusComponent.makeBonus(10, 20, "magnet.json", () -> {
 			return new MagnetBonus();
 		}));
 

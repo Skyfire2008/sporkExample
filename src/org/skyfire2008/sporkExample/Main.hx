@@ -24,7 +24,8 @@ import spork.core.Wrapper;
 
 import io.newgrounds.NG;
 
-import knockout.Knockout;
+import howler.Howler;
+import howler.Howl;
 
 import org.skyfire2008.sporkExample.ui.Scoreboard;
 import org.skyfire2008.sporkExample.ui.Hints;
@@ -64,6 +65,8 @@ class Main {
 	private static var scoreDisplay: Element;
 	private static var multDisplay: Element;
 	private static var bgParticleCount: InputElement;
+	private static var masterVolume: InputElement;
+	private static var musicVolume: InputElement;
 	private static var restartButton: Element;
 	private static var loginButton: ButtonElement;
 	private static var submitButton: ButtonElement;
@@ -77,8 +80,9 @@ class Main {
 	private static var renderer: Renderer;
 	private static var shapes: StringMap<Shape> = new StringMap<Shape>();
 	private static var entFactories: StringMap<EntityFactoryMethod> = new StringMap<EntityFactoryMethod>();
-
+	private static var bgMusic: Howl;
 	private static var game: Game;
+
 	private static var running: Bool = true;
 	private static var over: Bool = false;
 
@@ -210,6 +214,24 @@ class Main {
 				bgParticles.resize(number);
 			}
 		});
+		masterVolume = cast(document.getElementById("masterVolume"));
+		masterVolume.value = "" + Settings.getInstance().masterVolume;
+		masterVolume.addEventListener("input", (e: Dynamic) -> {
+			var value: Int = e.target.value;
+			Settings.getInstance().masterVolume = value;
+			Settings.getInstance().save();
+
+			Howler.volume(value / 100.0);
+		});
+		musicVolume = cast(document.getElementById("musicVolume"));
+		musicVolume.value = "" + Settings.getInstance().musicVolume;
+		musicVolume.addEventListener("input", (e: Dynamic) -> {
+			var value: Int = e.target.value;
+			Settings.getInstance().musicVolume = value;
+			Settings.getInstance().save();
+
+			bgMusic.volume(value / 100.0);
+		});
 
 		GameOverOnDeath.init(() -> {
 			over = true;
@@ -232,7 +254,7 @@ class Main {
 		gl.blendFunc(GL.ONE, GL.ONE);
 
 		// load assets
-		var loadPromises: Array<Promise<Void>> = [];
+		var loadPromises: Array<Promise<Dynamic>> = [];
 		Util.fetchFile("assets/contents.json").then((text) -> {
 			var contents: Array<DirContent> = Json.parse(text);
 
@@ -257,6 +279,7 @@ class Main {
 				Util.fetchFile("assets/shaders/basic.vert"),
 				Util.fetchFile("assets/shaders/basic.frag")
 			];
+
 			loadPromises.push(Promise.all(rendererPromises).then((shaders) -> { // load shaders
 				// when shaders are loaded, set the shapes for render component and init the renderer
 				RenderComponent.setShapes(shapes);
@@ -265,6 +288,19 @@ class Main {
 				renderer = new Renderer(gl, shaders[0], shaders[1]);
 				Renderer.setInstance(renderer);
 				return;
+			}));
+
+			loadPromises.push(new Promise<>((resolve, reject) -> {
+				bgMusic = new Howl({
+					src: ["assets/sound/TangoStar-Space_Reggae_quiet.mp3"],
+					autoplay: true,
+					loop: true,
+					onload: () -> {
+						bgMusic.volume(Settings.getInstance().musicVolume / 100.0);
+						Howler.volume(Settings.getInstance().masterVolume / 100.0);
+						resolve(null);
+					}
+				});
 			}));
 
 			Promise.all(loadPromises).then((_) -> {

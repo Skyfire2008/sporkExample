@@ -24,7 +24,7 @@
 		{
 			"name": "hpComponent",
 			"params": {
-				"hp": 5
+				"hp": 7
 			}
 		},
 		{
@@ -43,7 +43,7 @@
 				"rotates": true,
 				"wep": {
 					"entityName": "missile.json",
-					"spawnTime": 1.5,
+					"spawnTime": 1,
 					"spreadAngle": 0.1,
 					"spawnNum": 1,
 					"spawnVel": 400,
@@ -63,13 +63,13 @@
 		{
 			"name": "deathSpawnComponent",
 			"params": {
-				"entityName": "playerBullet.json",
+				"entityName": "missile.json",
 				"spawnTime": 1,
 				"angleRand": 0,
 				"velRand": 0,
 				"spawnNum": 12,
 				"isVelRelative": false,
-				"spawnVel": 300,
+				"spawnVel": 400,
 				"spreadAngle": 0.523
 			}
 		},

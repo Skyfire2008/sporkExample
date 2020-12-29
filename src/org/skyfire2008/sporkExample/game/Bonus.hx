@@ -63,7 +63,7 @@ class MagnetBonus extends AbstractBonus {
 	}
 
 	public function new() {
-		super(20);
+		super(10);
 	}
 
 	public override function apply(target: Entity, ?pos: Point) {
@@ -76,7 +76,7 @@ class MagnetBonus extends AbstractBonus {
 		for (bonusCol in game.bonusColliders) {
 			var vec = Point.difference(ownerPos, bonusCol.pos);
 			vec.normalize();
-			vec.mult(100 * time);
+			vec.mult(200 * time);
 			bonusCol.pos.add(vec);
 		}
 		super.update(time);
