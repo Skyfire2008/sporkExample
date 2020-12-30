@@ -368,7 +368,7 @@ class Game {
 					}
 
 					if (Math.random() < (ScoringSystem.instance.mult - 20) / 60) {
-						for (i in 0...5) {
+						for (i in 0...4) {
 							var shielder = createShielder((holder) -> {
 								holder.position = new Point(0, 0);
 								holder.rotation = new Wrapper<Float>(i * Math.PI / 3);

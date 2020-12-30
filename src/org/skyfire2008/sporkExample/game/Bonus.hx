@@ -155,8 +155,8 @@ class ExplodeShot extends AbstractBonus {
 		spawnTime: 1,
 		spawnVel: 200,
 		spawnNum: 6,
-		spreadAngle: Math.PI / 3,
-		angleRand: Math.PI / 18,
+		spreadAngle: 0,
+		angleRand: 2 * Math.PI,
 		isVelRelative: true
 	};
 	private var spawner: Spawner;

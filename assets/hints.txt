@@ -10,6 +10,7 @@ Control scheme is uncomfortable? You can rebind those keys in the pause menu.
 Settings not saving inbetween sessions? You probably need to enable third-party cookies.
 Unlike regular bullets, heavy UFO missiles cannot be shot down, but they can de deflected.
 The heavy UFOs don't spawn unless you place at least 5 heavy or 25 regular turrets. The more turrets you have, the higher is their spawn probability.
+Heavy UFOs' missiles are not "smart" enough to chase you over the screen border.
 Shielded UFOs only appear if you've reached a multiplier of 20 or higher.
 Getting hit will reset your multiplier, so don't get hit, if you want to get a high score.
 You become temporarily invincible after getting hit, use it for a quick getaway.

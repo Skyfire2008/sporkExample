@@ -287,7 +287,13 @@ class Main {
 				// when shaders are loaded, set the shapes for render component and init the renderer
 				RenderComponent.setShapes(shapes);
 				AnimComponent.setShapes(shapes);
-				TimeToLiveCircle.setSegment(shapes.get("segment.json"));
+
+				var segment = Shape.fromJson({
+					"points": [{"x": 0, "y": 1, "color": "#ff0101"}, {"x": 0, "y": 0, "color": "#ff0101"}],
+					"lines": [{"from": 0, "to": 1}]
+				});
+				segment.init(gl);
+				TimeToLiveCircle.setSegment(segment);
 				renderer = new Renderer(gl, shaders[0], shaders[1]);
 				Renderer.setInstance(renderer);
 				return;
@@ -410,7 +416,6 @@ class Main {
 							listener = (ev: KeyboardEvent) -> {
 								// on key press, update html element
 								ev.stopPropagation();
-								ev.preventDefault();
 								bindings.set(key, ev.code);
 								binding.innerText = ev.code;
 
