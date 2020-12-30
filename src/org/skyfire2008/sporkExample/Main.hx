@@ -27,6 +27,8 @@ import io.newgrounds.NG;
 import howler.Howler;
 import howler.Howl;
 
+import knockout.Knockout;
+
 import org.skyfire2008.sporkExample.ui.Scoreboard;
 import org.skyfire2008.sporkExample.ui.Hints;
 import org.skyfire2008.sporkExample.geom.Point;
@@ -98,7 +100,7 @@ class Main {
 		var delta = (timestamp - prevTime) / 1000;
 		timeStore += delta;
 		timeCount++;
-		if (timeCount >= 300) {
+		if (timeCount >= 600) {
 			trace("fps: " + timeCount / timeStore);
 			timeStore = 0;
 			timeCount = 0;
@@ -166,6 +168,7 @@ class Main {
 				});
 		};
 		submitButton.addEventListener("click", (e) -> {
+			Knockout.contextFor(document.querySelector("scoreboard").firstElementChild).data.scoreboardLoaded(false);
 			NG.core.scoreBoards.get(9449).postScore(ScoringSystem.instance.score);
 		});
 		restartButton.addEventListener("click", (e) -> {
@@ -332,11 +335,6 @@ class Main {
 
 						NG.core.requestScoreBoards(() -> {
 							var scoreboard = NG.core.scoreBoards.get(9449);
-							scoreboard.onUpdate.add(() -> {
-								for (score in scoreboard.scores) {
-									trace(score.user, score.value);
-								}
-							});
 							scoreboard.requestScores(1000);
 						}, (error) -> {
 								trace(error);
@@ -412,6 +410,7 @@ class Main {
 							listener = (ev: KeyboardEvent) -> {
 								// on key press, update html element
 								ev.stopPropagation();
+								ev.preventDefault();
 								bindings.set(key, ev.code);
 								binding.innerText = ev.code;
 

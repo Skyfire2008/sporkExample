@@ -84,6 +84,19 @@
 		{
 			"name": "spawnsHealthShip",
 			"params": {}
+		},
+		{
+			"name": "deathSpawnComponent",
+			"params": {
+				"entityName": "spark3.json",
+				"spawnTime": 1,
+				"angleRand": 6.29,
+				"velRand": 125,
+				"spawnNum": 50,
+				"isVelRelative": false,
+				"spawnVel": 150,
+				"spreadAngle": 0
+			}
 		}
 	]
 }

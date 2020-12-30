@@ -1,0 +1,29 @@
+{
+	"properties": {},
+	"components": [
+		{
+			"name": "moveComponent",
+			"params": {}
+		},
+		{
+			"name": "timedComponent",
+			"params": {
+				"time": 1
+			}
+		},
+		{
+			"name": "changeScaleComponent",
+			"params": {
+				"startScale": 20,
+				"stopScale": 0,
+				"changeTime": 1
+			}
+		},
+		{
+			"name": "renderComponent",
+			"params": {
+				"shapeRef": "spark3.json"
+			}
+		}
+	]
+}

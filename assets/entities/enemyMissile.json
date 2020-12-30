@@ -41,7 +41,7 @@
 			"name": "chasesComponent",
 			"params": {
 				"group": "Player",
-				"angVel": 2,
+				"angVel": 2.5,
 				"diesOnHit": true
 			}
 		},

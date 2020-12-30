@@ -3,13 +3,13 @@ All powerups stack with each other, so don't worry about picking up two same pow
 This game has no overhealing, so leave those health powerups until you need them.
 The outer white ring around the powerup shows the time it has until it disappears.
 No matter what you've heard, turrets cannot actually pick up powerups.
-Background particle effect causing motion sickness? You can set the number of particles to 0 in the pause menu.
+If you think that the ship is hard to control, try braking(S by default). Remember, original Asteroids didn't allow you to brake.
+You don't need to accelerate all the time, just let your ship drift, while you correct its course and fire at nearby asteroids.
+Background particle effect causing motion sickness? You can awalys set their number to 0 in the pause menu.
 Control scheme is uncomfortable? You can rebind those keys in the pause menu.
 Settings not saving inbetween sessions? You probably need to enable third-party cookies.
-Unlike regular bullets, heavy UFO missiles cannot be shot down. But they can de deflected.
-Where are the heavy UFOs? Place at least 5 heavy or 25 regular turrets and find out.
-Where are the shielded UFOs? Reach a multiplier of 25 and find out.
-You don't need to accelerate all the time, just let your ship drift, while you correct its course and fire at nearby asteroids.
-Turrets are invaluable for reaching a high multiplier.
-Getting hit will reset your multiplier, so don't get hit, if you want to get a high score!
+Unlike regular bullets, heavy UFO missiles cannot be shot down, but they can de deflected.
+The heavy UFOs don't spawn unless you place at least 5 heavy or 25 regular turrets. The more turrets you have, the higher is their spawn probability.
+Shielded UFOs only appear if you've reached a multiplier of 20 or higher.
+Getting hit will reset your multiplier, so don't get hit, if you want to get a high score.
 You become temporarily invincible after getting hit, use it for a quick getaway.

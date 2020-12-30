@@ -108,6 +108,9 @@ class Scoreboard {
 					</tfoot>
 				</table>
 			</div>
+			<div data-bind='ifnot: scoreboardLoaded' style='animation-name: preloader; animation-duration: 0.5s; animation-iteration-count: infinite;'>
+				Loading scoreboard...
+			</div>
 			"
 		});
 
