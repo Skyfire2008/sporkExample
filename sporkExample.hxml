@@ -13,7 +13,7 @@
 --macro spork.core.Macro.setComponentsClassPath(["org.skyfire2008.sporkExample.game.components"])
 --macro spork.core.Macro.setPropertyHolder("org.skyfire2008.sporkExample.game.properties.MyHolder")
 
--lib spork
+-lib spork:0.8.0
 -lib polygonal-ds
 -lib howlerjs
 -lib newgrounds
